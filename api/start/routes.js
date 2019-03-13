@@ -10,6 +10,6 @@ Route.group(() => {
  //TODO Fazer o alterar
   Route.post('category', 'CategoryController.create');
 
-
+  Route.post('product', 'ProductController.create');
 })
  .prefix('api');
