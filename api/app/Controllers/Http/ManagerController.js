@@ -2,8 +2,9 @@
 
 const ManagerModel = use('App/Models/Manager');
 
-class ManagerController {3
+class ManagerController {
   async create({ request }) {
+    console.log("Gerente...")
     const { cpf, name, password, address, email, id_supermarket } = request.all();
     const manager = await ManagerModel.create({
       cpf,
