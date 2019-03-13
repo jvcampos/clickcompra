@@ -12,7 +12,7 @@ class ProductSchema extends Schema {
         .references('id')
         .inTable('categories')
         .notNullable()
-      table.integer('value').notNullable()
+      table.float('value').notNullable()
       table.integer('amount').notNullable()
       table.increments()
       table.timestamps()
