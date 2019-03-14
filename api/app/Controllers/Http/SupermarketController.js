@@ -1,6 +1,7 @@
 'use strict'
 
 const SuperMarketModel = use('App/Models/Supermarket')
+const HandlerMessage = use ('App/Services/HandlerMessage');
 
 class SupermarketController {
     async create({ request, response }) {
@@ -14,14 +15,9 @@ class SupermarketController {
         email,
         year_foundation
       })
-      return supermarket;
+      HandlerMessage.handlerSuccess(response, supermarket)
     } catch (error) {
-      console.log(error)
-      response.status(500).json({
-        error: error.code,
-        error_message: error.sqlMessage,
-        message: "Ops, não consegui cadastrar novo supermercado !"
-      })
+      HandlerMessage.handlerError(response, error)
     }
   }
 }
