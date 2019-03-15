@@ -5,10 +5,10 @@ const HandlerMessage = use ('App/Services/HandlerMessage');
 
 class SupermarketController {
     async create({ request, response }) {
-    // NOTE (outra maneira) const data = request.only("cnpj", "name", "address", "email", "year_foundation")
-    const { cnpj, name, address, email, year_foundation } = request.all();
+    const { id_manager, cnpj, name, address, email, year_foundation } = request.all();
     try {
       const supermarket = await SuperMarketModel.create({
+        id_manager,
         cnpj,
         name,
         address,
@@ -16,10 +16,10 @@ class SupermarketController {
         year_foundation
       })
       HandlerMessage.handlerSuccess(response, supermarket)
-    } catch (error) {
-      HandlerMessage.handlerError(response, error)
+      } catch (error) {
+        HandlerMessage.handlerError(response, error)
+      }
     }
-  }
 }
 
 module.exports = SupermarketController

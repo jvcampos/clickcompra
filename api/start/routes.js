@@ -3,13 +3,15 @@
 const Route = use('Route')
 
 Route.group(() => {
-  //TODO fazer alterar
-  Route.post('supermarket', 'SupermarketController.create');
-  //TODO fazer alterar
-  Route.post('manager', 'ManagerController.create');
- //TODO Fazer o alterar
-  Route.post('category', 'CategoryController.create');
+  Route.post('login', 'SessionController.createSession')
 
-  Route.post('product', 'ProductController.create');
+  Route.post('supermarket', 'SupermarketController.create')
+  Route.patch('supermarket/:id', 'SupermarketController.update').middleware('auth')
+
+  Route.post('user', 'UserController.create');
+
+  Route.post('category', 'CategoryController.create').middleware('auth')
+
+  Route.post('product', 'ProductController.create').middleware('auth')
 })
  .prefix('api');
