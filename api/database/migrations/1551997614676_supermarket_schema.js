@@ -5,6 +5,12 @@ const Schema = use('Schema')
 class SupermarketSchema extends Schema {
   up () {
     this.create('supermarkets', (table) => {
+      table
+        .integer('id_manager')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .notNullable()
       table.string('cnpj', 20).notNullable().unique()
       table.string('name', 80).notNullable().unique()
       table.string('address',150).notNullable()
@@ -17,6 +23,10 @@ class SupermarketSchema extends Schema {
 
   down () {
     this.drop('supermarkets')
+  }
+
+  user () {
+    return this.hasMany('App/Models/User')
   }
 }
 
