@@ -8,7 +8,7 @@ class UserController {
   async create({ request, response }) {
     const { cpf, name, address, email, password, role } = request.all();
     try {
-        const user = await User.create({
+        const user = await UserModel.create({
         cpf,
         name,
         address,
@@ -54,8 +54,9 @@ class UserController {
     const user = await UserModel.find(id)
     if (user) {
       HandlerMessage.handlerSuccess(response, user)
+    }else{
+      HandlerMessage.handlerNotFound(response);
     }
-    HandlerMessage.handlerNotFound(response);
   }
 
   async getAll({ request }) {

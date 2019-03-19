@@ -48,8 +48,9 @@ class ProductController {
     const product = await ProductModel.find(id)
     if (product) {
       HandlerMessage.handlerSuccess(response, product)
+    }else{
+      HandlerMessage.handlerNotFound(response);
     }
-    HandlerMessage.handlerNotFound(response);
   }
 
   async getAll({ request }) {
