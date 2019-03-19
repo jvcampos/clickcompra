@@ -6,9 +6,9 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 
 class CategoryController {
   async create({ request }) {
-    const { category, name } = request.all()
+    const { id_supermarket, name } = request.all()
     const category = await CategoryModel.create({
-      id_category,
+      id_supermarket,
       name
     })
     return category
@@ -20,7 +20,7 @@ class CategoryController {
       await Database
         .table('categories')
         .where('id', id)
-        .update({ id_category, name })
+        .update({ name })
       const category = await CategoryModel.find(id)
       HandlerMessage.handlerUpdate(response, category)
     }
@@ -45,8 +45,9 @@ class CategoryController {
     const category = await CategoryModel.find(id)
     if (category) {
       HandlerMessage.handlerSuccess(response, category)
+    }else{
+      HandlerMessage.handlerNotFound(response);
     }
-    HandlerMessage.handlerNotFound(response);
   }
 
   async getAll({ request }) {
