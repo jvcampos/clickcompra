@@ -1,0 +1,32 @@
+/* INICIO Botões personalizados */
+
+.ui.button.blue.button_clickcompras{
+    text-transform: uppercase;
+    background-color: #0077DB;
+    color: #fff;
+}
+
+.ui.button.blue.button_clickcompras:hover{
+    background-color: #068DE3;
+    color: #fff;
+}
+
+/* FIM Botões personalizados */
+
+/* INICIO Backgrounds */
+
+div.login-form{
+    /* background-image: linear-gradient(to bottom, #8a989f, #7ba0b5, #68a8cc, #50afe4, #2ab5fe); */
+    background-image: linear-gradient(to bottom, #ffffff, #dddef7, #b3bff0, #7da3ea, #0a8ae3);
+}
+
+/* FIM Backgrounds */
+
+/* INICIO Imagens */
+
+img.img_logo{
+    width: 275px !important;
+    margin-bottom: -50px !important;
+}
+
+/* FIM Imagens */
