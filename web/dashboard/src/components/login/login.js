@@ -11,7 +11,7 @@ class Login extends Component {
         body > div,
         body > div > div,
         body > div > div > div.login-form {
-            height: 100.70%;
+            height: 100.60%;
         }
         `}
         </style>
