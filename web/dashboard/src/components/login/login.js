@@ -9,22 +9,25 @@ import ActionLogin from '../../store/actions/login'
 import "./login.css"
 
 class Login extends Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props){
-    super(props)
-    this.state = {
-      email: '',
-      password: ''
-    }
+  state = {
+    email: '',
+    password: ''
+  }
+  
+  handleVerifyAcess = () => {
+    console.log(this.props.data)
   }
 
   handleSubmit = () =>{
     this.props.login(this.state.email, this.state.password)
+    this.setState({ email: '', password: '' })
+    this.handleVerifyAcess()
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
   }
+
 
   render() {
     return (
@@ -44,10 +47,11 @@ class Login extends Component {
             </Header>
             <Form onSubmit={this.handleSubmit} size='large'>
             <Segment stacked>
-                <Form.Input name="email" onChange={this.handleChange} fluid icon='user' iconPosition='left' placeholder='E-MAIL' />
+                <Form.Input name="email" onChange={this.handleChange} value={this.state.email} fluid icon='user' iconPosition='left' placeholder='E-MAIL' />
                 <Form.Input
                 name="password"
                 onChange={this.handleChange}
+                value={this.state.password}
                 fluid
                 icon='lock'
                 iconPosition='left'
@@ -55,7 +59,7 @@ class Login extends Component {
                 type='password'
                 />
                 <Button className="button_clickcompras" color="blue" fluid size="large">
-                    Acessar painel
+                    ACESSAR PAINEL
                 </Button>
             </Segment>
             </Form>
@@ -66,8 +70,13 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  data: state.login,
+});
+
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ login : ActionLogin } , dispatch);
 
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
