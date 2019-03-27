@@ -1,13 +1,11 @@
-/* eslint-disable default-case */
-const INIITAL_STATE = []
-
-export default function login(state = INIITAL_STATE , action) {
+export default function login(state = [] , action) {
    switch(action.type){
        case 'USER_LOGIN':
-          return {
+          return [ ...state, {
               email: action.email,
               password: action.password
-          };
+          }]
+        default:
+          return state;
    }
-   return state;
 }
