@@ -1,0 +1,23 @@
+/* INICIO Menu superior  */
+.ui.menu{
+    text-transform: uppercase !important;
+}
+
+.ui.menu.menu_superior{
+    background-color: #50afe4 !important;
+    text-transform: uppercase !important;
+}
+
+
+.ui.button.blue.button_clickcompras{
+    text-transform: uppercase;
+    background-color: #0077DB;
+    color: #fff;
+}
+
+.ui.button.blue.button_clickcompras:hover{
+    background-color: #068DE3;
+    color: #fff;
+}
+
+/* INICIO Menu superior */
