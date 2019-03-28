@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux'
 
 import store from './store'
-
-import Login from "./components/login/login"
-// import MenuSuperior from './components/dashboard/menusuperior/menusuperior'
+import Routes from './routes/index'
 
 class App extends Component {
   render() {
     return (
       <div>
         <Provider store={store}>
-          <Login />
+          <Routes />
         </Provider>
       </div>
     );
