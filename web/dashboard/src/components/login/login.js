@@ -13,12 +13,13 @@ class Login extends Component {
     email: '',
     password: ''
   }
-  
+
   handleVerifyAcess = () => {
-    console.log(this.props.data)
+    console.log(this.props.dataLogin)
   }
 
-  handleSubmit = () =>{
+  handleSubmit = (e) =>{
+    e.preventDefault()
     this.props.login(this.state.email, this.state.password)
     this.setState({ email: '', password: '' })
     this.handleVerifyAcess()
@@ -71,7 +72,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  data: state.login,
+  dataLogin: state.login,
 });
 
 
