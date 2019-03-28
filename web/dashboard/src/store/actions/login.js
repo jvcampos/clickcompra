@@ -12,17 +12,24 @@ export default function userLogin(email, password){
       dispatch(loginSucess(response.data, email, password))
       dispatch(push("/home"));
     })
-    .catch((error) => {
-      throw error(error)
+    .catch(() => {
+      dispatch(loginError('Dados inseridos incorretos, verificar !'))
     })
   }
 }
 
 export const loginSucess = (data, email, password) => {
   return {
-    type: 'USER_LOGIN',
+    type: 'USER_SUCCESS_LOGIN',
     email,
     password,
     data
+  }
+}
+
+export const loginError = (message) => {
+  return {
+    type: 'USER_ERROR_LOGIN',
+    message,
   }
 }

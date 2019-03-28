@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
+import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -11,18 +11,25 @@ import "./login.css"
 class Login extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    statusMessageError: 'hidden'
   }
 
-  handleVerifyAcess = () => {
-    console.log(this.props.dataLogin)
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <Message negative style={{ visibility: `${this.state.statusMessageError}` }}>
+          <Message.Header>{this.props.errorMessage.error}</Message.Header>
+        </Message>
+      );
+    }
   }
+
 
   handleSubmit = (e) =>{
     e.preventDefault()
     this.props.login(this.state.email, this.state.password)
-    this.setState({ email: '', password: '' })
-    this.handleVerifyAcess()
+    this.setState({ email: '', password: '', statusMessageError: 'visible' })
   }
 
   handleChange = (e) => {
@@ -63,6 +70,7 @@ class Login extends Component {
                     ACESSAR PAINEL
                 </Button>
             </Segment>
+                {this.renderAlert()}
             </Form>
         </Grid.Column>
         </Grid>
@@ -72,7 +80,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  dataLogin: state.login,
+  errorMessage: state.login
 });
 
 
