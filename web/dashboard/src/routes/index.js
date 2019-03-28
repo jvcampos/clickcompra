@@ -3,7 +3,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 
-import Login from '../components/login/login'
+import Login from '../containers/login/login'
 import Home from '../components/menusuperior/menusuperior'
 
 import history from "./history";
