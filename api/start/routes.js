@@ -5,6 +5,7 @@ const Route = use('Route')
 Route.group(() => {
   // NOTE Routes to acess, bouth web and mobile.
   Route.post('login', 'SessionController.createSession')
+  Route.get('logout', 'SessionController.sessionLogout').middleware('auth')
 
   Route.post('user', 'UserController.create');
   Route.put('user/:id', 'UserController.update').middleware('auth')

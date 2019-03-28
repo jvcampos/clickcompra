@@ -7,16 +7,22 @@ import './menusuperior.css'
 
 class MenuSuperior extends Component {
 	state = {
-		activeItem: 'home'
+		activeItem: 'home',
+		token: ''
 	}
 
 	handleItemClick = (e, { name }) => {
 		this.setState({ activeItem: name})
 	}
 
+	componentDidMount = () => {
+		sessionStorage.setItem('token', this.props.dataLogin.token);
+	};
+	
 	render() {
 		const { activeItem } = this.state
-
+		console.log(this.props.dataLogin.token)
+		
 		return (
 			<div>
 				<Menu className="menu_superior" pointing secondary>
@@ -43,7 +49,7 @@ class MenuSuperior extends Component {
 						<Menu.Item
 						name='sair'
 						active={activeItem === 'sair'}
-						onClick={this.handleItemClick}
+						onClick={this.logout}
 						/>
 					</Menu.Menu>
 				</Menu>
