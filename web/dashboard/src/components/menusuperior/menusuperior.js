@@ -7,8 +7,7 @@ import './menusuperior.css'
 
 class MenuSuperior extends Component {
 	state = {
-		activeItem: 'home',
-		token: ''
+		activeItem: 'home'
 	}
 
 	handleItemClick = (e, { name }) => {
@@ -16,13 +15,18 @@ class MenuSuperior extends Component {
 	}
 
 	componentDidMount = () => {
-		sessionStorage.setItem('token', this.props.dataLogin.token);
+		localStorage.setItem('token', this.props.dataLogin.token);
 	};
-	
+
+	logout = () => {
+		localStorage.clear()
+		window.open(`${process.env.PUBLIC_URL}/`, '_self');
+	};
+
+
 	render() {
 		const { activeItem } = this.state
 		console.log(this.props.dataLogin.token)
-		
 		return (
 			<div>
 				<Menu className="menu_superior" pointing secondary>
