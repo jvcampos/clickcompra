@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "connected-react-router": "^6.3.2",
+    "history": "^4.9.0",
     "password-hash": "^1.2.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-redux": "^6.0.1",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
