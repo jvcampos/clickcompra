@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 
 import Login from '../components/login/login'
-import Home from '../components/dashboard/menusuperior/menusuperior'
+import Home from '../components/menusuperior/menusuperior'
 
 import history from "./history";
 
