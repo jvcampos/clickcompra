@@ -15,6 +15,10 @@ class Login extends Component {
     statusMessageError: 'hidden'
   }
 
+  componentDidMount() {
+    document.title = 'Log in - ClickCompras';
+  }
+
   renderAlert() {
     if (this.props.errorMessage) {
       return (
@@ -24,7 +28,6 @@ class Login extends Component {
       );
     }
   }
-
 
   handleSubmit = (e) =>{
     e.preventDefault()

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, Menu, Segment } from 'semantic-ui-react'
+import { Dropdown, Icon, Menu, Segment } from 'semantic-ui-react'
 
 import { connect } from 'react-redux';
 
@@ -10,13 +10,14 @@ class MenuSuperior extends Component {
 		activeItem: 'home'
 	}
 
+	componentDidMount = () => {
+		document.title = 'Home | ClickCompras';
+		localStorage.setItem('token', this.props.dataLogin.token);
+	};
+
 	handleItemClick = (e, { name }) => {
 		this.setState({ activeItem: name})
 	}
-
-	componentDidMount = () => {
-		localStorage.setItem('token', this.props.dataLogin.token);
-	};
 
 	logout = () => {
 		localStorage.clear()
@@ -50,6 +51,12 @@ class MenuSuperior extends Component {
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Menu position='right'>
+						<Dropdown text="Configuração" pointing className="dropdown_conta_configuracao">
+							<Dropdown.Menu>
+								<Dropdown.Header>Conta</Dropdown.Header>
+								<Dropdown.Item>Alterar Conta</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown>
 						<Menu.Item
 						name='sair'
 						active={activeItem === 'sair'}
