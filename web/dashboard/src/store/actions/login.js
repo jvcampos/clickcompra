@@ -4,18 +4,22 @@ const api = axios.create({
 })
 
 export default function userLogin(email, password){
-    return dispatch => {
-      api.post('login', { email, password })
-      .then(res => {
-          console.log(res)
-          // dispatch(res.data)
-          return {
-              type: 'USERr_LOGIN',
-              email,
-              password,
-          }
-        }).catch((error) => {
-          console.log(`Error ==> ${error}`)
-        })
-    }
+  return (dispatch) => {
+    return api.post('login', { email, password })
+    .then(response => {
+      dispatch(loginSucess(response.data, email, password))
+    })
+    .catch((error) => {
+      throw error(error)
+    })
+  }
+}
+
+export const loginSucess = (data, email, password) => {
+  return {
+    type: 'USER_LOGIN',
+    email,
+    password,
+    data
+  }
 }

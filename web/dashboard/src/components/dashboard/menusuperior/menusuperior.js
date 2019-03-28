@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import { Icon, Menu, Segment } from 'semantic-ui-react'
 
+// import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+// import ActionLogin from '../../store/actions/login'
+
 import './menusuperior.css'
 
 class MenuSuperior extends Component {
@@ -53,4 +58,12 @@ class MenuSuperior extends Component {
     }
 }
 
-export default MenuSuperior;
+const mapStateToProps = state => ({
+    dataLogin: state.login,
+  });
+
+// const mapDispatchToProps = dispatch =>
+//     bindActionCreators({ login : ActionLogin } , dispatch);
+
+
+export default connect(mapStateToProps, null)(MenuSuperior)
