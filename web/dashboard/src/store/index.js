@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import thunk from 'redux-thunk'
 
@@ -10,7 +11,7 @@ const middlewares = [routerMiddleware(history), thunk];
 
 const store = createStore(
   connectRouter(history)(reducers),
-  applyMiddleware(...middlewares)
+  composeWithDevTools(applyMiddleware(...middlewares))
 );
 
 export default store;
