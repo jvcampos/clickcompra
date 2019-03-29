@@ -29,16 +29,18 @@ class Login extends Component {
     }
   }
 
-  handleSubmit = (e) =>{
+handleSubmit = (e) =>{
     e.preventDefault()
     this.props.login(this.state.email, this.state.password)
-    this.setState({ email: '', password: '', statusMessageError: 'visible' })
+    this.setState({ email: '', password: '', statusLoading: true })
+    setTimeout(() => {
+      this.setState({ statusLoading: false, statusMessageError: 'visible', })
+    }, 1000)
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
   }
-
 
   render() {
     return (
@@ -69,9 +71,12 @@ class Login extends Component {
                 placeholder='SENHA'
                 type='password'
                 />
-                <Button className="button_clickcompras" color="blue" fluid size="large">
-                    ACESSAR PAINEL
-                </Button>
+                <Button className = "button_clickcompras"
+                color = "blue"
+                fluid size = "large"
+                  loading={this.state.statusLoading}>
+                  ACESSAR PAINEL
+                  </Button>
             </Segment>
                 {this.renderAlert()}
             </Form>
