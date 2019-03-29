@@ -5,6 +5,11 @@ import { connect } from 'react-redux';
 
 import './menusuperior.css'
 
+import Supermercado from '../supermercado/Supermercado'
+import Categorias from '../categorias/Categorias'
+import Produtos from '../produtos/Produtos'
+import Home from '../home/Home'
+
 class MenuSuperior extends Component {
 	state = {
 		activeItem: 'home'
@@ -16,7 +21,7 @@ class MenuSuperior extends Component {
 	};
 
 	handleItemClick = (e, { name }) => {
-		this.setState({ activeItem: name})
+		this.setState({ activeItem: name })
 	}
 
 	logout = () => {
@@ -24,6 +29,18 @@ class MenuSuperior extends Component {
 		window.open(`${process.env.PUBLIC_URL}/`, '_self');
 	};
 
+	changeComponent = () => {
+		switch (this.state.activeItem) {
+			case 'Supermercado':
+				return <Supermercado />
+			case 'Categorias':
+				return <Categorias />
+			case 'Produtos':
+				return <Produtos />
+			default:
+				return <Home />
+		}
+	}
 
 	render() {
 		const { activeItem } = this.state
@@ -36,18 +53,18 @@ class MenuSuperior extends Component {
 					</Menu.Item>
 					<Menu.Item
 						className="menu_superior_item"
-						name='supermercado'
-						active={activeItem === 'supermercado'}
+						name='Supermercado'
+						active={activeItem === 'Supermercado'}
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Item
-						name='categorias'
-						active={activeItem === 'categorias'}
+						name='Categorias'
+						active={activeItem === 'Categorias'}
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Item
-						name='produtos'
-						active={activeItem === 'produtos'}
+						name='Produtos'
+						active={activeItem === 'Produtos'}
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Menu position='right'>
@@ -58,14 +75,14 @@ class MenuSuperior extends Component {
 							</Dropdown.Menu>
 						</Dropdown>
 						<Menu.Item
-						name='sair'
-						active={activeItem === 'sair'}
-						onClick={this.logout}
+							name='sair'
+							active={activeItem === 'sair'}
+							onClick={this.logout}
 						/>
 					</Menu.Menu>
 				</Menu>
 				<Segment>
-					<h3>Será outro componente !</h3>
+					{this.changeComponent()}
 				</Segment>
 			</div>
 		)
