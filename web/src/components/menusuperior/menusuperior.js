@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
 import { Dropdown, Icon, Menu, Segment } from 'semantic-ui-react'
+import renderComponent from '../../store/actions/renderComponent'
+import { PropTypes } from 'react'
 
+import Supermarket from '../supermarket/Supermarket'
+import Categories from '../categories/Categories'
+import Products from '../products/Products'
+import Home from '../home/Home'
+
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
 import './menusuperior.css'
 
-import Supermercado from '../supermercado/Supermercado'
-import Categorias from '../categorias/Categorias'
-import Produtos from '../produtos/Produtos'
-import Home from '../home/Home'
-
 class MenuSuperior extends Component {
+
+	constructor(props) {
+		super(props)
+	}
+
 	state = {
-		activeItem: 'home'
+		activeItem: ''
 	}
 
 	componentDidMount = () => {
@@ -21,7 +29,7 @@ class MenuSuperior extends Component {
 	};
 
 	handleItemClick = (e, { name }) => {
-		this.setState({ activeItem: name })
+		this.props.render(name)
 	}
 
 	logout = () => {
@@ -29,42 +37,31 @@ class MenuSuperior extends Component {
 		window.open(`${process.env.PUBLIC_URL}/`, '_self');
 	};
 
-	changeComponent = () => {
-		switch (this.state.activeItem) {
-			case 'Supermercado':
-				return <Supermercado />
-			case 'Categorias':
-				return <Categorias />
-			case 'Produtos':
-				return <Produtos />
-			default:
-				return <Home />
-		}
-	}
-
 	render() {
 		const { activeItem } = this.state
 		console.log(this.props.dataLogin.token)
 		return (
 			<div>
 				<Menu className="menu_superior" pointing secondary>
-					<Menu.Item className="menu_superior_item" name='home' active={activeItem === 'home'} onClick={this.handleItemClick}>
-						<Icon name='home' />Home
+					<Menu.Item
+						className="menu_superior_item"
+						name='home'
+						active={activeItem === 'home'} onClick={this.handleItemClick}>
 					</Menu.Item>
 					<Menu.Item
 						className="menu_superior_item"
-						name='Supermercado'
-						active={activeItem === 'Supermercado'}
+						name='supermarket'
+						active={activeItem === 'supermarket'}
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Item
-						name='Categorias'
-						active={activeItem === 'Categorias'}
+						name='categories'
+						active={activeItem === 'categories'}
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Item
-						name='Produtos'
-						active={activeItem === 'Produtos'}
+						name='products'
+						active={activeItem === 'products'}
 						onClick={this.handleItemClick}
 					/>
 					<Menu.Menu position='right'>
@@ -81,9 +78,6 @@ class MenuSuperior extends Component {
 						/>
 					</Menu.Menu>
 				</Menu>
-				<Segment>
-					{this.changeComponent()}
-				</Segment>
 			</div>
 		)
 	}
@@ -91,6 +85,10 @@ class MenuSuperior extends Component {
 
 const mapStateToProps = state => ({
 	dataLogin: state.login,
+	renderComponent: state.renderComponent,
 });
 
-export default connect(mapStateToProps, null)(MenuSuperior)
+const mapDispatchToProps = dispatch =>
+	bindActionCreators({ render: renderComponent }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuSuperior)
