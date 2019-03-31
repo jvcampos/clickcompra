@@ -3,13 +3,15 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import MenuSuperior from '../menusuperior/menusuperior'
-// import { Container } from './styles';
+import MenuSuperior from '../menusuperior/Menusuperior'
 
-class Supermercado extends Component {
+class Supermarket extends Component {
   render() {
     return (
-      <h3>Supermercado Noêmia</h3>
+      <div>
+        <MenuSuperior />
+        <h3>Supermercado Noêmia</h3>
+      </div>
     );
   }
 }
@@ -22,4 +24,4 @@ class Supermercado extends Component {
 export default connect(
   // mapStateToProps,
   // mapDispatchToProps
-)(Supermercado);
+)(Supermarket);

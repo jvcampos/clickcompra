@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-// import { Container } from './styles';
+import MenuSuperior from '../menusuperior/Menusuperior'
 
 class Home extends Component {
   render() {
     return (
-      <h3>Home</h3>
+      <div>
+        <MenuSuperior/>
+        <h3>Home</h3>
+      </div>
     )
   }
 }

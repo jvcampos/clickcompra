@@ -3,17 +3,18 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// import { Container } from './styles';
+import MenuSuperior from '../menusuperior/Menusuperior'
 
-class Produtos extends Component {
+class Categories extends Component {
   render() {
     return (
       <div>
-        <h3>Produtos</h3>
+        <MenuSuperior/>
+        <h3>Categorias</h3>
         <ul>
-          <li>Carne</li>
-          <li>Arroz</li>
-          <li>Macarrão</li>
+          <li>Cereais</li>
+          <li>Bebidas</li>
+          <li>Padaria</li>
         </ul>
       </div>
     );
@@ -28,4 +29,4 @@ class Produtos extends Component {
 export default connect(
   // mapStateToProps,
   // mapDispatchToProps
-)(Produtos);
+)(Categories);
