@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import MenuSuperior from '../menusuperior/Menusuperior'
 
@@ -17,9 +17,6 @@ class Home extends Component {
 // const mapStateToProps = state => ({});
 
 // const mapDispatchToProps = dispatch =>
-//   bindActionCreators(Actions, dispatch);
+//   bindActionCreators(null, dispatch);
 
-export default connect(
-  // mapStateToProps,
-  // mapDispatchToProps
-)(Home);
+export default connect(null,null)(Home);
