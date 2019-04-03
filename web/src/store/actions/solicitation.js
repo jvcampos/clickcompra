@@ -7,27 +7,45 @@ export default function managerSolicitation(dados) {
     return (dispatch) => {
         const { manager } = dados
         const { supermarket } = dados
-        console.log(manager)
         return api.post('user', manager)
         .then(response => {
           const { id } = response.data.data
           dispatch(supermarketSolicitation(id, supermarket))
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          dispatch(errorSolicitation('Verificar dados inseridos !'))
         })
     }
   }
-  
+
 export const supermarketSolicitation = (id_manager, data_supermarket) => {
   return (dispatch) => {
-    console.log(id_manager, data_supermarket)
-    return api.post('supermarket', data_supermarket, id_manager)
+    const json_supermarket = { id_manager, ...data_supermarket }
+    console.log(json_supermarket)
+    return api.post('supermarket', json_supermarket)
       .then(response => {
-        console.log(response)
+        dispatch(successSolicitation('Solicitação de cadastro feita com sucesso !'))
       })
       .catch(() => {
-        
+        dispatch(errorSolicitation('Verificar dados inseridos !'))
       })
+  }
+}
+
+export const successSolicitation = (message) => {
+  return {
+    type: 'SUCCESS_SOLICITATION',
+    status: 'success',
+    title: 'Solicitação realizada com sucesso',
+    message,
+  }
+}
+
+export const errorSolicitation = (message) => {
+  return {
+    type: 'ERROR_SOLICITATION',
+    status: 'error',
+    title: 'Não foi possível solicitar cadastro',
+    message,
   }
 }

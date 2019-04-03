@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
+import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -34,23 +35,26 @@ class Solicitacao extends Component {
     document.title = 'Solicitacao - ClickCompras';
   }
 
-  renderAlert() {
-    if (this.props.errorMessage) {
-      return (
-        <Message negative style={{ visibility: `${this.state.statusMessageError}` }}>
-          <Message.Header>{this.props.errorMessage.error}</Message.Header>
-        </Message>
+  showMessage() {
+    setTimeout(() => {
+      toast(
+        {
+          type: `${this.props.messageStatus.status}`,
+          icon: 'bullhorn',
+          animation: 'pulse',
+          title: `${this.props.messageStatus.title}`,
+          description: `${this.props.messageStatus.message}`
+        },
       );
-    }
+      this.setState({ statusLoading: false, statusMessageError: 'visible', })
+    }, 2000);
   }
 
 handleSubmit = (e) =>{
     e.preventDefault()
     this.props.solicitation(this.state)
     this.setState({ statusLoading: true })
-    setTimeout(() => {
-      this.setState({ statusLoading: false })
-    }, 1400)
+    this.showMessage()
   }
 
   handleChange = (e) => {
@@ -78,6 +82,7 @@ handleSubmit = (e) =>{
   render() {
     return (
       <div className="login-form-solicitacao">
+      <SemanticToastContainer />
         <style>{`
         body > div,
         body > div > div,
@@ -94,14 +99,12 @@ handleSubmit = (e) =>{
             <Form onSubmit={this.handleSubmit} size='large'>
             <Segment stacked>
               <Header>SUPERMERCADO</Header>
-                <Form.Input name="name" onChange={this.handleChangeSupermarket} value={this.state.supermarket.name} fluid icon='user' iconPosition='left' placeholder='RAZÃO SOCIAL' />
+                <Form.Input name="name" onChange={this.handleChangeSupermarket} value={this.state.supermarket.name} fluid placeholder='RAZÃO SOCIAL' />
                 <Form.Input
                     name="cnpj"
                     onChange={this.handleChangeSupermarket}
                     value={this.state.supermarket.cnpj}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='CNPJ'
                     type='text'
                     />
@@ -110,8 +113,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeSupermarket}
                     value={this.state.supermarket.address}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='ENDEREÇO'
                     type='text'
                     />
@@ -120,8 +121,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeSupermarket}
                     value={this.state.supermarket.email}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='EMAIL'
                     type='email'
                     />
@@ -130,8 +129,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeSupermarket}
                     value={this.state.supermarket.year_foundation}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='ANO DE FUNDAÇÃO'
                     type='text'
                     />
@@ -141,8 +138,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeManager}
                     value={this.state.manager.name}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='NOME'
                     type='text'
                     />
@@ -151,8 +146,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeManager}
                     value={this.state.manager.cpf}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='CPF'
                     type='text'
                     />
@@ -161,8 +154,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeManager}
                     value={this.state.manager.address}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='ENDEREÇO'
                     type='text'
                     />
@@ -171,8 +162,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeManager}
                     value={this.state.manager.email}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='EMAIL'
                     type='text'
                     />
@@ -181,8 +170,6 @@ handleSubmit = (e) =>{
                     onChange={this.handleChangeManager}
                     value={this.state.manager.password}
                     fluid
-                    icon='lock'
-                    iconPosition='left'
                     placeholder='SENHA'
                     type='password'
                     />
@@ -196,7 +183,6 @@ handleSubmit = (e) =>{
                     Cancelar solicitacao ? <Link to="/">Voltar ao login</Link>
                   </Message>
             </Segment>
-                {this.renderAlert()}
             </Form>
         </Grid.Column>
         </Grid>
@@ -206,7 +192,7 @@ handleSubmit = (e) =>{
 }
 
 const mapStateToProps = state => ({
-  solicitation: state.solicitation
+  messageStatus: state.solicitation
 });
 
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
+import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -8,7 +9,6 @@ import { connect } from 'react-redux';
 import ActionLogin from '../../store/actions/login'
 
 import "./login.css"
-
 class Login extends Component {
   state = {
     email: '',
@@ -20,23 +20,26 @@ class Login extends Component {
     document.title = 'Log in - ClickCompras';
   }
 
-  renderAlert() {
-    if (this.props.errorMessage) {
-      return (
-        <Message negative style={{ visibility: `${this.state.statusMessageError}` }}>
-          <Message.Header>{this.props.errorMessage.error}</Message.Header>
-        </Message>
+  showMessageError() {
+    setTimeout(() => {
+      toast(
+        {
+          type: `${this.props.errorMessage.status}`,
+          icon: 'bullhorn',
+          animation: 'pulse',
+          title: "Não foi possível acessar painel",
+          description: `${this.props.errorMessage.error}`
+        },
       );
-    }
+      this.setState({ statusLoading: false, statusMessageError: 'visible', })
+    }, 2000);
   }
 
 handleSubmit = (e) =>{
     e.preventDefault()
     this.props.login(this.state.email, this.state.password)
+    this.showMessageError()
     this.setState({ email: '', password: '', statusLoading: true })
-    setTimeout(() => {
-      this.setState({ statusLoading: false, statusMessageError: 'visible', })
-    }, 1400)
   }
 
   handleChange = (e) => {
@@ -46,6 +49,7 @@ handleSubmit = (e) =>{
   render() {
     return (
       <div className="login-form">
+        <SemanticToastContainer />
         <style>{`
         body > div,
         body > div > div,
@@ -82,7 +86,7 @@ handleSubmit = (e) =>{
                     Quer se juntar ? <Link to="/solicitacao"> Realizar solicitação </Link>
                   </Message>
             </Segment>
-                {this.renderAlert()}
+                {/* {this.renderAlert()} */}
             </Form>
         </Grid.Column>
         </Grid>

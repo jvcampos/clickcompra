@@ -29,6 +29,7 @@ export const loginSucess = (data, email, password) => {
 export const loginError = (message) => {
   return {
     type: 'USER_ERROR_LOGIN',
+    status: 'error',
     message,
   }
 }
