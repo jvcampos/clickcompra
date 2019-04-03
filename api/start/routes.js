@@ -14,7 +14,7 @@ Route.group(() => {
   Route.get('users', 'UserController.getAll').middleware('auth')
 
   // NOTE Routes to supermarkets.
-  Route.post('supermarket', 'SupermarketController.create').middleware('auth')
+  Route.post('supermarket', 'SupermarketController.create')
   Route.put('supermarket/:id', 'SupermarketController.update').middleware('auth')
   Route.delete('supermarket/:id', 'SupermarketController.delete').middleware('auth')
   Route.get('supermarket/:id', 'SupermarketController.getSupermarket').middleware('auth')
