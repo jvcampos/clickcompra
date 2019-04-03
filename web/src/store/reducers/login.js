@@ -1,7 +1,6 @@
 export default function login(state = {} , action) {
    switch(action.type){
      case 'USER_SUCCESS_LOGIN':
-     console.log(action)
       return {
           ...state,
           email: action.email,

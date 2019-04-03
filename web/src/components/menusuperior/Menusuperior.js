@@ -15,12 +15,10 @@ class MenuSuperior extends Component {
 
 	componentDidMount = () => {
 		document.title = 'Home | ClickCompras';
-		console.log(this.props)
 		localStorage.setItem('token', this.props.dataLogin.token);
 	};
 
 	handleItemClick = (e, { name }) => {
-		console.log(this.props)
 		this.props.render(name)
 	}
 

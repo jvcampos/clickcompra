@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -20,7 +19,7 @@ const middlewares = [routerMiddleware(history), thunk];
 
 const store = createStore(
   connectRouter(history)(persistedReducer),
-  composeWithDevTools(applyMiddleware(...middlewares))
+  applyMiddleware(...middlewares)
 );
 
 const persistor = persistStore(store)

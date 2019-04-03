@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
 
 import { bindActionCreators } from 'redux';
@@ -35,7 +36,7 @@ handleSubmit = (e) =>{
     this.setState({ email: '', password: '', statusLoading: true })
     setTimeout(() => {
       this.setState({ statusLoading: false, statusMessageError: 'visible', })
-    }, 1000)
+    }, 1400)
   }
 
   handleChange = (e) => {
@@ -72,11 +73,14 @@ handleSubmit = (e) =>{
                 type='password'
                 />
                 <Button className = "button_clickcompras"
-                color = "blue"
-                fluid size = "large"
+                  color = "blue"
+                  fluid size = "large"
                   loading={this.state.statusLoading}>
                   ACESSAR PAINEL
-                  </Button>
+                </Button>
+                  <Message>
+                    Quer se juntar ? <Link to="/solicitacao"> Realizar solicitação </Link>
+                  </Message>
             </Segment>
                 {this.renderAlert()}
             </Form>
