@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 
 import Login from '../containers/login/login'
-import Menu from '../components/menusuperior/Menusuperior'
+import Solicitacao from '../containers/solicitacao/solicitacao'
 import Supermarket from '../components/supermarket/Supermarket'
 import Categories from '../components/categories/Categories'
 import Products from '../components/products/Products'
@@ -16,6 +16,7 @@ const Routes = () => (
   <ConnectedRouter history={history}>
     <Switch>
       <Route exact path="/" component={Login} />
+      <Route path="/solicitacao" component={Solicitacao} />
       <Route path="/home" component={Home}/>
       <Route path="/categories" component={Categories} />
       <Route path="/supermarket" component={Supermarket} />

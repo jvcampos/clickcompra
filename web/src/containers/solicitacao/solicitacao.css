@@ -1,0 +1,31 @@
+/* INICIO Botões personalizados */
+
+.ui.button.blue.button_clickcompras{
+    text-transform: uppercase;
+    background-color: #0077DB;
+    color: #fff;
+}
+
+.ui.button.blue.button_clickcompras:hover{
+    background-color: #068DE3;
+    color: #fff;
+}
+
+/* FIM Botões personalizados */
+
+/* INICIO Backgrounds */
+
+div.login-form-solicitacao{
+    background-color: #cbc2b7
+}
+
+/* FIM Backgrounds */
+
+/* INICIO Imagens */
+
+img.img_logo{
+    width: 300px !important;
+    margin-bottom: -50px !important;
+}
+
+/* FIM Imagens */

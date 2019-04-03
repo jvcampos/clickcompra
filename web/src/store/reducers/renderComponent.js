@@ -1,10 +1,11 @@
 //Reducer
 export default function render(state = {}, action) {
-  switch (action.tyoe) {
+  switch(action.type) {
     case 'MENU_RENDER_COMPONENT':
+    console.log(action)
       return {
         ...state,
-        renderComponent: action.component,
+        componentSelected: action.component,
       }
     default:
       return state;
