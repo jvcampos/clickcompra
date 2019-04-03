@@ -10,6 +10,7 @@ export default function login(state = {} , action) {
       case 'USER_ERROR_LOGIN' :
         return {
           ...state,
+          status: action.status,
           error: action.message
         }
       default:

@@ -9,6 +9,7 @@ import Supermarket from '../components/supermarket/Supermarket'
 import Categories from '../components/categories/Categories'
 import Products from '../components/products/Products'
 import Home from '../components/home/Home'
+import Admin from '../containers/admin/admin'
 
 import history from "./history";
 
@@ -16,6 +17,7 @@ const Routes = () => (
   <ConnectedRouter history={history}>
     <Switch>
       <Route exact path="/" component={Login} />
+      <Route path="/admin" component={Admin} />
       <Route path="/solicitacao" component={Solicitacao} />
       <Route path="/home" component={Home}/>
       <Route path="/categories" component={Categories} />
