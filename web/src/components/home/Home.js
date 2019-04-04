@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react'
-import { VictoryChart, VictoryBar } from 'victory'
+import './home.css'
+import { VictoryPie } from 'victory'
 
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,13 +11,13 @@ import MenuSuperior from '../menusuperior/Menusuperior'
 class Home extends Component {
   state = {
     ChartData: [
-      { name: "Mon", value: 20 },
-      { name: "Tue", value: 50 },
-      { name: "Wed", value: 10 },
-      { name: "Thu", value: 80 },
-      { name: "Fri", value: 70 },
-      { name: "Sat", value: 90 },
-      { name: "Sun", value: 47 },
+      { name: "Seg.", value: 20 },
+      { name: "Terç.", value: 50 },
+      { name: "Qua", value: 10 },
+      { name: "Qui", value: 80 },
+      { name: "Sex", value: 70 },
+      { name: "Sáb", value: 90 },
+      { name: "Dom", value: 47 },
     ]
   }
 
@@ -31,12 +32,12 @@ class Home extends Component {
         <Segment>
           Welcome , <strong> {this.props.dataLogin.email}</strong>
         </Segment>
-          <VictoryChart horizontal domainPadding={2} heigth={0}>
-          <VictoryBar
-            style={{ data: { fill: "#0164dd" } }}
+        <div className = 'chartPie' style={{width: 400}}>
+          <h3>Vendas por dias da semana</h3>
+          <VictoryPie
+            colorScale={["#4286f4", "#ce7323", "#e8d037", "#21d16d", "navy"]}
             data={this.state.ChartData} x="name" y="value" />
-        </VictoryChart>
-
+        </div>
       </div>
     )
   }
