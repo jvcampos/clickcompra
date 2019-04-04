@@ -1,0 +1,31 @@
+/* INICIO Backgrounds */
+
+div.background-page{
+    /* background-image: linear-gradient(to bottom, #8a989f, #7ba0b5, #68a8cc, #50afe4, #2ab5fe); */
+    /* background-image: linear-gradient(to bottom, #ffffff, #dddef7, #b3bff0, #7da3ea, #0a8ae3); */
+    background-image: url('../../assets/login/background-login.png') !important;
+    background-size: cover;
+}
+
+/* FIM Backgrounds */
+
+.ui.menu.menu_superior_admin{
+    margin: -1px;
+    background-color: #989c9e !important;
+}
+
+/* INICIO Botões personalizados */
+
+.ui.button.btn_verificar_gerente{
+    margin: 10px;
+}
+
+/* FIM Botões personalizados */
+
+/* INICIO Modal personalizado */
+
+.ui.modal.modal_dados_gerente{
+    height: 38%;
+}
+
+/* FIM Modal personalizado */
