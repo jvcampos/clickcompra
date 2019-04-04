@@ -9,7 +9,11 @@ export default function userLogin(email, password){
     return api.post('login', { email, password })
     .then(response => {
       dispatch(loginSucess(response.data, email, password))
-      dispatch(push("/home"));
+      if (response.data.role === 'ADMIN'){
+        dispatch(push("/admin"));
+      } else {
+        dispatch(push("/home"));
+      }
     })
     .catch(() => {
       dispatch(loginError('Dados inseridos incorretos, verificar !'))
