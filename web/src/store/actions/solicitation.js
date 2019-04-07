@@ -21,7 +21,6 @@ export default function managerSolicitation(dados) {
 export const supermarketSolicitation = (id_manager, data_supermarket) => {
   return (dispatch) => {
     const json_supermarket = { id_manager, ...data_supermarket }
-    console.log(json_supermarket)
     return api.post('supermarket', json_supermarket)
       .then(response => {
         dispatch(successSolicitation('Solicitação de cadastro feita com sucesso !'))

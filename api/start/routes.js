@@ -18,6 +18,7 @@ Route.group(() => {
   Route.put('supermarket/:id', 'SupermarketController.update').middleware('auth')
   Route.delete('supermarket/:id', 'SupermarketController.delete').middleware('auth')
   Route.get('supermarket/:id', 'SupermarketController.getSupermarket').middleware('auth')
+  Route.get('supermarkets/unproved', 'SupermarketController.getSupermarketUnproved').middleware('auth')
   Route.get('supermarkets', 'SupermarketController.getAll').middleware('auth')
 
   // NOTE Routes to categories.

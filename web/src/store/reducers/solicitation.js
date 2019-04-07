@@ -1,6 +1,5 @@
 //Reducer
 export default function solicitation(state = {}, action) {
-  console.log(action)
     switch(action.type) {
       case 'SUCCESS_SOLICITATION':
         return {

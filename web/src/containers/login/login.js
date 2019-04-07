@@ -86,7 +86,6 @@ handleSubmit = (e) =>{
                     Quer se juntar ? <Link to="/solicitacao"> Realizar solicitação </Link>
                   </Message>
             </Segment>
-                {/* {this.renderAlert()} */}
             </Form>
         </Grid.Column>
         </Grid>
