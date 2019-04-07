@@ -6,7 +6,7 @@ const HandlerMessage = use('App/Services/HandlerMessage')
 
 class UserController {
   async create({ request, response }) {
-    const { cpf, name, address, email, password, role, status } = request.all();
+    const { cpf, name, address, email, password, role } = request.all();
     try {
         const user = await UserModel.create({
         cpf,
@@ -15,7 +15,6 @@ class UserController {
         email,
         password,
         role,
-        status
       })
       HandlerMessage.handlerSuccess(response, user)
     } catch (error) {

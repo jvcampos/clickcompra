@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
-import { Icon, Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
+import { Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
 
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
+import ActionAdmin from '../../store/actions/admin'
 
 import './admin.css'
 
 class Admin extends Component {
-  state = {
+
+  componentDidMount(){
+    document.title = 'Painel Administrativo - ClickCompras';
+    localStorage.setItem('token', this.props.dataLogin.token.token);
+    this.props.admin()
+    console.log(this.props.allUnproved)
   }
 
   logout = () => {
@@ -43,7 +50,7 @@ class Admin extends Component {
               <Table color={'blue'}>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Nome Supermercado</Table.HeaderCell>
+                    <Table.HeaderCell>RAZÃO SOCIAL</Table.HeaderCell>
                     <Table.HeaderCell>CNPJ</Table.HeaderCell>
                     <Table.HeaderCell>ENDEREÇO</Table.HeaderCell>
                     <Table.HeaderCell>EMAIL</Table.HeaderCell>
@@ -51,39 +58,35 @@ class Admin extends Component {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  <Table.Row>
-                    <Table.Cell>Supermercado X</Table.Cell>
-                    <Table.Cell>444.444.444</Table.Cell>
-                    <Table.Cell>Rua Supermercado X</Table.Cell>
-                    <Table.Cell>supermercadox@super.com</Table.Cell>
-                    <Modal
-                      className="modal_dados_gerente"
-                      dimmer="blurring"
-                      size="mini"
-                      trigger={<Button className="btn_verificar_gerente">Verificar dados</Button>}
-                      >
-                      <Modal.Header style={{ textAlign: 'center' }}>Gerente do Supermercado X</Modal.Header>
-                        <Modal.Content>
-                          <Modal.Description>
-                            <Header as='h3'>Nome</Header>
-                              <p style={{ color: 'blue', textTransform: 'uppercase', fontWeight: 'bold' }}>João Vitor Campos Silva</p>
-                            <Header as='h3'>Email</Header>
-                              <p style={{ color: 'blue', textTransform: 'uppercase', fontWeight: 'bold' }}>jjvcamposs@gmail.com</p>
-                            <Header as='h3'>Endereço</Header>
-                              <p style={{ color: 'blue', textTransform: 'uppercase', fontWeight: 'bold' }}>Rua manoel messias da silva</p>
-                          </Modal.Description>
-                        </Modal.Content>
-                      </Modal>
-                    <Button color={'green'} className="btn_verificar_gerente">Aprovar</Button>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>Supermercado Y</Table.Cell>
-                    <Table.Cell>555.555.555</Table.Cell>
-                    <Table.Cell>Rua Supermercado Y</Table.Cell>
-                    <Table.Cell>supermercadoy@super.com</Table.Cell>
-                    <Button className="btn_verificar_gerente">Verificar dados</Button>
-                    <Button color={'green'} className="btn_verificar_gerente">Aprovar</Button>
-                  </Table.Row>
+                  {/* {this.props.allUnproved.data.data.map(data => {
+                    return (
+                      <Table.Row>
+                        <Table.Cell>{data.social_reason}</Table.Cell>
+                        <Table.Cell>{data.cnpj}</Table.Cell>
+                        <Table.Cell>{data.address_supermarket}</Table.Cell>
+                        <Table.Cell>{data.email_supermarket}</Table.Cell>
+                        <Modal
+                          className="modal_dados_gerente"
+                          dimmer="blurring"
+                          size="mini"
+                          trigger={<Button className="btn_verificar_gerente">Verificar dados</Button>}
+                          >
+                          <Modal.Header style={{ textAlign: 'center' }}>Gerente do Supermercado X</Modal.Header>
+                            <Modal.Content>
+                              <Modal.Description>
+                                <Header as='h3'>Nome</Header>
+                                  <p style={{ color: 'blue', textTransform: 'uppercase', fontWeight: 'bold' }}>{data.name}</p>
+                                <Header as='h3'>Email</Header>
+                                  <p style={{ color: 'blue', textTransform: 'uppercase', fontWeight: 'bold' }}>{data.email}</p>
+                                <Header as='h3'>Endereço</Header>
+                                  <p style={{ color: 'blue', textTransform: 'uppercase', fontWeight: 'bold' }}>{data.address}</p>
+                              </Modal.Description>
+                            </Modal.Content>
+                          </Modal>
+                        <Button color={'green'} className="btn_verificar_gerente">Aprovar</Button>
+                      </Table.Row>
+                    )
+                  })} */}
                 </Table.Body>
               </Table>
             </Grid.Column>
@@ -94,13 +97,14 @@ class Admin extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   errorMessage: state.login
-// });
+const mapStateToProps = state => ({
+  dataLogin: state.login,
+  allUnproved: state.admin
+});
 
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators({ login : ActionLogin } , dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ admin: ActionAdmin } , dispatch);
 
 
-export default connect(null, null)(Admin);
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);
