@@ -64,13 +64,28 @@ class SupermarketController {
       const data = await Database
       .select(
         'users.name', 'users.address', 'users.email',
-        'supermarkets.social_reason', 'supermarkets.cnpj', 'supermarkets.address_supermarket', 'supermarkets.email_supermarket'
+        'supermarkets.id', 'supermarkets.social_reason', 'supermarkets.cnpj', 'supermarkets.address_supermarket', 'supermarkets.email_supermarket'
         )
       .from('users')
       .where('supermarkets.status', 2)
       .leftJoin('supermarkets', 'users.id', 'supermarkets.id_manager')
       HandlerMessage.handlerSuccess(response, data)
     } catch(error){
+      HandlerMessage.handlerError(response, error)
+    }
+  }
+
+  async aproveSupermarket({ params, response }){
+    try {
+      const { id } = params;
+      await Database
+        .table('supermarkets')
+        .where('id', id)
+        .update('status', 1)
+      const supermarket = await SuperMarketModel.find(id)
+      HandlerMessage.handlerUpdate(response, supermarket)
+    }
+    catch (error) {
       HandlerMessage.handlerError(response, error)
     }
   }

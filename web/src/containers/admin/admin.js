@@ -1,30 +1,67 @@
 import React, { Component } from 'react'
 import { Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
+import axios from 'axios';
+import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import ActionAdmin from '../../store/actions/admin'
-
+// import ActionAdmin from '../../store/actions/admin'
 import './admin.css'
 
-class Admin extends Component {
+const api = axios.create({
+  baseURL: 'http://localhost:3001/api/',
+});
 
-  componentDidMount(){
+class Admin extends Component {
+  state = {
+    supermarkets: []
+  }
+
+  componentDidMount() {
     document.title = 'Painel Administrativo - ClickCompras';
     localStorage.setItem('token', this.props.dataLogin.token.token);
-    this.props.admin()
-    console.log(this.props.allUnproved)
+    api.get('supermarkets/unproved', {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+      this.setState({ supermarkets: response.data.data})
+    })
+  }
+
+  aprovedSupermarket(id){
+    api.put(`supermarket/aproved/${id}`)
+    this.updatingSupermarkets(id)
+  }
+
+  updatingSupermarkets(id){
+    this.setState({ supermarkets: this.state.supermarkets.filter(supermarket => {
+      return supermarket.id !== id
+    })})
+    this.showMessageError()
+  }
+
+  showMessageError() {
+      toast(
+        {
+          type: "success",
+          icon: 'bullhorn',
+          animation: 'pulse',
+          title: "Supermercado aprovado !",
+          description: "Sucesso ao aprovar supermercado"
+        },
+      );
   }
 
   logout = () => {
-		localStorage.clear()
-		window.open(`${process.env.PUBLIC_URL}/`, '_self');
+    localStorage.clear()
+    window.open(`${process.env.PUBLIC_URL}/`, '_self');
   };
 
   render() {
     return (
       <div className="background-page">
+      <SemanticToastContainer />
         <style>{`
         body > div,
         body > div > div,
@@ -34,20 +71,20 @@ class Admin extends Component {
         `}
         </style>
         <Menu className="menu_superior_admin" pointing secondary>
-					<Menu.Menu position='right'>
-						<Menu.Item
-							name='sair'
-							onClick={this.logout}
-						/>
-					</Menu.Menu>
-				</Menu>
+          <Menu.Menu position='right'>
+            <Menu.Item
+              name='sair'
+              onClick={this.logout}
+            />
+          </Menu.Menu>
+        </Menu>
         <Grid verticalAlign='middle' textAlign='center' style={{ height: '90%' }} >
           <Grid.Row>
             <Grid.Column width={10} >
-            <Header as='h2' color='blue' textAlign='center'>
-              SUPERMERCADOS PENDENTE PARA APROVAÇÕES
+              <Header as='h2' color='blue' textAlign='center'>
+                SUPERMERCADOS PENDENTE PARA APROVAÇÕES
             </Header>
-              <Table color={'blue'}>
+              <Table loading={true} color={'blue'}>
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>RAZÃO SOCIAL</Table.HeaderCell>
@@ -58,7 +95,7 @@ class Admin extends Component {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {/* {this.props.allUnproved.data.data.map(data => {
+                  {this.state.supermarkets.map(data => {
                     return (
                       <Table.Row>
                         <Table.Cell>{data.social_reason}</Table.Cell>
@@ -83,10 +120,10 @@ class Admin extends Component {
                               </Modal.Description>
                             </Modal.Content>
                           </Modal>
-                        <Button color={'green'} className="btn_verificar_gerente">Aprovar</Button>
+                        <Button color={'green'} className="btn_verificar_gerente" onClick={() => this.aprovedSupermarket(data.id)}>Aprovar</Button>
                       </Table.Row>
                     )
-                  })} */}
+                  })}
                 </Table.Body>
               </Table>
             </Grid.Column>
@@ -102,9 +139,4 @@ const mapStateToProps = state => ({
   allUnproved: state.admin
 });
 
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ admin: ActionAdmin } , dispatch);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Admin);
+export default connect(mapStateToProps, null)(Admin);
