@@ -11,8 +11,10 @@ export default function userLogin(email, password){
       dispatch(loginSucess(response.data, email, password))
       if (response.data.role === 'ADMIN'){
         dispatch(push("/admin"));
-      } else {
+      } else if (response.data.status_register === 'APROVED'){
         dispatch(push("/home"));
+      } else {
+        dispatch(loginError('Seu registro ainda não foi aprovado !'))
       }
     })
     .catch(() => {
