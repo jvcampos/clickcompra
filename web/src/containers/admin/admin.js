@@ -108,7 +108,7 @@ class Admin extends Component {
                           size="mini"
                           trigger={<Button className="btn_verificar_gerente">Verificar dados</Button>}
                           >
-                          <Modal.Header style={{ textAlign: 'center' }}>Gerente do Supermercado X</Modal.Header>
+                          <Modal.Header style={{ textAlign: 'center' }}>Gerente do {data.social_reason}</Modal.Header>
                             <Modal.Content>
                               <Modal.Description>
                                 <Header as='h3'>Nome</Header>
