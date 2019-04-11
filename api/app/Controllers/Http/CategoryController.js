@@ -6,10 +6,11 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 
 class CategoryController {
   async create({ request }) {
-    const { id_supermarket, name } = request.all()
+    const { id_supermarket, name_categorie, description } = request.all()
     const category = await CategoryModel.create({
       id_supermarket,
-      name
+      name_categorie,
+      description
     })
     return category
   }
