@@ -8,17 +8,15 @@ export default function userLogin(email, password){
   return (dispatch) => {
     return api.post('login', { email, password })
     .then(response => {
-      dispatch(loginSucess(response.data, email, password))
       if (response.data.role === 'ADMIN'){
+        dispatch(loginSucess(response.data, email, password))
         dispatch(push("/admin"));
-      } else if (response.data.status_register === 'APROVED'){
+      } else if (response.data.status === 'APROVED'){
+        dispatch(loginSucess(response.data, email, password))
         dispatch(push("/home"));
       } else {
         dispatch(loginError('Seu registro ainda não foi aprovado !'))
       }
-    })
-    .catch(() => {
-      dispatch(loginError('Dados inseridos incorretos, verificar !'))
     })
   }
 }

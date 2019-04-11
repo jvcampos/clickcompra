@@ -5,13 +5,11 @@ import history from '../../routes/history'
 import login from './login'
 import renderComponent from './renderComponent'
 import solicitation from './solicitation'
-import admin from './admin'
 
 const rootReducer = combineReducers({
     login,
     renderComponent,
     solicitation,
-    admin,
     router: connectRouter(history)
 })
 
