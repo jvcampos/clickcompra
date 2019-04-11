@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
+import {Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
 
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -22,10 +22,14 @@ class Categories extends Component {
   }
 
   closeModalAdd = () => {
-    this.setState({ statusModalRemove: false })
+    this.setState({ statusModalAdd: false })
   }
   closeModalRemove = () => {
     this.setState({ statusModalRemove: false })
+  }
+
+  onSubmit = () => {
+    alert('Submit !')
   }
 
   render() {
@@ -39,13 +43,42 @@ class Categories extends Component {
         </Segment>
           <Segment>
           <Grid verticalAlign='middle' textAlign='center' style={{ height: '90%' }}>
-              <Grid.Column width={5} style={{ left : '-23.5%'}}>
-                <Button color="green" animated='vertical'>
+              <Grid.Column width={5} style={{ left : '-22.5%'}}>
+              <Modal
+                open={this.state.statusModalAdd}
+                className="modal_dados_gerente"
+                dimmer="blurring"
+                size="mini"
+                trigger={
+                  <Button onClick={this.openModalAdd} color="green" animated='vertical'>
                     <Button.Content visible>ADICIONAR NOVA CATEGORIA</Button.Content>
                     <Button.Content hidden>
                       <Icon name='add' />
                     </Button.Content>
-                </Button>
+                  </Button>}
+                >
+                <Modal.Header style={{ textAlign: 'center' }}>ADICIONAR NOVA CATEGORIA</Modal.Header>
+                  <Modal.Content>
+                    <Modal.Description>
+                      <Header as='h3'>NOME</Header>
+                      <Form.Input name="name_categorie" fluid icon='tag' iconPosition='left' placeholder='NOME' />
+                      <Header as='h3'>DESCRIÇÃO</Header>
+                      <Form.TextArea style={{
+                        width: '318px',
+                        maxWidth: '318px',
+                        height: '68px',
+                        maxHeight: '100px',
+                        margin: '0px',
+                        borderRadius: '6px',
+                        borderColor: '#c1bfbfbd',
+                      }}  rows={3} placeholder="Descrição da categoria"></Form.TextArea>
+                    </Modal.Description>
+                    <Modal.Actions style={{ marginTop: '10px' }}>
+                      <Button negative icon='close' onClick={this.closeModalAdd} labelPosition='right' content="Cancelar"></Button>
+                      <Button positive icon='checkmark' onClick={this.onSubmit} labelPosition='right' content='Confirmar' />
+                    </Modal.Actions>
+                  </Modal.Content>
+                </Modal>
               </Grid.Column>
             <Grid.Row>
               <Grid.Column width={10}>
@@ -64,23 +97,29 @@ class Categories extends Component {
                     <Table.Cell></Table.Cell>
                     <Table.Cell></Table.Cell>
                     <Table.Cell textAlign="center">
-                      <Modal
-                        className="modal_dados_gerente"
+                        <Modal
+                        basic size='small'
                         dimmer="blurring"
-                        size="mini"
+                        open={this.state.statusModalRemove}
                         trigger={
-                        <Button size="small" color="red" animated='fade'>
-                          <Button.Content visible>EXCLUIR</Button.Content>
-                          <Button.Content hidden><Icon name='close'/></Button.Content>
-                        </Button>}
+                          <Button onClick={this.openModalRemove} size="small" color="red" animated='fade'>
+                            <Button.Content visible>EXCLUIR</Button.Content>
+                            <Button.Content hidden><Icon name='close'/></Button.Content>
+                          </Button>}
                         >
-                        <Modal.Header style={{ textAlign: 'center' }}>Gerente do </Modal.Header>
+                          <Header icon='close' content='Excluir Categoria XXXXXX' />
                           <Modal.Content>
-                            <Modal.Description>
-                              <Header as='h3'>Nome</Header>
-                              <Header as='h3'>Descrição</Header>
-                            </Modal.Description>
+                            <p>Você realmente deseja excluir a categoria selecionada ?</p>
+                            <p>Todos os produtos que estão relacionados à esta categoria, serão removidos.</p>
                           </Modal.Content>
+                          <Modal.Actions>
+                            <Button basic onClick={this.closeModalRemove} color='red' inverted>
+                              <Icon name='remove' /> Cancelar
+                            </Button>
+                            <Button color='green' onClick={this.onSubmit} inverted>
+                              <Icon name='checkmark' /> Confirmar
+                            </Button>
+                          </Modal.Actions>
                         </Modal>
                       </Table.Cell>
                   </Table.Row>
