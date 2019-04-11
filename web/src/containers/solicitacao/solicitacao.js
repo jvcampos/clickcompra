@@ -14,9 +14,9 @@ class Solicitacao extends Component {
   state = {
     supermarket : {
       cnpj: '',
-      name: '',
-      address: '',
-      email: '',
+      social_reason: '',
+      address_supermarket: '',
+      email_supermarket: '',
       year_foundation: '',
     },
     manager: {
@@ -25,7 +25,7 @@ class Solicitacao extends Component {
       address: '',
       email: '',
       password: '',
-      role: 1,
+      role: 2,
       status: 2,
     },
     statusMessageError: 'hidden'
@@ -99,7 +99,7 @@ handleSubmit = (e) =>{
             <Form onSubmit={this.handleSubmit} size='large'>
             <Segment stacked>
               <Header>SUPERMERCADO</Header>
-                <Form.Input name="name" onChange={this.handleChangeSupermarket} value={this.state.supermarket.name} fluid placeholder='RAZÃO SOCIAL' />
+                <Form.Input name="social_reason" onChange={this.handleChangeSupermarket} value={this.state.supermarket.social_reason} fluid placeholder='RAZÃO SOCIAL' />
                 <Form.Input
                     name="cnpj"
                     onChange={this.handleChangeSupermarket}
@@ -109,17 +109,17 @@ handleSubmit = (e) =>{
                     type='text'
                     />
                 <Form.Input
-                    name="address"
+                    name="address_supermarket"
                     onChange={this.handleChangeSupermarket}
-                    value={this.state.supermarket.address}
+                    value={this.state.supermarket.address_supermarket}
                     fluid
                     placeholder='ENDEREÇO'
                     type='text'
                     />
                 <Form.Input
-                    name="email"
+                    name="email_supermarket"
                     onChange={this.handleChangeSupermarket}
-                    value={this.state.supermarket.email}
+                    value={this.state.supermarket.email_supermarket}
                     fluid
                     placeholder='EMAIL'
                     type='email'

@@ -7,6 +7,7 @@ export default function managerSolicitation(dados) {
     return (dispatch) => {
         const { manager } = dados
         const { supermarket } = dados
+        console.log(manager)
         return api.post('user', manager)
         .then(response => {
           const { id } = response.data.data

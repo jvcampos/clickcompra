@@ -11,7 +11,13 @@ import './categories.css'
 class Categories extends Component {
   state = {
     statusModalAdd : false,
-    statusModalRemove : false
+    statusModalRemove : false,
+    name_categorie : '',
+    description: ''
+  }
+
+  componentDidMount(){
+    document.title = "Categorias | ClickCompras"
   }
 
   openModalAdd = () => {
@@ -30,6 +36,12 @@ class Categories extends Component {
 
   onSubmit = () => {
     alert('Submit !')
+  }
+
+  onHandleChange = (e) => {
+    this.setState({
+        [e.target.name] : e.target.value
+    })
   }
 
   render() {
@@ -61,7 +73,12 @@ class Categories extends Component {
                   <Modal.Content>
                     <Modal.Description>
                       <Header as='h3'>NOME</Header>
-                      <Form.Input name="name_categorie" fluid icon='tag' iconPosition='left' placeholder='NOME' />
+                      <Form.Input
+                        onChange={this.onHandleChange}
+                        value={this.state.name_categorie}
+                        name="name_categorie"
+                        fluid icon='tag' iconPosition='left'
+                        placeholder='NOME' />
                       <Header as='h3'>DESCRIÇÃO</Header>
                       <Form.TextArea style={{
                         width: '318px',
@@ -71,7 +88,12 @@ class Categories extends Component {
                         margin: '0px',
                         borderRadius: '6px',
                         borderColor: '#c1bfbfbd',
-                      }}  rows={3} placeholder="Descrição da categoria"></Form.TextArea>
+                      }}
+                      onChange={this.onHandleChange}
+                      value={this.state.description}
+                      name="description"
+                      rows={3}
+                      placeholder="Descrição da categoria"></Form.TextArea>
                     </Modal.Description>
                     <Modal.Actions style={{ marginTop: '10px' }}>
                       <Button negative icon='close' onClick={this.closeModalAdd} labelPosition='right' content="Cancelar"></Button>
