@@ -20,7 +20,6 @@ class SessionController {
         role,
         status: 'APROVED'
       }
-    }
   }
 }
 
