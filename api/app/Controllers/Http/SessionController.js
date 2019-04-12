@@ -12,7 +12,8 @@ class SessionController {
       return {
         token,
         role,
-        status
+        status,
+        id
       }
     } else {
       return {

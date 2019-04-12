@@ -3,6 +3,8 @@
 const Database = use('Database')
 const CategoryModel = use('App/Models/Category')
 const HandlerMessage = use('App/Services/HandlerMessage');
+const UserModel = use('App/Models/User');
+const SuperMarketModel = use('App/Models/Supermarket')
 
 class CategoryController {
   async create({ request }) {
@@ -51,12 +53,16 @@ class CategoryController {
     }
   }
 
-  async getAll({ request }) {
-    const { page } = request.all()
+  async getAllSupermarket({ params, response }) {
+    const { id } = params;
+    const supermarketData = await SuperMarketModel.findBy('id_manager', id)
     const categories = await Database
+      .select('id', 'name_categorie', 'description')
       .from('categories')
-      .paginate(page, 1)
-    return categories
+      .where('id_supermarket', supermarketData.id)
+    // const { page } = request.all()
+      // .paginate(page, 1)
+    HandlerMessage.handlerSuccess(response, categories)
   }
 }
 

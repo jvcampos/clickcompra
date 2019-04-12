@@ -5,7 +5,8 @@ export default function login(state = {} , action) {
           ...state,
           email: action.email,
           password: action.password,
-          token: action.data.token
+          token: action.data.token,
+          id: action.data.id
         }
       case 'USER_ERROR_LOGIN' :
         return {

@@ -1,23 +1,47 @@
 import React, { Component } from 'react';
-import {Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
+import axios from 'axios';
+import { Dimmer, Loader, Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
 
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as categoriesActions from '../../store/actions/categories'
 
 import MenuSuperior from '../menusuperior/Menusuperior'
 
 import './categories.css'
 
+const api = axios.create({
+  baseURL: 'http://localhost:3001/api/',
+});
+
 class Categories extends Component {
   state = {
+    loading: true,
     statusModalAdd : false,
     statusModalRemove : false,
     name_categorie : '',
-    description: ''
+    description: '',
+    categories : []
   }
 
   componentDidMount(){
+    localStorage.setItem('token', this.props.dataLogin.token.token);
     document.title = "Categorias | ClickCompras"
+    api.get(`categories/${this.props.dataLogin.id}` ,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+      .then(response => {
+          this.fetchGetCategories(response)
+      })
+  }
+
+  fetchGetCategories = (response) => {
+    this.setState({ categories: response.data.data})
+    setTimeout(() => {
+      this.setState({ loading: false})
+    }, 1000);
   }
 
   openModalAdd = () => {
@@ -104,7 +128,9 @@ class Categories extends Component {
               </Grid.Column>
             <Grid.Row>
               <Grid.Column width={10}>
-              <Table className="table_categories" loading={true} color={'green'}>
+              <Table
+                className="table_categories"
+                color={'green'}>
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>NOME</Table.HeaderCell>
@@ -114,37 +140,44 @@ class Categories extends Component {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  <Table.Row>
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell textAlign="center">
-                        <Modal
-                        basic size='small'
-                        dimmer="blurring"
-                        open={this.state.statusModalRemove}
-                        trigger={
-                          <Button onClick={this.openModalRemove} size="small" color="red" animated='fade'>
-                            <Button.Content visible>EXCLUIR</Button.Content>
-                            <Button.Content hidden><Icon name='close'/></Button.Content>
-                          </Button>}
-                        >
-                          <Header icon='close' content='Excluir Categoria XXXXXX' />
-                          <Modal.Content>
-                            <p>Você realmente deseja excluir a categoria selecionada ?</p>
-                            <p>Todos os produtos que estão relacionados à esta categoria, serão removidos.</p>
-                          </Modal.Content>
-                          <Modal.Actions>
-                            <Button basic onClick={this.closeModalRemove} color='red' inverted>
-                              <Icon name='remove' /> Cancelar
-                            </Button>
-                            <Button color='green' onClick={this.onSubmit} inverted>
-                              <Icon name='checkmark' /> Confirmar
-                            </Button>
-                          </Modal.Actions>
-                        </Modal>
-                      </Table.Cell>
-                  </Table.Row>
+                  {this.state.categories.map(categorie => {
+                    return (
+                      <Table.Row>
+                        <Dimmer active={this.state.loading} inverted>
+                          <Loader content="Buscando categorias..."/>
+                        </Dimmer>
+                        <Table.Cell>{categorie.name_categorie}</Table.Cell>
+                        <Table.Cell>0</Table.Cell>
+                        <Table.Cell>{categorie.description}</Table.Cell>
+                        <Table.Cell textAlign="center">
+                            <Modal
+                            basic size='small'
+                            dimmer="blurring"
+                            open={this.state.statusModalRemove}
+                            trigger={
+                              <Button onClick={this.openModalRemove} size="small" color="red" animated='fade'>
+                                <Button.Content visible>EXCLUIR</Button.Content>
+                                <Button.Content hidden><Icon name='close'/></Button.Content>
+                              </Button>}
+                            >
+                              <Header icon='close' content='Excluir Categoria XXXXXX' />
+                              <Modal.Content>
+                                <p>Você realmente deseja excluir a categoria selecionada ?</p>
+                                <p>Todos os produtos que estão relacionados à esta categoria, serão removidos.</p>
+                              </Modal.Content>
+                              <Modal.Actions>
+                                <Button basic onClick={this.closeModalRemove} color='red' inverted>
+                                  <Icon name='remove' /> Cancelar
+                                </Button>
+                                <Button color='green' onClick={this.onSubmit} inverted>
+                                  <Icon name='checkmark' /> Confirmar
+                                </Button>
+                              </Modal.Actions>
+                            </Modal>
+                          </Table.Cell>
+                      </Table.Row>
+                    )
+                  })}
                 </Table.Body>
               </Table>
               </Grid.Column>
@@ -156,12 +189,12 @@ class Categories extends Component {
   }
 }
 
-// const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  dataLogin: state.login,
+  // categories: state.categories
+});
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators(Actions, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(categoriesActions, dispatch);
 
-export default connect(
-  // mapStateToProps,
-  // mapDispatchToProps
-)(Categories);
+export default connect( mapStateToProps, mapDispatchToProps)(Categories);

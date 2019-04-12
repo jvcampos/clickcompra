@@ -15,7 +15,6 @@ class MenuSuperior extends Component {
 
 	componentDidMount = () => {
 		document.title = 'Home | ClickCompras';
-		localStorage.setItem('token', this.props.dataLogin.token.token);
 	};
 
 	handleItemClick = (e, { name }) => {

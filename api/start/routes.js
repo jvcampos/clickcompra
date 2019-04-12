@@ -27,7 +27,7 @@ Route.group(() => {
   Route.put('category/:id', 'CategoryController.update').middleware('auth')
   Route.delete('category/:id', 'CategoryController.delete').middleware('auth')
   Route.get('category/:id', 'CategoryController.getCategory').middleware('auth')
-  Route.get('categories', 'CategoryController.getAll').middleware('auth')
+  Route.get('categories/:id', 'CategoryController.getAllSupermarket').middleware('auth')
 
   // NOTE Routes to products.
   Route.post('product', 'ProductController.create').middleware('auth')

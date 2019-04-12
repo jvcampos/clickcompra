@@ -21,12 +21,13 @@ export default function userLogin(email, password){
   }
 }
 
-export const loginSucess = (data, email, password) => {
+export const loginSucess = (data, email, password,id) => {
   return {
     type: 'USER_SUCCESS_LOGIN',
     email,
     password,
-    data
+    data,
+    id,
   }
 }
 
