@@ -13,15 +13,18 @@ const api = axios.create({
 });
 
 class Admin extends Component {
-  state = {
-    loading: true,
-    loadingAprove: false,
-    supermarkets: []
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      supermarkets: []
+    }
   }
 
   componentDidMount() {
     document.title = 'Painel Administrativo - ClickCompras';
-    localStorage.setItem('token', this.props.dataLogin.token.token);
+    console.log(this.props.token)
+    // localStorage.setItem('token', this.props.dataLogin.token.token);
     api.get('supermarkets/unproved', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')

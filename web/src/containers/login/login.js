@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
 import { toast, SemanticToastContainer } from 'react-semantic-toasts'
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-import ActionLogin from '../../store/actions/login'
+import login from '../../server/login'
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 import "./login.css"
-class Login extends Component {
+export default class Login extends Component {
   state = {
     email: '',
     password: '',
     loading: false,
-    statusMessageError: 'hidden'
+    statusMessageError: 'hidden',
+    admin: false,
   }
 
   componentDidMount() {
@@ -46,10 +43,15 @@ class Login extends Component {
     else {
       try {
         this.setState({ loading: true })
-        await this.props.login(this.state.email, this.state.password);
-        this.messageStatus('success', 'Seja Bem Vindo :D');
+        const result = await login(this.state.email, this.state.password);
+        if (result.data.role === "ADMIN" && result.data.status === "APROVED") {
+          this.messageStatus('success', 'Seja Bem Vindo :D');
+          localStorage.setItem('token', result.data.token.token);
+          this.setState({admin: true })
+        }
         this.setState({ loading: false })
       } catch (error) {
+        console.log(error)
         this.setState({ loading: true })
         this.messageStatus('warning', 'Você não tem autorização até o momento!');
         this.setState({ loading: false })
@@ -62,6 +64,9 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
   render() {
+    if (this.state.admin) {
+      return <Redirect to="/admin" />
+    }
     return (
       <div className="login-form">
         <SemanticToastContainer />
@@ -108,14 +113,3 @@ class Login extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  stateLogin: state.login
-});
-
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ login : ActionLogin } , dispatch);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
