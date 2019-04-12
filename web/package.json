@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.16.2",
     "axios": "^0.18.0",
+    "base64-img": "^1.0.4",
     "connected-react-router": "^6.3.2",
     "faker": "^4.1.0",
     "history": "^4.9.0",
