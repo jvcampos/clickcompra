@@ -19,6 +19,7 @@ class SupermarketController {
       })
       HandlerMessage.handlerSuccess(response, supermarket)
     } catch (error) {
+      console.log(error)
       HandlerMessage.handlerError(response, error)
     }
   }
@@ -35,6 +36,8 @@ class SupermarketController {
       HandlerMessage.handlerUpdate(response, supermarket)
     }
     catch (error) {
+      console.log(error)
+
       HandlerMessage.handlerError(response, error)
     }
   }

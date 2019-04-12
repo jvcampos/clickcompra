@@ -1,0 +1,11 @@
+.ui.modal.modal_dados_novacategoria{
+  height: 30%;
+}
+
+/* FIM Modal personalizado */
+
+/* INICIO Containers */
+
+.ui.table.table_categories {
+  box-shadow: 4px 3px 8px -2px !important;
+}

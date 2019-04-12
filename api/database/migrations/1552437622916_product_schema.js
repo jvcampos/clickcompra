@@ -12,6 +12,8 @@ class ProductSchema extends Schema {
         .references('id')
         .inTable('categories')
         .notNullable()
+      table.String('name').notNullable()
+      table.String('description').notNullable()
       table.float('value').notNullable()
       table.integer('amount').notNullable()
       table.increments()
