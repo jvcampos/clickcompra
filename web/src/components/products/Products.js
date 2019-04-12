@@ -8,7 +8,30 @@ import { connect } from 'react-redux';
 
 import MenuSuperior from '../menusuperior/Menusuperior'
 
+import 'antd/dist/antd.css';
+import { Upload, Icon as IconAntd, message } from 'antd';
+
+
 import './products.css'
+
+const Dragger = Upload.Dragger;
+
+const props = {
+  name: 'file',
+  multiple: true,
+  action: '//jsonplaceholder.typicode.com/posts/',
+  onChange(info) {
+    const status = info.file.status;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
 
 const source = _.times(5, () => ({
   title: faker.company.companyName(),
@@ -31,11 +54,14 @@ class Products extends Component {
     this.resetComponent()
   }
 
+  //Search
   resetComponent = () =>
     this.setState({ isLoading: false, results: [], value: '' })
 
+  //Search    
   handleResultSelect = (e, { result }) => this.setState({ value: result.title })
 
+  //Search
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })
 
@@ -91,10 +117,11 @@ class Products extends Component {
           <Grid verticalAlign='middle' textAlign='center' style={{ height: '90%' }}>
             <Grid.Column width={5} style={{ left: '-22.5%' }}>
               <Modal
+                centered={false}
                 open={this.state.statusModalAdd}
                 className="modal_dados_gerente"
                 dimmer="blurring"
-                size="mini"
+                size="large"
                 trigger={
                   <Button onClick={this.openModalAdd} color="green" animated='vertical'>
                     <Button.Content visible>ADICIONAR NOVO PRODUTO</Button.Content>
@@ -104,8 +131,16 @@ class Products extends Component {
                   </Button>}
               >
                 <Modal.Header style={{ textAlign: 'center' }}>ADICIONAR NOVO PRODUTO</Modal.Header>
-                <Modal.Content>
-                  <Modal.Description>
+                <Modal.Content image>
+                  <div style={{height: 200, width: 300}}>
+                    <Dragger {...props}>
+                      <p className="ant-upload-drag-icon">
+                        <IconAntd type="inbox" />
+                      </p>
+                      <p className="ant-upload-text">Clique para selecionar<br/> ou <br/> Arraste a Imagem</p>
+                    </Dragger>
+                  </div>
+                  <Modal.Description style={{ paddingLeft: 100, paddingRight: 100 }}>
                     <Header as='h3'>NOME</Header>
                     <Form.Input
                       onChange={this.onHandleChange}
@@ -113,8 +148,7 @@ class Products extends Component {
                       name="name_product"
                       fluid icon='tag' iconPosition='left'
                       placeholder='NOME' />
-
-                    <Header as='h3'>Categoria</Header>
+                    <Header as='h3'>CATEGORIA</Header>
                     <Search
                       loading={isLoading}
                       onResultSelect={this.handleResultSelect}
@@ -126,7 +160,7 @@ class Products extends Component {
                       {...this.props}
                     />
 
-                    <Header as='h3'>Preço</Header>
+                    <Header as='h3'>PREÇO</Header>
                     <Form.Input
                       onChange={this.onHandleChange}
                       value={this.state.value_product}
@@ -134,7 +168,7 @@ class Products extends Component {
                       fluid icon='money' iconPosition='left'
                       placeholder='PREÇO' />
 
-                    <Header as='h3'>Quantidade</Header>
+                    <Header as='h3'>QUANTIDADE</Header>
                     <Form.Input
                       onChange={this.onHandleChange}
                       value={this.state.amount_product}
@@ -159,11 +193,11 @@ class Products extends Component {
                       placeholder="Descrição do produto">
                     </Form.TextArea>
 
+                    <Modal.Actions style={{ marginTop: '10px' }}>
+                      <Button negative icon='close' onClick={this.closeModalAdd} labelPosition='right' content="Cancelar"></Button>
+                      <Button positive icon='checkmark' onClick={this.onSubmit} labelPosition='right' content='Confirmar' />
+                    </Modal.Actions>
                   </Modal.Description>
-                  <Modal.Actions style={{ marginTop: '10px' }}>
-                    <Button negative icon='close' onClick={this.closeModalAdd} labelPosition='right' content="Cancelar"></Button>
-                    <Button positive icon='checkmark' onClick={this.onSubmit} labelPosition='right' content='Confirmar' />
-                  </Modal.Actions>
                 </Modal.Content>
               </Modal>
             </Grid.Column>
@@ -172,16 +206,18 @@ class Products extends Component {
                 <Table className="table_categories" loading={true} color={'green'}>
                   <Table.Header>
                     <Table.Row>
+                      <Table.HeaderCell>IMAGEM</Table.HeaderCell>
                       <Table.HeaderCell>NOME</Table.HeaderCell>
-                      <Table.HeaderCell>QUANTIDADE DE PRODUTOS</Table.HeaderCell>
-                      <Table.HeaderCell>PREÇO DE PRODUTOS</Table.HeaderCell>
-                      <Table.HeaderCell>QUANTIDADE DE PRODUTOS</Table.HeaderCell>
+                      <Table.HeaderCell>CATEGORIA</Table.HeaderCell>
+                      <Table.HeaderCell>PREÇO</Table.HeaderCell>
+                      <Table.HeaderCell>QUANTIDADE</Table.HeaderCell>
                       <Table.HeaderCell>DESCRIÇÃO</Table.HeaderCell>
                       <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
                     <Table.Row>
+                      <Table.Cell></Table.Cell>
                       <Table.Cell></Table.Cell>
                       <Table.Cell></Table.Cell>
                       <Table.Cell></Table.Cell>
@@ -200,8 +236,7 @@ class Products extends Component {
                         >
                           <Header icon='close' content='Excluir Produto XXXXXX' />
                           <Modal.Content>
-                            <p>Você realmente deseja excluir o produto selecionada ?</p>
-                            <p>Todos os produtos que estão relacionados à este produto, serão removidos.</p>
+                            <p>Você realmente deseja excluir o produto selecionado ?</p>
                           </Modal.Content>
                           <Modal.Actions>
                             <Button basic onClick={this.closeModalRemove} color='red' inverted>
@@ -220,7 +255,7 @@ class Products extends Component {
             </Grid.Row>
           </Grid>
         </Segment>
-      </div>
+      </div >
     );
   }
 }
