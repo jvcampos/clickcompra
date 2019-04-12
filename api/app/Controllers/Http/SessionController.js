@@ -9,11 +9,13 @@ class SessionController {
     const { id, role } = userData
     if(role !== 'ADMIN'){
       const { status } = await SupermarketModel.findBy('id_manager', id)
-      return {
-        token,
-        role,
-        status,
-        id
+      if (status === 'APROVED') {
+        return {
+          token,
+          role,
+          status,
+          id
+        }
       }
     } else {
       return {

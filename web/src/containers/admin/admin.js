@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
+import { Dimmer, Loader, Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
 import axios from 'axios';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 
@@ -14,6 +14,8 @@ const api = axios.create({
 
 class Admin extends Component {
   state = {
+    loading: true,
+    loadingAprove: false,
     supermarkets: []
   }
 
@@ -26,6 +28,9 @@ class Admin extends Component {
       }
     }).then(response => {
       this.setState({ supermarkets: response.data.data})
+      setTimeout(() => {
+        this.setState({ loading: false})
+      }, 1000)
     })
   }
 
@@ -37,11 +42,17 @@ class Admin extends Component {
   updatingSupermarkets(id){
     this.setState({ supermarkets: this.state.supermarkets.filter(supermarket => {
       return supermarket.id !== id
-    })})
-    this.showMessageError()
+    }),
+    loadingAprove: true,
+    loading: true
+  })
+  setTimeout(() => {
+    this.setState({ loadingAprove: false, loading: false})
+  }, 1000);
+    this.showMessage()
   }
 
-  showMessageError() {
+  showMessage() {
       toast(
         {
           type: "success",
@@ -82,6 +93,9 @@ class Admin extends Component {
           <Grid.Row>
             <Grid.Column width={10} >
               <Header as='h2' color='blue' textAlign='center'>
+              <Dimmer active={this.state.loading} inverted>
+                <Loader content="Buscando supermercados..."/>
+              </Dimmer>
                 SUPERMERCADOS PENDENTE PARA APROVAÇÕES
             </Header>
               <Table loading={true} color={'blue'}>
@@ -120,7 +134,11 @@ class Admin extends Component {
                               </Modal.Description>
                             </Modal.Content>
                           </Modal>
-                        <Button color={'green'} className="btn_verificar_gerente" onClick={() => this.aprovedSupermarket(data.id)}>Aprovar</Button>
+                        <Button
+                          color={'green'}
+                          loading={this.state.loadingAprove}
+                          className="btn_verificar_gerente"
+                          onClick={() => this.aprovedSupermarket(data.id)}>Aprovar</Button>
                       </Table.Row>
                     )
                   })}
