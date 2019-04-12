@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
-// import { SemanticToastContainer, toast } from 'react-semantic-toasts'
+import { toast, SemanticToastContainer } from 'react-semantic-toasts'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import ActionLogin from '../../store/actions/login'
+import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 import "./login.css"
 class Login extends Component {
   state = {
     email: '',
     password: '',
+    loading: false,
     statusMessageError: 'hidden'
   }
 
@@ -20,36 +22,49 @@ class Login extends Component {
     document.title = 'Log in - ClickCompras';
   }
 
-  // showMessageError() {
-  //   setTimeout(() => {
-  //     toast(
-  //       {
-  //         type: `${this.props.errorMessage.status}`,
-  //         icon: 'bullhorn',
-  //         animation: 'pulse',
-  //         title: "Não foi possível acessar painel",
-  //         description: `${this.props.errorMessage.error}`
-  //       },
-  //     );
-  //     this.setState({ statusLoading: false, statusMessageError: 'visible', })
-  //   }, 2000);
-  // }
+  messageStatus = (type, title, description = '', time = 5000) => {
+    setTimeout(() => {
+      toast({
+        type: type,
+        icon: 'envelope',
+        title: title,
+        description: description,
+        animation: 'bounce',
+        time: time,
+      });
+    }, 1000);
+  }
 
-handleSubmit = (e) =>{
+  handleSubmit = async (e) => {
     e.preventDefault()
-    this.props.login(this.state.email, this.state.password)
-    // this.showMessageError()
-    this.setState({ email: '', password: '', statusLoading: true })
+    const { email, password } = this.state;
+    if (email === '' || password === '') {
+      this.setState({ loading: true })
+      this.messageStatus('error', 'Campos não preenchidos', 'email ou password estão vazios!');
+      this.setState({ loading: false })
+    }
+    else {
+      try {
+        this.setState({ loading: true })
+        await this.props.login(this.state.email, this.state.password);
+        this.messageStatus('success', 'Seja Bem Vindo :D');
+        this.setState({ loading: false })
+      } catch (error) {
+        this.setState({ loading: true })
+        this.messageStatus('warning', 'Você não tem autorização até o momento!');
+        this.setState({ loading: false })
+      }
+      this.setState({ email: '', password: '' })
+    }
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
   }
-
   render() {
     return (
       <div className="login-form">
-        {/* <SemanticToastContainer /> */}
+        <SemanticToastContainer />
         <style>{`
         body > div,
         body > div > div,
@@ -77,9 +92,9 @@ handleSubmit = (e) =>{
                 type='password'
                 />
                 <Button className = "button_clickcompras"
-                  color = "blue"
-                  fluid size = "large"
-                  loading={this.state.statusLoading}>
+                  color="blue"
+                  fluid size="large"
+                  loading={this.state.loading}>
                   ACESSAR PAINEL
                 </Button>
                   <Message>
@@ -95,7 +110,7 @@ handleSubmit = (e) =>{
 }
 
 const mapStateToProps = state => ({
-  errorMessage: state.login
+  stateLogin: state.login
 });
 
 
