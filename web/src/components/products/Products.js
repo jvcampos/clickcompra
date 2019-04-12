@@ -11,27 +11,27 @@ import MenuSuperior from '../menusuperior/Menusuperior'
 import 'antd/dist/antd.css';
 import { Upload, Icon as IconAntd, message } from 'antd';
 
-
 import './products.css'
 
 const Dragger = Upload.Dragger;
 
-const props = {
-  name: 'file',
-  multiple: true,
-  action: '//jsonplaceholder.typicode.com/posts/',
-  onChange(info) {
-    const status = info.file.status;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
+function beforeUpload(file) {
+  const isJPG = file.type === "image/jpeg";
+  if (!isJPG) {
+    message.error("You can only upload JPG file!");
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error("Image must smaller than 2MB!");
+  }
+  return isJPG && isLt2M;
+}
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 
 const source = _.times(5, () => ({
   title: faker.company.companyName(),
@@ -46,7 +46,25 @@ class Products extends Component {
     value_product: '',
     description: '',
     isLoading: false,
-    results: []
+    results: [],
+    loading: false,
+  }
+
+  handleChange = info => {
+    if (info.file.status === "uploading") {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, imageUrl => {
+        this.setState({
+          imageUrl,
+          loading: false
+        });
+        console.log(this.state.imageUrl)
+      });
+    }
   }
 
   componentDidMount() {
@@ -132,12 +150,18 @@ class Products extends Component {
               >
                 <Modal.Header style={{ textAlign: 'center' }}>ADICIONAR NOVO PRODUTO</Modal.Header>
                 <Modal.Content image>
-                  <div style={{height: 200, width: 300}}>
-                    <Dragger {...props}>
+                  <div style={{ height: 200, width: 300 }}>
+                    <Dragger
+                      name='file'
+                      multiple
+                      action='//jsonplaceholder.typicode.com/posts/'
+                      beforeUpload={beforeUpload}
+                      onChange={this.handleChange}
+                    >
                       <p className="ant-upload-drag-icon">
                         <IconAntd type="inbox" />
                       </p>
-                      <p className="ant-upload-text">Clique para selecionar<br/> ou <br/> Arraste a Imagem</p>
+                      <p className="ant-upload-text">Clique para selecionar<br /> ou <br /> Arraste a Imagem</p>
                     </Dragger>
                   </div>
                   <Modal.Description style={{ paddingLeft: 100, paddingRight: 100 }}>
