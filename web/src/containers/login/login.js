@@ -13,6 +13,7 @@ export default class Login extends Component {
     loading: false,
     statusMessageError: 'hidden',
     admin: false,
+    commom: false
   }
 
   componentDidMount() {
@@ -44,10 +45,16 @@ export default class Login extends Component {
       try {
         this.setState({ loading: true })
         const result = await login(this.state.email, this.state.password);
-        if (result.data.role === "ADMIN" && result.data.status === "APROVED") {
+        console.log(result)
+        if (result.data.role === "ADMIN") {
           this.messageStatus('success', 'Seja Bem Vindo :D');
           localStorage.setItem('token', result.data.token.token);
           this.setState({admin: true })
+        }
+        else if (result.data.role === "CUSTOMER") {
+          this.messageStatus('success', 'Seja Bem Vindo :D');
+          localStorage.setItem('token', result.data.token.token);
+          this.setState({ customer: true })
         }
         this.setState({ loading: false })
       } catch (error) {
@@ -66,6 +73,9 @@ export default class Login extends Component {
   render() {
     if (this.state.admin) {
       return <Redirect to="/admin" />
+    }
+    if (this.state.customer) {
+      return <Redirect to="/home" />
     }
     return (
       <div className="login-form">

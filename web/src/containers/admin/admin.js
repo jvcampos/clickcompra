@@ -24,7 +24,6 @@ class Admin extends Component {
   componentDidMount() {
     document.title = 'Painel Administrativo - ClickCompras';
     console.log(this.props.token)
-    // localStorage.setItem('token', this.props.dataLogin.token.token);
     api.get('supermarkets/unproved', {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')

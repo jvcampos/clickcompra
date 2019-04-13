@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react'
 import './home.css'
 import { VictoryPie } from 'victory'
+import { SemanticToastContainer } from 'react-semantic-toasts'
+
 
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -28,6 +30,7 @@ class Home extends Component {
   render() {
     return (
       <div>
+        <SemanticToastContainer />
         <MenuSuperior />
         <Segment>
           Welcome , <strong> {this.props.dataLogin.email}</strong>

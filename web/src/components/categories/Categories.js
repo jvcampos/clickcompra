@@ -25,7 +25,6 @@ class Categories extends Component {
   }
 
   componentDidMount(){
-    localStorage.setItem('token', this.props.dataLogin.token.token);
     document.title = "Categorias | ClickCompras"
     api.get(`categories/${this.props.dataLogin.id}` ,{
       headers: {
