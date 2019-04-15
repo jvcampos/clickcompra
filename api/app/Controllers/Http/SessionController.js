@@ -8,13 +8,14 @@ class SessionController {
     const userData = await UserModel.findBy('email', email)
     const { id, role } = userData
     if(role !== 'ADMIN'){
-      const { status } = await SupermarketModel.findBy('id_manager', id)
-      if (status === 'APROVED') {
+      const superData = await SupermarketModel.findBy('id_manager', id)
+      if (superData.status === 'APROVED') {
         return {
           token,
           role,
-          status,
-          id
+          status: superData.status,
+          id_supermarket: superData.id,
+          id,
         }
       }
     } else {
