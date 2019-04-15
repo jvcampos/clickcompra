@@ -22,6 +22,7 @@ export function updateCategories(id){
             }
         })
         .then(response => {
+            console.log(response)
             dispatch(updatedCategories(response.data))
         })
       }

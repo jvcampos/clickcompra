@@ -24,12 +24,18 @@ class Categories extends Component {
     statusModalRemove : false,
     name_categorie : '',
     description: '',
-    categories : []
+    categories : [],
+    user_id: '',
+    user_id_supermarket: ''
   }
 
   componentDidMount(){
+    const id_manager = localStorage.getItem('id')
+    console.log(localStorage.getItem('id_supermarket'))
+    const id_supermarket = localStorage.getItem('id_supermarket')
+    this.setState({ user_id : id_manager, user_id_supermarket: id_supermarket})
     document.title = "Categorias | ClickCompras"
-    api.get(`categories/${this.props.dataLogin.id}` ,{
+    api.get(`categories/${id_manager}` ,{
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
@@ -51,6 +57,7 @@ class Categories extends Component {
       );
       this.setState({ statusLoading: false, statusMessageError: 'visible', })
     }, 1000);
+    this.forceUpdate()
   }
 
   fetchGetCategories = (response) => {
@@ -59,7 +66,7 @@ class Categories extends Component {
       this.setState({ loading: false})
     }, 1000);
   }
-  
+
   fetchUpdateCategories = (response) => {
     this.showMessage()
     setTimeout(() => {
@@ -68,13 +75,14 @@ class Categories extends Component {
   }
 
   addCategorie = () => {
+    console.log(this.state.user_id_supermarket)
     this.props.addCategorie(
-      this.props.dataLogin.id_supermarket,
+      this.state.user_id_supermarket,
       this.state.description, this.state.name_categorie)
     this.setState({ loadingAddCategorie: true })
     setTimeout(() => {
       console.log('busco todas as categorias !')
-      this.props.updateCategories(this.props.dataLogin.id)
+      this.props.updateCategories(this.state.user_id)
       setTimeout(() => {
         console.log('busco meu state atualizado !')
         this.fetchUpdateCategories(this.props.dataCategories.categories)
@@ -163,7 +171,25 @@ class Categories extends Component {
               </Grid.Column>
             <Grid.Row>
               <Grid.Column width={10}>
-                <TableCategories data={this.state.categories}/>
+              <Table
+                className="table_categories"
+                color={'green'}>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>NOME</Table.HeaderCell>
+                    <Table.HeaderCell>QUANTIDADE DE PRODUTOS</Table.HeaderCell>
+                    <Table.HeaderCell>DESCRIÇÃO</Table.HeaderCell>
+                    <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                {this.state.categories.map(categorie => {
+                  return (
+                    <TableCategories data={categorie}/>
+                    )
+                  })}
+                </Table.Body>
+              </Table>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -174,7 +200,6 @@ class Categories extends Component {
 }
 
 const mapStateToProps = state => ({
-  dataLogin: state.login,
   dataCategories: state.categories
 });
 
