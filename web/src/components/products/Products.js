@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Table, Modal, Grid, Button, Icon, Header, Segment, Search } from 'semantic-ui-react'
+import { toast, SemanticToastContainer } from 'react-semantic-toasts'
 import faker from 'faker'
 import _ from 'lodash'
+import "antd/dist/antd.css";
 
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -9,29 +11,10 @@ import { connect } from 'react-redux';
 import MenuSuperior from '../menusuperior/Menusuperior'
 
 import 'antd/dist/antd.css';
-import { Upload, Icon as IconAntd, message } from 'antd';
-
+import { Upload, Icon as IconAntd } from 'antd';
 import './products.css'
 
 const Dragger = Upload.Dragger;
-
-function beforeUpload(file) {
-  const isJPG = file.type === "image/jpeg";
-  if (!isJPG) {
-    message.error("You can only upload JPG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJPG && isLt2M;
-}
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 
 const source = _.times(5, () => ({
   title: faker.company.companyName(),
@@ -49,6 +32,40 @@ class Products extends Component {
     results: [],
     loading: false,
   }
+  messageStatus = (type, title, description = '', time = 5000) => {
+    setTimeout(() => {
+      toast({
+        type: type,
+        icon: 'file excel outline',
+        title: title,
+        description: description,
+        animation: 'bounce',
+        time: time,
+      });
+    }, 1000);
+  }
+
+  beforeUpload = (file) => {
+    const isJPG = file.type === "image/jpeg";
+    if (!isJPG) {
+      this.messageStatus('error', 'Só é permitido tipo JPG');
+      return
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      this.messageStatus('error', 'Imagem deve ter até 2MB!');
+      return
+    }
+    return isJPG && isLt2M;
+  }
+
+  getBase64 = (img, callback) => {
+    this.messageStatus('error', 'Imagem deve ter até 2MB e ser JPG/PNG')
+    this.messageStatus('success', 'Imagem adicionada com sucesso')
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
 
   handleChange = info => {
     if (info.file.status === "uploading") {
@@ -57,7 +74,7 @@ class Products extends Component {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => {
+      this.getBase64(info.file.originFileObj, imageUrl => {
         this.setState({
           imageUrl,
           loading: false
@@ -150,12 +167,13 @@ class Products extends Component {
               >
                 <Modal.Header style={{ textAlign: 'center' }}>ADICIONAR NOVO PRODUTO</Modal.Header>
                 <Modal.Content image>
+                  <SemanticToastContainer />
                   <div style={{ height: 200, width: 300 }}>
                     <Dragger
                       name='file'
                       multiple
                       action='//jsonplaceholder.typicode.com/posts/'
-                      beforeUpload={beforeUpload}
+                      beforeUpload={this.beforeUpload}
                       onChange={this.handleChange}
                     >
                       <p className="ant-upload-drag-icon">
