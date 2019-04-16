@@ -45,7 +45,6 @@ export default class Login extends Component {
       try {
         this.setState({ loading: true })
         const result = await login(this.state.email, this.state.password);
-        console.log(result)
         if (result.data.role === "ADMIN") {
           this.messageStatus('success', 'Seja Bem Vindo :D');
           localStorage.setItem('token', result.data.token.token);
@@ -54,6 +53,8 @@ export default class Login extends Component {
         else if (result.data.role === "CUSTOMER") {
           this.messageStatus('success', 'Seja Bem Vindo :D');
           localStorage.setItem('token', result.data.token.token);
+          localStorage.setItem('id', result.data.id)
+          localStorage.setItem('id_supermarket', result.data.id_supermarket)
           this.setState({ customer: true })
         }
         this.setState({ loading: false })

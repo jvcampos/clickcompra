@@ -24,7 +24,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.dataLogin.email)
+    console.log(localStorage.getItem('id_supermarket'))
   }
 
   render() {
