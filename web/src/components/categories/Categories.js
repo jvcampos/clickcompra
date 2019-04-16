@@ -20,28 +20,30 @@ class Categories extends Component {
   state = {
     loading: true,
     loadingAddCategorie: false,
-    statusModalAdd : false,
-    statusModalRemove : false,
-    name_categorie : '',
+    statusModalAdd: false,
+    statusModalRemove: false,
+    name_categorie: '',
     description: '',
-    categories : [],
+    categories: [],
     user_id: '',
     user_id_supermarket: ''
   }
 
-  componentDidMount(){
-    const id_manager = localStorage.getItem('id')
-    const id_supermarket = localStorage.getItem('id_supermarket')
-    this.setState({ user_id : id_manager, user_id_supermarket: id_supermarket})
+  componentWillMount() {
     document.title = "Categorias | ClickCompras"
-    api.get(`categories/${id_manager}` ,{
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-      .then(response => {
-          this.fetchGetCategories(response.data)
-      })
+  }
+
+  componentDidMount() {
+    this.props.getCategories(localStorage.getItem('id'))
+    console.log(this.props.dataCategories)
+    // api.get(`categories/${id_manager}` ,{
+    //   headers: {
+    //     'Authorization': 'Bearer ' + localStorage.getItem('token')
+    //   }
+    // })
+    //   .then(response => {
+    //     this.fetchGetCategories(response.data)
+    //   })
   }
 
   showMessage() {
@@ -60,9 +62,9 @@ class Categories extends Component {
   }
 
   fetchGetCategories = (response) => {
-    this.setState({ categories: response.data})
+    this.setState({ categories: response.data })
     setTimeout(() => {
-      this.setState({ loading: false})
+      this.setState({ loading: false })
     }, 1000);
   }
 
@@ -75,25 +77,17 @@ class Categories extends Component {
   }
 
   addCategorie = () => {
-    console.log(this.state.user_id_supermarket)
+    const id_supermarket = localStorage.getItem('id_supermarket')
     this.props.addCategorie(
-      this.state.user_id_supermarket,
+      id_supermarket,
       this.state.description, this.state.name_categorie)
-    this.setState({ loadingAddCategorie: true });
-    // setTimeout(() => {
-    //   console.log('busco todas as categorias !')
-    //   this.props.updateCategories(this.state.user_id)
-    //   setTimeout(() => {
-    //     console.log('busco meu state atualizado !')
-    //     this.fetchUpdateCategories(this.props.dataCategories.categories)
-    //     this.setState({ loadingAddCategorie: false, loading: true, statusModalAdd: false })
-    //   }, 2000);
-    // }, 1000);
+    this.setState({ statusModalAdd: false })
+    this.showMessage()
   }
 
   onHandleChange = (e) => {
     this.setState({
-        [e.target.name] : e.target.value
+      [e.target.name]: e.target.value
     })
   }
   openModalAdd = () => {
@@ -115,15 +109,15 @@ class Categories extends Component {
     return (
       <div>
         <SemanticToastContainer />
-        <MenuSuperior/>
+        <MenuSuperior />
         <Segment>
           <Header as="h2">
             SEÇÃO DE CATEGORIAS
           </Header>
         </Segment>
-          <Segment>
+        <Segment>
           <Grid verticalAlign='middle' textAlign='center' style={{ height: '90%' }}>
-              <Grid.Column width={5} style={{ left : '-22.5%'}}>
+            <Grid.Column width={5} style={{ left: '-22.5%' }}>
               <Modal
                 open={this.state.statusModalAdd}
                 className="modal_dados_gerente"
@@ -135,65 +129,65 @@ class Categories extends Component {
                       <Icon name='add' />
                     </Button.Content>
                   </Button>}
-                >
+              >
                 <Modal.Header style={{ textAlign: 'center' }}>ADICIONAR NOVA CATEGORIA</Modal.Header>
-                  <Modal.Content>
-                    <Modal.Description>
-                      <Header as='h3'>NOME</Header>
-                      <Form.Input
-                        onChange={this.onHandleChange}
-                        value={this.state.name_categorie}
-                        name="name_categorie"
-                        fluid icon='tag' iconPosition='left'
-                        placeholder='NOME' />
-                      <Header as='h3'>DESCRIÇÃO</Header>
-                      <Form.TextArea style={{
-                        width: '318px',
-                        maxWidth: '318px',
-                        height: '68px',
-                        maxHeight: '100px',
-                        margin: '0px',
-                        borderRadius: '6px',
-                        borderColor: '#c1bfbfbd',
-                      }}
+                <Modal.Content>
+                  <Modal.Description>
+                    <Header as='h3'>NOME</Header>
+                    <Form.Input
+                      onChange={this.onHandleChange}
+                      value={this.state.name_categorie}
+                      name="name_categorie"
+                      fluid icon='tag' iconPosition='left'
+                      placeholder='NOME' />
+                    <Header as='h3'>DESCRIÇÃO</Header>
+                    <Form.TextArea style={{
+                      width: '318px',
+                      maxWidth: '318px',
+                      height: '68px',
+                      maxHeight: '100px',
+                      margin: '0px',
+                      borderRadius: '6px',
+                      borderColor: '#c1bfbfbd',
+                    }}
                       onChange={this.onHandleChange}
                       value={this.state.description}
                       name="description"
                       rows={3}
                       placeholder="Descrição da categoria"></Form.TextArea>
-                    </Modal.Description>
-                    <Modal.Actions style={{ marginTop: '10px' }}>
-                      <Button negative icon='close' onClick={this.closeModalAdd} labelPosition='right' content="Cancelar"></Button>
-                      <Button positive icon='checkmark' loading={this.state.loadingAddCategorie} onClick={this.addCategorie} labelPosition='right' content='Confirmar' />
-                    </Modal.Actions>
-                  </Modal.Content>
-                </Modal>
-              </Grid.Column>
+                  </Modal.Description>
+                  <Modal.Actions style={{ marginTop: '10px' }}>
+                    <Button negative icon='close' onClick={this.closeModalAdd} labelPosition='right' content="Cancelar"></Button>
+                    <Button positive icon='checkmark' loading={this.state.loadingAddCategorie} onClick={this.addCategorie} labelPosition='right' content='Confirmar' />
+                  </Modal.Actions>
+                </Modal.Content>
+              </Modal>
+            </Grid.Column>
             <Grid.Row>
               <Grid.Column width={10}>
-              <Table
-                className="table_categories"
-                color={'green'}>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell>NOME</Table.HeaderCell>
-                    <Table.HeaderCell>QUANTIDADE DE PRODUTOS</Table.HeaderCell>
-                    <Table.HeaderCell>DESCRIÇÃO</Table.HeaderCell>
-                    <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                {this.props.dataCategories.map(categorie => {
-                  return (
-                    <TableCategories data={categorie}/>
-                    )
-                  })}
-                </Table.Body>
-              </Table>
+                <Table
+                  className="table_categories"
+                  color={'green'}>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>NOME</Table.HeaderCell>
+                      <Table.HeaderCell>QUANTIDADE DE PRODUTOS</Table.HeaderCell>
+                      <Table.HeaderCell>DESCRIÇÃO</Table.HeaderCell>
+                      <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {this.props.dataCategories.map(categorie => {
+                      return (
+                        <TableCategories data={categorie} />
+                      )
+                    })}
+                  </Table.Body>
+                </Table>
               </Grid.Column>
             </Grid.Row>
           </Grid>
-          </Segment>
+        </Segment>
       </div>
     );
   }

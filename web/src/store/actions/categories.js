@@ -12,30 +12,36 @@ export function addCategorie(id_supermarket, name_categorie, description){
             }
         })
         .then(response => {
-            dispatch(getCategories(response.data))
+            dispatch(newCategory(response.data))
         })
       }
 }
 
+export function getCategories(id_manager){
+    console.log(id_manager)
+    return (dispatch) => {
+        api.get(`categories/${id_manager}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        .then(response =>  {
+            dispatch(getAllCategories(response.data))
+        })
+    }
+}
 
-// export function updateCategories(id){
-//     return (dispatch) => {
-//         return api.get(`categories/${id}`, {
-//             headers: {
-//                 'Authorization': 'Bearer ' + localStorage.getItem('token')
-//             }
-//         })
-//         .then(response => {
-//             console.log(response)
-//             dispatch(updatedCategories(response.data))
-//         })
-//       }
-// }
+export const getAllCategories = (data) => {
+    return {
+        type: 'GET_ALL_CATEGORY',
+        data
+    }
+}
 
-export const getCategories = (data) => {
-    console.log(data)
+export const newCategory = (data) => {
     return {
         type: 'ADD_CATEGORY',
         data
     }
 }
+

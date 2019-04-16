@@ -62,7 +62,8 @@ class CategoryController {
       .where('id_supermarket', supermarketData.id)
     // const { page } = request.all()
       // .paginate(page, 1)
-    HandlerMessage.handlerSuccess(response, categories)
+      return categories
+    // HandlerMessage.handlerSuccess(response, categories)
   }
 }
 
