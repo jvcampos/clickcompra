@@ -31,7 +31,6 @@ class Categories extends Component {
 
   componentDidMount(){
     const id_manager = localStorage.getItem('id')
-    console.log(localStorage.getItem('id_supermarket'))
     const id_supermarket = localStorage.getItem('id_supermarket')
     this.setState({ user_id : id_manager, user_id_supermarket: id_supermarket})
     document.title = "Categorias | ClickCompras"
@@ -68,6 +67,7 @@ class Categories extends Component {
   }
 
   fetchUpdateCategories = (response) => {
+    console.log(response)
     this.showMessage()
     setTimeout(() => {
       this.setState({ categorie: response.data, loading: false })
@@ -79,16 +79,16 @@ class Categories extends Component {
     this.props.addCategorie(
       this.state.user_id_supermarket,
       this.state.description, this.state.name_categorie)
-    this.setState({ loadingAddCategorie: true })
-    setTimeout(() => {
-      console.log('busco todas as categorias !')
-      this.props.updateCategories(this.state.user_id)
-      setTimeout(() => {
-        console.log('busco meu state atualizado !')
-        this.fetchUpdateCategories(this.props.dataCategories.categories)
-        this.setState({ loadingAddCategorie: false, loading: true, statusModalAdd: false })
-      }, 2000);
-    }, 1000);
+    this.setState({ loadingAddCategorie: true });
+    // setTimeout(() => {
+    //   console.log('busco todas as categorias !')
+    //   this.props.updateCategories(this.state.user_id)
+    //   setTimeout(() => {
+    //     console.log('busco meu state atualizado !')
+    //     this.fetchUpdateCategories(this.props.dataCategories.categories)
+    //     this.setState({ loadingAddCategorie: false, loading: true, statusModalAdd: false })
+    //   }, 2000);
+    // }, 1000);
   }
 
   onHandleChange = (e) => {
@@ -111,6 +111,7 @@ class Categories extends Component {
   }
 
   render() {
+    console.log(this.props.dataCategories)
     return (
       <div>
         <SemanticToastContainer />
@@ -126,7 +127,6 @@ class Categories extends Component {
               <Modal
                 open={this.state.statusModalAdd}
                 className="modal_dados_gerente"
-                dimmer="blurring"
                 size="mini"
                 trigger={
                   <Button onClick={this.openModalAdd} color="green" animated='vertical'>
@@ -183,7 +183,7 @@ class Categories extends Component {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                {this.state.categories.map(categorie => {
+                {this.props.dataCategories.map(categorie => {
                   return (
                     <TableCategories data={categorie}/>
                     )
@@ -206,4 +206,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(categoriesActions, dispatch);
 
-export default connect( mapStateToProps, mapDispatchToProps)(Categories);
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

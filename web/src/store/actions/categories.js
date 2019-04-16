@@ -5,33 +5,37 @@ const api = axios.create({
 })
 
 export function addCategorie(id_supermarket, name_categorie, description){
-  return (dispatch) => {
-    return api.post('category', { id_supermarket, name_categorie, description }, {
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-    })
-  }
-}
-
-export function updateCategories(id){
     return (dispatch) => {
-        return api.get(`categories/${id}`, {
+        return api.post('category', { id_supermarket, name_categorie, description }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
         .then(response => {
-            console.log(response)
-            dispatch(updatedCategories(response.data))
+            dispatch(getCategories(response.data))
         })
       }
 }
 
-export const updatedCategories = (data) => {
+
+// export function updateCategories(id){
+//     return (dispatch) => {
+//         return api.get(`categories/${id}`, {
+//             headers: {
+//                 'Authorization': 'Bearer ' + localStorage.getItem('token')
+//             }
+//         })
+//         .then(response => {
+//             console.log(response)
+//             dispatch(updatedCategories(response.data))
+//         })
+//       }
+// }
+
+export const getCategories = (data) => {
+    console.log(data)
     return {
-        type: 'UPDATE_ALL_CATEGORIES',
+        type: 'ADD_CATEGORY',
         data
     }
 }
-

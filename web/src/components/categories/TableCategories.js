@@ -6,7 +6,6 @@ import './categories.css'
 class TableCategories extends Component {
   state = {
     statusModalRemove : false,
-    categories: []
   }
 
   openModalRemove = () => {
@@ -18,19 +17,15 @@ class TableCategories extends Component {
   }
 
   render() {
-    console.log(this.props.data)
     return (
       <Table.Body>
-        {this.props.data.map(categorie => {
-          console.log(categorie)
-          return (
             <Table.Row>
               <Dimmer active={this.state.loading} inverted>
                 <Loader content="Buscando categorias..."/>
               </Dimmer>
-              <Table.Cell>{categorie.name_categorie}</Table.Cell>
+              <Table.Cell>{this.props.data.name_categorie}</Table.Cell>
               <Table.Cell>0</Table.Cell>
-              <Table.Cell>{categorie.description}</Table.Cell>
+              <Table.Cell>{this.props.data.description}</Table.Cell>
               <Table.Cell textAlign="center">
                   <Modal
                   basic size='small'
@@ -58,8 +53,6 @@ class TableCategories extends Component {
                   </Modal>
               </Table.Cell>
             </Table.Row>
-            )
-          })}
           </Table.Body>
     );
   }
