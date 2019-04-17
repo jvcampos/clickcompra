@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Dimmer, Loader, Table, Modal, Button, Icon, Header } from 'semantic-ui-react'
+import { Table, Modal, Button, Icon, Header } from 'semantic-ui-react'
+import { SemanticToastContainer, toast } from 'react-semantic-toasts'
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as categoriesActions from '../../store/actions/categories'
 
 import './categories.css'
 
@@ -19,11 +24,8 @@ class TableCategories extends Component {
   render() {
     return (
       <Table.Row>
-        <Dimmer active={this.state.loading} inverted>
-          <Loader content="Buscando categorias..."/>
-        </Dimmer>
         <Table.Cell>{this.props.data.name_categorie}</Table.Cell>
-        <Table.Cell>0</Table.Cell>
+        <Table.Cell>100</Table.Cell>
         <Table.Cell>{this.props.data.description}</Table.Cell>
         <Table.Cell textAlign="center">
             <Modal
@@ -45,16 +47,23 @@ class TableCategories extends Component {
                 <Button basic onClick={this.closeModalRemove} color='red' inverted>
                   <Icon name='remove' /> Cancelar
                 </Button>
-                <Button color='green' onClick={this.onSubmit} inverted>
+                <Button color='green' onClick={() => this.props.onDeleteCategory(this.props.data.id)} inverted>
                   <Icon name='checkmark' /> Confirmar
                 </Button>
               </Modal.Actions>
             </Modal>
         </Table.Cell>
+      <SemanticToastContainer />
       </Table.Row>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  dataCategories: state.categories
+});
 
-export default TableCategories;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(categoriesActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableCategories);

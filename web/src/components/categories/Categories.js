@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Dimmer, Loader, Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 
@@ -11,10 +10,6 @@ import MenuSuperior from '../menusuperior/Menusuperior'
 import TableCategories from './TableCategories'
 
 import './categories.css'
-
-const api = axios.create({
-  baseURL: 'http://localhost:3001/api/',
-});
 
 class Categories extends Component {
   state = {
@@ -35,25 +30,19 @@ class Categories extends Component {
 
   componentDidMount() {
     this.props.getCategories(localStorage.getItem('id'))
-    console.log(this.props.dataCategories)
-    // api.get(`categories/${id_manager}` ,{
-    //   headers: {
-    //     'Authorization': 'Bearer ' + localStorage.getItem('token')
-    //   }
-    // })
-    //   .then(response => {
-    //     this.fetchGetCategories(response.data)
-    //   })
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000);
   }
 
-  showMessage() {
+  showMessage(type, icon, title) {
     setTimeout(() => {
       toast(
         {
-          type: 'success',
-          icon: 'bullhorn',
+          type,
+          icon,
           animation: 'bounce',
-          title: "Nova categoria adicionada !",
+          title,
         },
       );
       this.setState({ statusLoading: false, statusMessageError: 'visible', })
@@ -61,28 +50,25 @@ class Categories extends Component {
     this.forceUpdate()
   }
 
-  fetchGetCategories = (response) => {
-    this.setState({ categories: response.data })
+  onDeleteCategory = (id) => {
+    this.props.deleteCategory(id)
+    this.setState({ loading: true })
     setTimeout(() => {
       this.setState({ loading: false })
     }, 1000);
-  }
-
-  fetchUpdateCategories = (response) => {
-    console.log(response)
-    this.showMessage()
-    setTimeout(() => {
-      this.setState({ categorie: response.data, loading: false })
-    }, 1000);
+    this.showMessage('success' , 'cancel', 'Categoria deletada com sucesso !')
   }
 
   addCategorie = () => {
     const id_supermarket = localStorage.getItem('id_supermarket')
+    this.setState({ statusModalAdd: false, loading: true })
     this.props.addCategorie(
       id_supermarket,
       this.state.description, this.state.name_categorie)
-    this.setState({ statusModalAdd: false })
-    this.showMessage()
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000);
+    this.showMessage('success', 'bullhorn', 'Categoria adicionada com sucesso !')
   }
 
   onHandleChange = (e) => {
@@ -105,7 +91,6 @@ class Categories extends Component {
   }
 
   render() {
-    console.log(this.props.dataCategories)
     return (
       <div>
         <SemanticToastContainer />
@@ -168,6 +153,9 @@ class Categories extends Component {
                 <Table
                   className="table_categories"
                   color={'green'}>
+                  <Dimmer active={this.state.loading} inverted>
+                    <Loader content="Buscando categorias..."/>
+                  </Dimmer>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>NOME</Table.HeaderCell>
@@ -179,7 +167,7 @@ class Categories extends Component {
                   <Table.Body>
                     {this.props.dataCategories.map(categorie => {
                       return (
-                        <TableCategories data={categorie} />
+                        <TableCategories onDeleteCategory={this.onDeleteCategory} data={categorie} />
                       )
                     })}
                   </Table.Body>

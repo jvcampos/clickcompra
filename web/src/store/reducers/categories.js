@@ -1,19 +1,19 @@
+/* eslint-disable no-duplicate-case */
 export default function categories(state = [] , action) {
-  console.log(action.data)
-  // console.log(state);
   switch (action.type) {
       case 'ADD_CATEGORY':
        return [
           ...state,
          {
            id: action.data.id,
-           name_categorie: action.data.categorie,
+           name_categorie: action.data.name_categorie,
            description: action.data.description
          }
        ]
-       // eslint-disable-next-line no-duplicate-case
        case 'GET_ALL_CATEGORY':
         return action.data
+       case 'DELETE_CATEGORY':
+        return state.filter(categorie => categorie.id !== action.id)
        default:
         return state;
     }

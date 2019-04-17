@@ -18,7 +18,6 @@ export function addCategorie(id_supermarket, name_categorie, description){
 }
 
 export function getCategories(id_manager){
-    console.log(id_manager)
     return (dispatch) => {
         api.get(`categories/${id_manager}`, {
             headers: {
@@ -30,6 +29,20 @@ export function getCategories(id_manager){
         })
     }
 }
+
+export function deleteCategory(id){
+    return (dispatch) => {
+        api.delete(`category/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        .then(response =>  {
+            dispatch(removeCategory(response.data))
+        })
+    }
+}
+
 
 export const getAllCategories = (data) => {
     return {
@@ -45,3 +58,9 @@ export const newCategory = (data) => {
     }
 }
 
+export const removeCategory = (data) => {
+    return {
+        type: 'DELETE_CATEGORY',
+        id: data.data.id
+    }
+}
