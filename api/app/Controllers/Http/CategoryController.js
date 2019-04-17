@@ -16,6 +16,7 @@ class CategoryController {
     })
     return category
   }
+
   async update({ request, params, response }) {
     try {
       const { name } = request.all();
