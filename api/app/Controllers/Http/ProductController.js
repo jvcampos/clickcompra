@@ -6,10 +6,13 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 
 class ProductController {
   async create({ request }){
-    const { id_category, name, value, amount } = request.all()
+    const { id_category, name_product,imageBase64 ,description, value, amount } = request.all()
+    console.log(id_category, name_product,imageBase64 ,description, value, amount)
     const product = await ProductModel.create({
       id_category,
-      name,
+      name_product,
+      imageBase64,
+      description,
       value,
       amount
     })
@@ -18,12 +21,12 @@ class ProductController {
 
   async update({ request, params, response }) {
     try {
-      const { name, value, amount } = request.all();
+      const { name_product,imageBase64,description, value, amount } = request.all();
       const { id } = params;
       await Database
         .table('products')
         .where('id', id)
-        .update({ name, value, amount })
+        .update({ name_product,imageBase64,description, value, amount })
       const product = await ProductModel.find(id)
       HandlerMessage.handlerUpdate(response, product)
     }

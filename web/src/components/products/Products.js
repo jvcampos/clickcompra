@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Form, Table, Modal, Grid, Button, Icon, Header, Segment, Search } from 'semantic-ui-react'
 import { toast, SemanticToastContainer } from 'react-semantic-toasts'
-import faker from 'faker'
 import _ from 'lodash'
 import "antd/dist/antd.css";
-
+import TableProducts from './TableProducts'
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as productsAction from '../../store/actions/products'
 
 import MenuSuperior from '../menusuperior/Menusuperior'
 
@@ -16,21 +18,22 @@ import './products.css'
 
 const Dragger = Upload.Dragger;
 
-const source = _.times(5, () => ({
-  title: faker.company.companyName(),
-  description: faker.company.catchPhrase(),
-}))
+
 
 class Products extends Component {
   state = {
     statusModalAdd: false,
-    statusModalRemove: false,
     name_product: '',
+    category_id: '',
     value_product: '',
-    description: '',
+    description_product: '',
+    amount_product: '',
     isLoading: false,
     results: [],
     loading: false,
+    inputImg: true,
+    imageBase64: '',
+    disable: false
   }
   messageStatus = (type, title, description = '', time = 5000) => {
     setTimeout(() => {
@@ -60,7 +63,6 @@ class Products extends Component {
   }
 
   getBase64 = (img, callback) => {
-    this.messageStatus('error', 'Imagem deve ter até 2MB e ser JPG/PNG')
     this.messageStatus('success', 'Imagem adicionada com sucesso')
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
@@ -68,19 +70,26 @@ class Products extends Component {
   }
 
   handleChange = info => {
+    const { imageBase64 } = this.state
+    console.log(imageBase64)
     if (info.file.status === "uploading") {
       this.setState({ loading: true });
       return;
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, imageUrl => {
+      this.getBase64(info.file.originFileObj, imageBase64 => {
         this.setState({
-          imageUrl,
-          loading: false
+          imageBase64,
+          loading: false,
+          disable: true
         });
-        console.log(this.state.imageUrl)
+        console.log(this.state.imageBase64)
       });
+    } else {
+      this.setState({
+        disable: false
+      })
     }
   }
 
@@ -89,28 +98,55 @@ class Products extends Component {
     this.resetComponent()
   }
 
+  showMessage(type, icon, title) {
+    setTimeout(() => {
+      toast(
+        {
+          type,
+          icon,
+          animation: 'bounce',
+          title,
+        },
+      );
+      this.setState({ statusLoading: false, statusMessageError: 'visible', })
+    }, 1000);
+    this.forceUpdate()
+  }
+
   //Search
   resetComponent = () =>
     this.setState({ isLoading: false, results: [], value: '' })
 
   //Search    
-  handleResultSelect = (e, { result }) => this.setState({ value: result.title })
-
+  handleResultSelect = (e, { result }) => {
+    this.setState({
+      value: result.title,
+      category_id: result.id
+    })
+    console.log(this.state.category_id)
+  }
   //Search
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value })
+    this.props.dataCategories.map(categories => {
+      const source = _.times(5, () => ({
+        id: categories.id,
+        title: categories.name_categorie,
+        description: categories.description,
+      }))
+      this.setState({ isLoading: true, value })
 
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent()
+      setTimeout(() => {
+        if (this.state.value.length < 1) return this.resetComponent()
 
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
+        const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+        const isMatch = result => re.test(result.title)
 
-      this.setState({
-        isLoading: false,
-        results: _.filter(source, isMatch),
-      })
-    }, 300)
+        this.setState({
+          isLoading: false,
+          results: _.filter(source, isMatch),
+        })
+      }, 300)
+    })
   }
 
 
@@ -129,7 +165,19 @@ class Products extends Component {
   }
 
   onSubmit = () => {
-    alert('Submit !')
+    this.setState({ statusModalAdd: false, loading: true })
+    this.props.addProduct(
+      this.state.category_id,
+      this.state.name_product,
+      this.state.imageBase64,
+      this.state.description_product,
+      this.state.value_product,
+      this.state.amount_product,
+    )
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000);
+    this.showMessage('success', 'bullhorn', 'Produto adicionado com sucesso !')
   }
 
   onHandleChange = (e) => {
@@ -171,7 +219,7 @@ class Products extends Component {
                   <div style={{ height: 200, width: 300 }}>
                     <Dragger
                       name='file'
-                      multiple
+                      disabled={this.state.disable}
                       action='//jsonplaceholder.typicode.com/posts/'
                       beforeUpload={this.beforeUpload}
                       onChange={this.handleChange}
@@ -229,8 +277,8 @@ class Products extends Component {
                       borderColor: '#c1bfbfbd',
                     }}
                       onChange={this.onHandleChange}
-                      value={this.state.description}
-                      name="description"
+                      value={this.state.description_product}
+                      name="description_product"
                       rows={3}
                       placeholder="Descrição do produto">
                     </Form.TextArea>
@@ -257,41 +305,7 @@ class Products extends Component {
                       <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell textAlign="center">
-                        <Modal
-                          basic size='small'
-                          dimmer="blurring"
-                          open={this.state.statusModalRemove}
-                          trigger={
-                            <Button onClick={this.openModalRemove} size="small" color="red" animated='fade'>
-                              <Button.Content visible>EXCLUIR</Button.Content>
-                              <Button.Content hidden><Icon name='close' /></Button.Content>
-                            </Button>}
-                        >
-                          <Header icon='close' content='Excluir Produto XXXXXX' />
-                          <Modal.Content>
-                            <p>Você realmente deseja excluir o produto selecionado ?</p>
-                          </Modal.Content>
-                          <Modal.Actions>
-                            <Button basic onClick={this.closeModalRemove} color='red' inverted>
-                              <Icon name='remove' /> Cancelar
-                            </Button>
-                            <Button color='green' onClick={this.onSubmit} inverted>
-                              <Icon name='checkmark' /> Confirmar
-                            </Button>
-                          </Modal.Actions>
-                        </Modal>
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
+                  <TableProducts />
                 </Table>
               </Grid.Column>
             </Grid.Row>
@@ -302,12 +316,14 @@ class Products extends Component {
   }
 }
 
-// const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  dataCategories: state.categories
+});
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators(Actions, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(productsAction, dispatch);
 
 export default connect(
-  // mapStateToProps,
-  // mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Products);
