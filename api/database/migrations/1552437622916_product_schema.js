@@ -5,13 +5,14 @@ const Schema = use('Schema')
 class ProductSchema extends Schema {
   up () {
     this.create('products', (table) => {
-      table.string('name', 20).notNullable()
+      table.string('name_product', 20).notNullable()
       table
         .integer('id_category')
         .unsigned()
         .references('id')
         .inTable('categories')
         .notNullable()
+      table.text('imageBase64').notNullable()
       table.string('description').notNullable()
       table.float('value').notNullable()
       table.integer('amount').notNullable()
