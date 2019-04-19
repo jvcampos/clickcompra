@@ -34,6 +34,6 @@ Route.group(() => {
   Route.put('product/:id', 'ProductController.update').middleware('auth')
   Route.delete('product/:id', 'ProductController.delete').middleware('auth')
   Route.get('product/:id', 'ProductController.getProduct').middleware('auth')
-  Route.get('product', 'ProductController.getAll').middleware('auth')
+  Route.get('product/:id', 'ProductController.getAll').middleware('auth')
 })
  .prefix('api');

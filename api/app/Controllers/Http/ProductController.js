@@ -56,11 +56,13 @@ class ProductController {
     }
   }
 
-  async getAll({ request }) {
-    const { page } = request.all()
+  async getAll({ params }) {
+    const {id} = params
+    const supermarketData = await SupermarketModel.findBy('id_manager', id)
     const products = await Database
+      .select('id', 'name_product', 'id_category', 'imageBase64', 'description', 'value', 'amount')
       .from('products')
-      .paginate(page, 1)
+      .where('id_supermarket', supermarketData.id)
     return products
   }
 }

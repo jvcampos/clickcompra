@@ -3,15 +3,15 @@
 const Schema = use('Schema')
 
 class ProductSchema extends Schema {
-  up () {
+  up() {
     this.create('products', (table) => {
-      table.string('name_product', 20).notNullable()
       table
         .integer('id_category')
         .unsigned()
         .references('id')
         .inTable('categories')
         .notNullable()
+      table.string('name_product', 20).notNullable()
       table.text('imageBase64').notNullable()
       table.string('description').notNullable()
       table.float('value').notNullable()
@@ -21,11 +21,11 @@ class ProductSchema extends Schema {
     })
   }
 
-  down () {
+  down() {
     this.drop('products')
   }
 
-  category () {
+  category() {
     return this.hasOne('App/Models/Category')
   }
 }
