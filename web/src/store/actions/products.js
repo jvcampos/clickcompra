@@ -14,8 +14,35 @@ export function addProduct(id_category,name_product, imageBase64, description, v
         }
       })
       .then(response => {
+        console.log(response.data)
         dispatch(newProduct(response.data))
       })
+  }
+}
+
+export function getProducts(id_manager){
+  return (dispatch) => {
+    api.get(`products/${id_manager}`,{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+    })
+    .then(response => {
+      dispatch(getAllProducts(response.data))
+    })
+  }
+}
+
+export function deleteProduct(id){
+  return (dispatch) => {
+    api.delete(`product/${id}`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
+    })
+    .then(response => {
+      dispatch(removeProduct(response.data))
+    })
   }
 }
 
@@ -26,3 +53,16 @@ export const newProduct = (data) => {
   }
 }
 
+export const getAllProducts = (data) => {
+  return {
+    type: 'GET_ALL_PRODUCT',
+    data
+  }
+}
+
+export const removeProduct = (data) => {
+  return {
+    type: "DELETE_PRODUCT",
+    id: data.data.id
+  }
+}

@@ -18,8 +18,6 @@ import './products.css'
 
 const Dragger = Upload.Dragger;
 
-
-
 class Products extends Component {
   state = {
     statusModalAdd: false,
@@ -70,8 +68,6 @@ class Products extends Component {
   }
 
   handleChange = info => {
-    const { imageBase64 } = this.state
-    console.log(imageBase64)
     if (info.file.status === "uploading") {
       this.setState({ loading: true });
       return;
@@ -84,7 +80,6 @@ class Products extends Component {
           loading: false,
           disable: true
         });
-        console.log(this.state.imageBase64)
       });
     } else {
       this.setState({
@@ -93,9 +88,14 @@ class Products extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     document.title = "Produtos | ClickCompras"
-    this.resetComponent()
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000)
   }
 
   showMessage(type, icon, title) {
@@ -113,6 +113,15 @@ class Products extends Component {
     this.forceUpdate()
   }
 
+  onDeleteProduct = (id) => {
+    this.props.deleteProduct(id)
+    this.setState({loading: true})
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000);
+    this.showMessage('success' , 'cancel', 'Produto deletado com sucesso !')
+  }
+
   //Search
   resetComponent = () =>
     this.setState({ isLoading: false, results: [], value: '' })
@@ -123,7 +132,6 @@ class Products extends Component {
       value: result.title,
       category_id: result.id
     })
-    console.log(this.state.category_id)
   }
   //Search
   handleSearchChange = (e, { value }) => {
@@ -305,7 +313,11 @@ class Products extends Component {
                       <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-                  <TableProducts />
+                  {this.props.dataProducts.map(product => {
+                    return (
+                      <TableProducts onDeleteProduct={this.onDeleteProduct} data={product} />
+                    )
+                  })}
                 </Table>
               </Grid.Column>
             </Grid.Row>
@@ -317,7 +329,8 @@ class Products extends Component {
 }
 
 const mapStateToProps = state => ({
-  dataCategories: state.categories
+  dataCategories: state.categories,
+  dataProducts: state.products
 });
 
 const mapDispatchToProps = dispatch =>

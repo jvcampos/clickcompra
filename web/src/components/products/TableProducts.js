@@ -1,22 +1,34 @@
 import React, { Component } from 'react';
-import { Table, Modal, Icon, Button, Header} from 'semantic-ui-react'
+import { Table, Modal, Icon, Button, Header } from 'semantic-ui-react'
+import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 
-// import { Container } from './styles';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as productsActions from '../../store/actions/products'
 
-export default class TableProducts extends Component {
+class TableProducts extends Component {
   state = {
     statusModalRemove: false,
   }
+
+  openModalRemove = () => {
+    this.setState({ statusModalRemove: true })
+  }
+
+  closeModalRemove = () => {
+    this.setState({ statusModalRemove: false })
+  }
+
   render() {
     return (
       <Table.Body>
         <Table.Row>
-          <Table.Cell></Table.Cell>
-          <Table.Cell></Table.Cell>
-          <Table.Cell></Table.Cell>
-          <Table.Cell></Table.Cell>
-          <Table.Cell></Table.Cell>
-          <Table.Cell></Table.Cell>
+          <Table.Cell><img src={this.props.data.imageBase64} /></Table.Cell>
+          <Table.Cell>{this.props.data.name_product}</Table.Cell>
+          <Table.Cell>{this.props.data.id_category}</Table.Cell>
+          <Table.Cell>{this.props.data.value}</Table.Cell>
+          <Table.Cell>{this.props.data.amount}</Table.Cell>
+          <Table.Cell>{this.props.data.description}</Table.Cell>
           <Table.Cell textAlign="center">
             <Modal
               basic size='small'
@@ -36,14 +48,24 @@ export default class TableProducts extends Component {
                 <Button basic onClick={this.closeModalRemove} color='red' inverted>
                   <Icon name='remove' /> Cancelar
                             </Button>
-                <Button color='green' onClick={this.onSubmit} inverted>
+                <Button color='green' onClick={() => this.props.onDeleteProduct(this.props.data.id)} inverted>
                   <Icon name='checkmark' /> Confirmar
-                            </Button>
+                </Button>
               </Modal.Actions>
             </Modal>
           </Table.Cell>
         </Table.Row>
+        <SemanticToastContainer/>
       </Table.Body>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  dataProducts: state.products
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(productsActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableProducts)
