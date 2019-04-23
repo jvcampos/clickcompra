@@ -17,6 +17,8 @@ export default function categories(state = [], action){
       ]
       case 'GET_ALL_PRODUCT':
         return action.data
+      case 'DELETE_PRODUCT':
+        return state.filter(product => product.id !== action.id)
       default:
        return state
   }
