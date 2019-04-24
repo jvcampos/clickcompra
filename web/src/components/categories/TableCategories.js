@@ -81,7 +81,9 @@ class TableCategories extends Component {
               />
             }
             >
-              <Modal.Header style={{ textAlign: 'center' }}>ALTERAR CATEGORIA</Modal.Header>
+              <Modal.Header style={{ textAlign: 'center' }}>ALTERAR CATEGORIA
+                <Header as='h3' color="blue" style={{ textAlign: 'center', paddingTop: '5px' }}>{this.props.data.name_categorie}</Header>
+              </Modal.Header>
               <Modal.Content>
                 <Modal.Description>
                   <Header as='h3'>NOME</Header>
@@ -127,7 +129,8 @@ class TableCategories extends Component {
               >
               <Header icon='close' content='Excluir Categoria' />
               <Modal.Content>
-                <p>Você realmente deseja excluir a categoria selecionada ?</p>
+                <p>Você realmente deseja excluir a categoria
+                  <span style={{ color: 'red', textTransform: 'uppercase', fontWeight: 'bold' }}> {this.props.data.name_categorie}</span> ?</p>
                 <p>Todos os produtos que estão relacionados à esta categoria, serão removidos.</p>
               </Modal.Content>
               <Modal.Actions>

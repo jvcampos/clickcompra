@@ -30,6 +30,7 @@ export function getCategories(id_manager){
     }
 }
 
+
 export function deleteCategory(id){
     return (dispatch) => {
         api.delete(`category/${id}`, {
