@@ -30,9 +30,14 @@ class Categories extends Component {
 
   componentDidMount() {
     this.props.getCategories(localStorage.getItem('id'))
+    this.refreshTable()
+  }
+
+  refreshTable = () => {
     setTimeout(() => {
       this.setState({ loading: false })
     }, 1000);
+    this.setState({ loading: true })
   }
 
   showMessage(type, icon, title) {
@@ -45,9 +50,13 @@ class Categories extends Component {
           title,
         },
       );
-      this.setState({ statusLoading: false, statusMessageError: 'visible', })
     }, 1000);
     this.forceUpdate()
+    this.setState({ name_categorie: '', description: ''})
+  }
+
+  onUpdateCategory = () => {
+    this.refreshTable(true)
   }
 
   onDeleteCategory = (id) => {
@@ -64,7 +73,7 @@ class Categories extends Component {
     this.setState({ statusModalAdd: false, loading: true })
     this.props.addCategorie(
       id_supermarket,
-      this.state.description, this.state.name_categorie)
+      this.state.name_categorie, this.state.description)
     setTimeout(() => {
       this.setState({ loading: false })
     }, 1000);
@@ -76,6 +85,7 @@ class Categories extends Component {
       [e.target.name]: e.target.value
     })
   }
+
   openModalAdd = () => {
     this.setState({ statusModalAdd: true })
   }
@@ -104,6 +114,7 @@ class Categories extends Component {
           <Grid verticalAlign='middle' textAlign='center' style={{ height: '90%' }}>
             <Grid.Column width={5} style={{ left: '-22.5%' }}>
               <Modal
+                closeOnPortalMouseLeave={true}
                 open={this.state.statusModalAdd}
                 className="modal_dados_gerente"
                 size="mini"
@@ -167,7 +178,10 @@ class Categories extends Component {
                   <Table.Body>
                     {this.props.dataCategories.map(categorie => {
                       return (
-                        <TableCategories onDeleteCategory={this.onDeleteCategory} data={categorie} />
+                        <TableCategories
+                          onUpdateCategory={this.onUpdateCategory}
+                          onDeleteCategory={this.onDeleteCategory}
+                          data={categorie} />
                       )
                     })}
                   </Table.Body>

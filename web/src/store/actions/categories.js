@@ -43,6 +43,19 @@ export function deleteCategory(id){
     }
 }
 
+export function updateCategory(id_category, name_categorie, description ){
+    return (dispatch) => {
+        api.put(`category/${id_category}`, { name_categorie, description }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        .then(() =>  {
+            this.getCategories(localStorage.getItem('id'))
+        })
+    }
+}
+
 
 export const getAllCategories = (data) => {
     return {

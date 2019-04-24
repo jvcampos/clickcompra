@@ -19,12 +19,12 @@ class CategoryController {
 
   async update({ request, params, response }) {
     try {
-      const { name } = request.all();
+      const { name_categorie, description } = request.all();
       const { id } = params;
       await Database
         .table('categories')
         .where('id', id)
-        .update({ name })
+        .update({ name_categorie, description })
       const category = await CategoryModel.find(id)
       HandlerMessage.handlerUpdate(response, category)
     }
