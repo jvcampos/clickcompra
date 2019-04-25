@@ -28,6 +28,7 @@ export function getProducts(id_manager){
     }
     })
     .then(response => {
+      console.log(response)
       dispatch(getAllProducts(response.data))
     })
   }
