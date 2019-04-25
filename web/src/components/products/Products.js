@@ -93,9 +93,7 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loading: false })
-    }, 1000)
+    this.props.getProducts(localStorage.getItem('id_supermarket'))
   }
 
   showMessage(type, icon, title) {
