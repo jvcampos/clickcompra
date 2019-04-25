@@ -2,12 +2,14 @@
 
 const Database = use('Database')
 const ProductModel = use('App/Models/Product')
+const SupermarketModel = use('App/Models/Supermarket')
+const CategoryModel = use('App/Models/Category')
 const HandlerMessage = use('App/Services/HandlerMessage');
 
 class ProductController {
-  async create({ request }){
-    const { id_category, name_product,imageBase64 ,description, value, amount } = request.all()
-    console.log(id_category, name_product,imageBase64 ,description, value, amount)
+  async create({ request }) {
+    const { id_category, name_product, imageBase64, description, value, amount } = request.all()
+    console.log(id_category, name_product, imageBase64, description, value, amount)
     const product = await ProductModel.create({
       id_category,
       name_product,
@@ -21,12 +23,12 @@ class ProductController {
 
   async update({ request, params, response }) {
     try {
-      const { name_product,imageBase64,description, value, amount } = request.all();
+      const { name_product, imageBase64, description, value, amount } = request.all();
       const { id } = params;
       await Database
         .table('products')
         .where('id', id)
-        .update({ name_product,imageBase64,description, value, amount })
+        .update({ name_product, imageBase64, description, value, amount })
       const product = await ProductModel.find(id)
       HandlerMessage.handlerUpdate(response, product)
     }
@@ -51,19 +53,25 @@ class ProductController {
     const product = await ProductModel.find(id)
     if (product) {
       HandlerMessage.handlerSuccess(response, product)
-    }else{
+    } else {
       HandlerMessage.handlerNotFound(response);
     }
   }
 
   async getAll({ params }) {
-    const {id} = params
-    const supermarketData = await SupermarketModel.findBy('id_manager', id)
+    const { id } = params
+    // const categoriesData = await CategoryModel.findBy('id_supermarket', id)
     const products = await Database
-      .select('id', 'name_product', 'id_category', 'imageBase64', 'description', 'value', 'amount')
-      .from('products')
-      .where('id_supermarket', supermarketData.id)
+      .table('categories')
+      .where('categories.id_supermarket', id)
+      .innerJoin('products', 'categories.id', 'products.id_category')
     return products
+    // const supermarketData = await SupermarketModel.findBy('id_manager', id)
+    // const products = await Database
+    //   .select('*')
+    //   .from('products')
+    //   .where('id_supermarket', supermarketData.id)
+    // return products
   }
 }
 
