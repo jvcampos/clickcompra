@@ -4,6 +4,8 @@ const Database = use('Database')
 const UserModel = use('App/Models/User');
 const HandlerMessage = use('App/Services/HandlerMessage')
 
+const Encryption = use('Encryption')
+
 class UserController {
   async create({ request, response }) {
     const { cpf, name, address, email, password, role } = request.all();
@@ -24,12 +26,12 @@ class UserController {
 
   async update({ request, params, response }) {
     try {
-      const { cpf, name, address, email, password } = request.all();
+      const { cpf, name, address, email } = request.all();
       const { id } = params;
       await Database
         .table('users')
         .where('id', id)
-        .update({ cpf, name, address, email, password })
+        .update({ cpf, name, address, email })
       const user = await UserModel.find(id)
       HandlerMessage.handlerUpdate(response, user)
     }
@@ -52,6 +54,8 @@ class UserController {
   async getUser({ params, response }) {
     const { id } = params;
     const user = await UserModel.find(id)
+    const decrypted = Encryption.decrypt(user.password)
+    console.log(decrypted)
     if (user) {
       HandlerMessage.handlerSuccess(response, user)
     }else{
