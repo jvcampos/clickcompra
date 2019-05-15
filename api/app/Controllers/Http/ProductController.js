@@ -8,10 +8,11 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 
 class ProductController {
   async create({ request }) {
-    const { id_category, name_product, imageBase64, description, value, amount } = request.all()
-    console.log(id_category, name_product, imageBase64, description, value, amount)
+    const { id_category, name_category, name_product, imageBase64, description, value, amount } = request.all()
+    console.log(id_category, name_category, name_product, imageBase64, description, value, amount)
     const product = await ProductModel.create({
       id_category,
+      name_category,
       name_product,
       imageBase64,
       description,

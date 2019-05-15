@@ -24,13 +24,12 @@ class TableProducts extends Component {
   }
 
   render() {
-    console.log(this.props.data.name_categorie)
     return (
       <Table.Body>
         <Table.Row key={this.props.data.id}>
           <Table.Cell><img style={{width: 90}} src={this.props.data.imageBase64} /></Table.Cell>
           <Table.Cell>{this.props.data.name_product}</Table.Cell>
-          <Table.Cell>{this.props.data.name_categorie}</Table.Cell>
+          <Table.Cell>{this.props.data.name_category}</Table.Cell>
           <Table.Cell>{this.props.data.value}</Table.Cell>
           <Table.Cell>{this.props.data.amount}</Table.Cell>
           <Table.Cell>{this.props.data.description}</Table.Cell>
