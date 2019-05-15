@@ -44,9 +44,11 @@ class TableProducts extends Component {
                   <Button.Content hidden><Icon name='close' /></Button.Content>
                 </Button>}
             >
-              <Header icon='close' content='Excluir Produto XXXXXX' />
+              <Header icon='close' content='Excluir Produto' />
               <Modal.Content>
-                <p>Você realmente deseja excluir o produto selecionado ?</p>
+                <p>Você realmente deseja excluir o produto:
+                  <span style={{marginLeft: 10,fontSize: 20,color: 'red', textTransform: 'uppercase', fontWeight: 'bold'}}>
+                  {this.props.data.name_product}</span> ?</p>
               </Modal.Content>
               <Modal.Actions>
                 <Button basic onClick={this.closeModalRemove} color='red' inverted>
