@@ -135,6 +135,7 @@ class Products extends Component {
   }
   //Search
   handleSearchChange = (e, { value }) => {
+    console.log(this.props.dataCategories)
     this.props.dataCategories.map(categories => {
       const source = _.times(5, () => ({
         id: categories.id,
