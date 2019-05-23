@@ -16,6 +16,10 @@ class TableCategories extends Component {
     description: this.props.data.description,
   }
 
+  componentDidMount() {
+    console.log(this.state)
+  }
+
   updateCategorie = (id) => {
     this.props.updateCategory(id, this.state.name_categorie, this.state.description)
     this.props.onUpdateCategory()
