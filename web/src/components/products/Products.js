@@ -33,6 +33,7 @@ class Products extends Component {
     imageBase64: '',
     disable: false
   }
+  
   messageStatus = (type, title, description = '', time = 5000) => {
     setTimeout(() => {
       toast({
@@ -124,7 +125,7 @@ class Products extends Component {
   resetComponent = () =>
     this.setState({ isLoading: false, results: [], value: '' })
 
-  //Search    
+  //Search
   handleResultSelect = (e, { result }) => {
     this.setState({
       value: result.title,

@@ -14,7 +14,6 @@ export function addProduct(id_category,name_product, imageBase64, description, v
         }
       })
       .then(response => {
-        console.log(response.data)
         dispatch(newProduct(response.data))
       })
   }
@@ -28,7 +27,6 @@ export function getProducts(id_manager){
     }
     })
     .then(response => {
-      console.log(response)
       dispatch(getAllProducts(response.data))
     })
   }

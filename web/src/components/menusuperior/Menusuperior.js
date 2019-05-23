@@ -21,7 +21,12 @@ class MenuSuperior extends Component {
 			cpf: this.props.manager.cpf,
 			email: this.props.manager.email,
 			name: this.props.manager.name,
-		}
+			password: '',
+			password_new : '',
+		},
+		password_new_confirm : '',
+		status_label_password_new: false,
+		status_label_all_password: false,
 	}
 
 	componentDidMount = () => {
@@ -34,6 +39,20 @@ class MenuSuperior extends Component {
 		this.props.render(name)
 	}
 
+	onChangeNewPassword = (e) => {
+		this.setState({
+			manager: {
+				...this.state.manager,
+				[e.target.name] : e.target.value
+			}
+		})
+	}
+
+	onChangeConfirmNewPassword = (e) => {
+		this.setState({ [e.target.name]  : e.target.value })
+	}
+
+
 	closeModalEdit = () => {
 		this.setState({ statusModalEdit: false })
 	}
@@ -44,6 +63,7 @@ class MenuSuperior extends Component {
 
 	onHandleChange = (e) => {
 		this.setState({
+			status_label_password_new: false, status_label_all_password: false,
 			manager: {
 				...this.state.manager,
 				[e.target.name] : e.target.value
@@ -65,9 +85,18 @@ class MenuSuperior extends Component {
 	}
 
 	onSubmitForm = () => {
-		this.props.updateManager(this.state.manager)
-		this.closeModalEdit()
-		this.showMessage('success', 'edit', 'Dados do gerente alterado com sucesso !')
+		if(this.state.manager.password && this.state.manager.password_new === ''){
+			this.showMessage('error', 'cancel', 'Campos de senha não podem ficar vázios!')
+			this.setState({ status_label_all_password : true, status_label_password_new : true })
+		}else if (this.state.password_new === this.state.password_new_confirm){
+			this.props.updateManager(this.state.manager)
+			this.closeModalEdit()
+			this.showMessage('success', 'edit', 'Dados do gerente alterado com sucesso !')
+		}else {
+			this.props.updateManager(this.state.manager)
+			this.showMessage('error', 'lock', 'Senhas não são iguais !')
+			this.setState({ status_label_password : true })
+		}
 	}
 
 	logout = () => {
@@ -108,7 +137,7 @@ class MenuSuperior extends Component {
 								<Modal open={this.state.statusModalEdit} trigger={<Dropdown.Item onClick={this.openModalEdit}>Alterar Conta</Dropdown.Item>} closeIcon>
 									<Header icon='archive' content='Alterar dados do Gerente' />
 									<Modal.Content>
-										<Form>
+										<Form error>
 											<Form.Group widths='equal'>
 												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.name} label="Nome" name='name' placeholder='Nome Completo' />
 												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.cpf} label="CPF" name='cpf' placeholder='CPF' />
@@ -116,9 +145,9 @@ class MenuSuperior extends Component {
 												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.email} label="E-mail"name='email' placeholder='E-mail' />
 											</Form.Group>
 											<Form.Group widths='equal'>
-												<Form.Field control={Input} onChange={this.onHandleChange}  label="Senha Antiga" name='password' placeholder='Senha Antiga' />
-												<Form.Field control={Input} onChange={this.onHandleChange} label="Senha Nova" name='password_new' placeholder='Nova Senha' />
-												<Form.Field control={Input} onChange={this.onHandleChange} label="Confirmar Senha Nova" name='password_new_confirm' placeholder='Confirmar Senha' />
+												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onHandleChange} type="password" label="Senha Antiga" name='password' placeholder='Senha Antiga' />
+												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onChangeNewPassword} type="password" label="Senha Nova" name='password_new' placeholder='Nova Senha' />
+												<Form.Field error={this.state.status_label_password_new} control={Input} onChange={this.onChangeConfirmNewPassword} type="password" label="Confirmar Senha Nova" name='password_new_confirm' placeholder='Confirmar Senha' />
 											</Form.Group>
 										</Form>
 									</Modal.Content>
