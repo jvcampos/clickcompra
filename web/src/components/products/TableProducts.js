@@ -24,13 +24,12 @@ class TableProducts extends Component {
   }
 
   render() {
-    console.log(this.props.data.name_categorie)
     return (
       <Table.Body>
         <Table.Row key={this.props.data.id}>
           <Table.Cell><img style={{width: 90}} src={this.props.data.imageBase64} /></Table.Cell>
           <Table.Cell>{this.props.data.name_product}</Table.Cell>
-          <Table.Cell>{this.props.data.name_categorie}</Table.Cell>
+          <Table.Cell>{this.props.data.name_category}</Table.Cell>
           <Table.Cell>{this.props.data.value}</Table.Cell>
           <Table.Cell>{this.props.data.amount}</Table.Cell>
           <Table.Cell>{this.props.data.description}</Table.Cell>
@@ -45,9 +44,11 @@ class TableProducts extends Component {
                   <Button.Content hidden><Icon name='close' /></Button.Content>
                 </Button>}
             >
-              <Header icon='close' content='Excluir Produto XXXXXX' />
+              <Header icon='close' content='Excluir Produto' />
               <Modal.Content>
-                <p>Você realmente deseja excluir o produto selecionado ?</p>
+                <p>Você realmente deseja excluir o produto:
+                  <span style={{marginLeft: 10,fontSize: 20,color: 'red', textTransform: 'uppercase', fontWeight: 'bold'}}>
+                  {this.props.data.name_product}</span> ?</p>
               </Modal.Content>
               <Modal.Actions>
                 <Button basic onClick={this.closeModalRemove} color='red' inverted>

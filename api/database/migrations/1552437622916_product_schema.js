@@ -11,6 +11,7 @@ class ProductSchema extends Schema {
         .references('id')
         .inTable('categories')
         .notNullable()
+      table.string('name_category', 20).notNullable()
       table.string('name_product', 20).notNullable()
       table.text('imageBase64').notNullable()
       table.string('description').notNullable()

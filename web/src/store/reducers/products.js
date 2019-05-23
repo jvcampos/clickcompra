@@ -7,7 +7,7 @@ export default function categories(state = [], action){
         ...state,
         {
           id: action.data.id,
-          name_categorie: action.data.name_categorie,
+          name_category: action.data.name_category,
           name_product: action.data.name_product,
           imageBase64: action.data.imageBase64,
           description: action.data.description,

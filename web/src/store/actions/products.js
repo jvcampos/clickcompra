@@ -5,9 +5,9 @@ const api = axios.create({
   baseURL: 'http://localhost:3001/api/'
 })
 
-export function addProduct(id_category,name_product, imageBase64, description, value, amount) {
+export function addProduct(id_category, name_category, name_product, imageBase64, description, value, amount) {
   return (dispatch) => {
-    return api.post('product', { id_category, name_product, imageBase64, description, value, amount },
+    return api.post('product', { id_category, name_category, name_product, imageBase64, description, value, amount },
       {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -19,29 +19,29 @@ export function addProduct(id_category,name_product, imageBase64, description, v
   }
 }
 
-export function getProducts(id_manager){
+export function getProducts(id_manager) {
   return (dispatch) => {
-    api.get(`products/${id_manager}`,{
+    api.get(`products/${id_manager}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
-    }
     })
-    .then(response => {
-      dispatch(getAllProducts(response.data))
-    })
+      .then(response => {
+        console.log(response)
+        dispatch(getAllProducts(response.data))
+      })
   }
 }
 
-export function deleteProduct(id){
+export function deleteProduct(id) {
   return (dispatch) => {
     api.delete(`product/${id}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
-    }
+      }
     })
-    .then(response => {
-      dispatch(removeProduct(response.data))
-    })
+      .then(response => {
+        dispatch(removeProduct(response.data))
+      })
   }
 }
 

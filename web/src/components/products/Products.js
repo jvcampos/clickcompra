@@ -23,6 +23,7 @@ class Products extends Component {
     statusModalAdd: false,
     name_product: '',
     category_id: '',
+    category_name: '',
     value_product: '',
     description_product: '',
     amount_product: '',
@@ -129,7 +130,8 @@ class Products extends Component {
   handleResultSelect = (e, { result }) => {
     this.setState({
       value: result.title,
-      category_id: result.id
+      category_id: result.id,
+      category_name: result.title
     })
   }
   //Search
@@ -175,6 +177,7 @@ class Products extends Component {
     this.setState({ statusModalAdd: false, loading: true })
     this.props.addProduct(
       this.state.category_id,
+      this.state.category_name,
       this.state.name_product,
       this.state.imageBase64,
       this.state.description_product,
