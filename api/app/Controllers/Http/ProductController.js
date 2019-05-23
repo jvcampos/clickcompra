@@ -61,18 +61,11 @@ class ProductController {
 
   async getAll({ params }) {
     const { id } = params
-    // const categoriesData = await CategoryModel.findBy('id_supermarket', id)
     const products = await Database
       .table('categories')
       .where('categories.id_supermarket', id)
       .innerJoin('products', 'categories.id', 'products.id_category')
     return products
-    // const supermarketData = await SupermarketModel.findBy('id_manager', id)
-    // const products = await Database
-    //   .select('*')
-    //   .from('products')
-    //   .where('id_supermarket', supermarketData.id)
-    // return products
   }
 }
 

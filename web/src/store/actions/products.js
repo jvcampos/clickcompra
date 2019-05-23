@@ -14,7 +14,6 @@ export function addProduct(id_category, name_category, name_product, imageBase64
         }
       })
       .then(response => {
-        console.log(response.data)
         dispatch(newProduct(response.data))
       })
   }
@@ -38,7 +37,6 @@ export function getProducts(id_manager) {
     api.get(`products/${id_manager}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
     })
       .then(response => {
         console.log(response)

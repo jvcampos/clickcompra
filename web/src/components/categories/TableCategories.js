@@ -67,7 +67,6 @@ class TableCategories extends Component {
     return (
       <Table.Row>
         <Table.Cell>{this.props.data.name_categorie}</Table.Cell>
-        <Table.Cell>100</Table.Cell>
         <Table.Cell>{this.props.data.description}</Table.Cell>
         <Table.Cell textAlign="center">
           <Modal

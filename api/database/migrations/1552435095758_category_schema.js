@@ -11,7 +11,7 @@ class CategorySchema extends Schema {
         .inTable('supermarkets')
         .notNullable()
       table.string('name_categorie', 20).notNullable().unique()
-      table.string('description', 20).notNullable().unique()
+      table.string('description', 20).notNullable()
       table.increments()
       table.timestamps()
     })

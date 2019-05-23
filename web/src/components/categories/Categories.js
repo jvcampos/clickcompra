@@ -170,7 +170,6 @@ class Categories extends Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>NOME</Table.HeaderCell>
-                      <Table.HeaderCell>QUANTIDADE DE PRODUTOS</Table.HeaderCell>
                       <Table.HeaderCell>DESCRIÇÃO</Table.HeaderCell>
                       <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
                     </Table.Row>

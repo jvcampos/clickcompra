@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Dropdown, Menu } from 'semantic-ui-react'
-
+import { Button, Header, Icon, Modal, Form, Input } from 'semantic-ui-react'
+import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
+import { getManager } from '../../store/actions/manager'
+import { updateManager } from '../../store/actions/manager'
 
 import ActionRenderComponent from '../../store/actions/renderComponent'
 
@@ -10,15 +13,90 @@ import './menusuperior.css'
 
 class MenuSuperior extends Component {
 	state = {
-		activeItem: ''
+		activeItem: '',
+		statusModalEdit: false,
+		manager: {
+			id: localStorage.getItem('id'),
+			address: this.props.manager.address,
+			cpf: this.props.manager.cpf,
+			email: this.props.manager.email,
+			name: this.props.manager.name,
+			password: '',
+			password_new : '',
+		},
+		password_new_confirm : '',
+		status_label_password_new: false,
+		status_label_all_password: false,
 	}
 
 	componentDidMount = () => {
+		const id_manager = localStorage.getItem('id')
 		document.title = 'Home | ClickCompras';
+		this.props.getManager(id_manager)
 	};
 
 	handleItemClick = (e, { name }) => {
 		this.props.render(name)
+	}
+
+	onChangeNewPassword = (e) => {
+		this.setState({
+			manager: {
+				...this.state.manager,
+				[e.target.name] : e.target.value
+			}
+		})
+	}
+
+	onChangeConfirmNewPassword = (e) => {
+		this.setState({ [e.target.name]  : e.target.value })
+	}
+
+
+	closeModalEdit = () => {
+		this.setState({ statusModalEdit: false })
+	}
+
+	openModalEdit = () => {
+		this.setState({ statusModalEdit: true })
+	}
+
+	onHandleChange = (e) => {
+		this.setState({
+			status_label_password_new: false, status_label_all_password: false,
+			manager: {
+				...this.state.manager,
+				[e.target.name] : e.target.value
+			}
+		})
+	}
+
+	showMessage(type, icon, title) {
+		setTimeout(() => {
+			toast(
+				{
+					type,
+					icon,
+					animation: 'bounce',
+					title,
+				},
+			);
+		}, 1000);
+	}
+
+	onSubmitForm = () => {
+		if(this.state.manager.password && this.state.manager.password_new === ''){
+			this.showMessage('error', 'cancel', 'Campos de senha não podem ficar vázios!')
+			this.setState({ status_label_all_password : true, status_label_password_new : true })
+		}else if (this.state.password_new === this.state.password_new_confirm){
+			this.props.updateManager(this.state.manager)
+			this.closeModalEdit()
+			this.showMessage('success', 'edit', 'Dados do gerente alterado com sucesso !')
+		}else {
+			this.props.updateManager(this.state.manager)
+			this.showMessage('error', 'lock', 'Senhas não são iguais !')
+			this.setState({ status_label_password : true })
+		}
 	}
 
 	logout = () => {
@@ -56,7 +134,32 @@ class MenuSuperior extends Component {
 						<Dropdown text="Configuração" pointing className="dropdown_conta_configuracao">
 							<Dropdown.Menu>
 								<Dropdown.Header>Conta</Dropdown.Header>
-								<Dropdown.Item>Alterar Conta</Dropdown.Item>
+								<Modal open={this.state.statusModalEdit} trigger={<Dropdown.Item onClick={this.openModalEdit}>Alterar Conta</Dropdown.Item>} closeIcon>
+									<Header icon='archive' content='Alterar dados do Gerente' />
+									<Modal.Content>
+										<Form error>
+											<Form.Group widths='equal'>
+												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.name} label="Nome" name='name' placeholder='Nome Completo' />
+												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.cpf} label="CPF" name='cpf' placeholder='CPF' />
+												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.address} label="Endereço" name='address' placeholder='Endereço' />
+												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.email} label="E-mail"name='email' placeholder='E-mail' />
+											</Form.Group>
+											<Form.Group widths='equal'>
+												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onHandleChange} type="password" label="Senha Antiga" name='password' placeholder='Senha Antiga' />
+												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onChangeNewPassword} type="password" label="Senha Nova" name='password_new' placeholder='Nova Senha' />
+												<Form.Field error={this.state.status_label_password_new} control={Input} onChange={this.onChangeConfirmNewPassword} type="password" label="Confirmar Senha Nova" name='password_new_confirm' placeholder='Confirmar Senha' />
+											</Form.Group>
+										</Form>
+									</Modal.Content>
+									<Modal.Actions>
+										<Button onClick={this.closeModalEdit} color='red'>
+											<Icon name='remove' /> Cancelar
+										</Button>
+										<Button onClick={this.onSubmitForm} color='green'>
+											<Icon name='checkmark' /> Alterar
+										</Button>
+									</Modal.Actions>
+									</Modal>
 							</Dropdown.Menu>
 						</Dropdown>
 						<Menu.Item
@@ -64,6 +167,7 @@ class MenuSuperior extends Component {
 							active={activeItem === 'sair'}
 							onClick={this.logout}
 						/>
+						<SemanticToastContainer />
 					</Menu.Menu>
 				</Menu>
 			</div>
@@ -74,9 +178,10 @@ class MenuSuperior extends Component {
 const mapStateToProps = state => ({
 	dataLogin: state.login,
 	menuSelected: state.render,
+	manager: state.manager
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ render: ActionRenderComponent }, dispatch);
+	bindActionCreators({ render: ActionRenderComponent, getManager, updateManager }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuSuperior)

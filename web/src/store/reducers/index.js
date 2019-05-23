@@ -7,6 +7,7 @@ import renderComponent from './renderComponent'
 import solicitation from './solicitation'
 import categories from './categories'
 import products from './products'
+import manager from './manager'
 
 const rootReducer = combineReducers({
     login,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     solicitation,
     categories,
     products,
+    manager,
     router: connectRouter(history)
 })
 

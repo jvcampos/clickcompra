@@ -40,6 +40,7 @@ class Products extends Component {
     }
     this.baseState = this.state
   }
+  
   messageStatus = (type, title, description = '', time = 5000) => {
     setTimeout(() => {
       toast({
@@ -145,7 +146,43 @@ class Products extends Component {
     setTimeout(() => {
       this.setState({ loading: false })
     }, 1000);
-    this.showMessage('success', 'cancel', 'Produto deletado com sucesso !')
+    this.showMessage('success' , 'cancel', 'Produto deletado com sucesso !')
+  }
+
+  //Search
+  resetComponent = () =>
+    this.setState({ isLoading: false, results: [], value: '' })
+
+  //Search
+  handleResultSelect = (e, { result }) => {
+    this.setState({
+      value: result.title,
+      category_id: result.id,
+      category_name: result.title
+    })
+  }
+  //Search
+  handleSearchChange = (e, { value }) => {
+    this.props.dataCategories.map(categories => {
+      const source = _.times(5, () => ({
+        id: categories.id,
+        title: categories.name_categorie,
+        description: categories.description,
+      }))
+      this.setState({ isLoading: true, value })
+
+      setTimeout(() => {
+        if (this.state.value.length < 1) return this.resetComponent()
+
+        const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+        const isMatch = result => re.test(result.title)
+
+        this.setState({
+          isLoading: false,
+          results: _.filter(source, isMatch),
+        })
+      }, 300)
+    })
   }
 
   openModalAdd = () => {
