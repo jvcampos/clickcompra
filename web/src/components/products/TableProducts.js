@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Search, Form, Popup, Table, Modal, Icon, Button, Header } from 'semantic-ui-react'
+import { Form, Popup, Table, Modal, Icon, Button, Header } from 'semantic-ui-react'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 import { Upload, Icon as IconAntd } from 'antd';
 import _ from 'lodash'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as productsActions from '../../store/actions/products'
+import Select from 'react-select'
 
 const Dragger = Upload.Dragger;
 
@@ -13,23 +14,44 @@ class TableProducts extends Component {
   state = {
     statusModalRemove: false,
     isLoading: false,
-    results: [],
-    name_product: '',
-    category_id: '',
+    name_product: this.props.data.name_product,
+    category_id: null,
     category_name: '',
-    value_product: '',
-    description_product: '',
-    amount_product: '',
+    value_product: this.props.data.value,
+    description_product: this.props.data.description,
+    amount_product: this.props.data.amount,
     loading: false,
     inputImg: true,
-    imageBase64: '',
+    disable: false,
+    imageBase64: this.props.data.imageBase64,
+    optionsCategories: [], //Select category 
+    selectedOption: null,
   }
 
   componentWillMount = () => {
     console.log(this.props.data)
+    document.title = "Produtos | ClickCompras"
+    const options = this.props.dataCategories.map(categories => ({
+      label: categories.name_categorie,
+      id: categories.id,
+      description: categories.description
+    })
+    )
+    this.setState({
+      optionsCategories: options
+    })
   }
+
+  componentDidMount() {
+    this.props.getProducts(localStorage.getItem('id_supermarket'))
+  }
+
   openModalEdit = () => {
     this.setState({ statusModalEdit: true })
+  }
+
+  resetState = () => {
+    this.setState(this.baseState)
   }
 
   closeModalEdit = () => {
@@ -46,21 +68,29 @@ class TableProducts extends Component {
 
   //Alter dada
   updateProduct = (id) => {
-    this.props.updateProduct(id, this.state.category_id, this.state.category_name, this.state.name_product, this.state.imageBase64, this.state.description_product, this.state.value_product, this.state.amount_product)
+    console.log(this.state.category_id, this.state.category_name)
+    this.props.updateProduct(
+      id,
+      this.state.category_id,
+      this.state.category_name,
+      this.state.name_product,
+      this.state.imageBase64,
+      this.state.description_product,
+      this.state.value_product,
+      this.state.amount_product
+    )
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000);
     this.showMessage('success', 'edit', 'Produto alterado com sucesso !')
     this.closeModalEdit()
   }
 
-  //Search
-  resetComponent = () =>
-    this.setState({ isLoading: false, results: [], value: '' })
-
-  //Search    
-  handleResultSelect = (e, { result }) => {
+  //Select category
+  handleInputChange = (selectedOption) => {
     this.setState({
-      value: result.title,
-      category_id: result.id,
-      category_name: result.title
+      category_id: selectedOption.id,
+      category_name: selectedOption.label,
     })
   }
 
@@ -132,31 +162,6 @@ class TableProducts extends Component {
     }
   }
 
-
-  //Search
-  handleSearchChange = (e, { value }) => {
-    this.props.dataCategories.map(categories => {
-      const source = _.times(5, () => ({
-        id: categories.id,
-        title: categories.name_categorie,
-        description: categories.description,
-      }))
-      this.setState({ isLoading: true, value })
-
-      setTimeout(() => {
-        if (this.state.value.length < 1) return this.resetComponent()
-
-        const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-        const isMatch = result => re.test(result.title)
-
-        this.setState({
-          isLoading: false,
-          results: _.filter(source, isMatch),
-        })
-      }, 300)
-    })
-  }
-
   onHandleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
@@ -191,7 +196,7 @@ class TableProducts extends Component {
                 />
               }
             >
-              <Modal.Header style={{ textAlign: 'center' }}>ADICIONAR NOVO PRODUTO</Modal.Header>
+              <Modal.Header style={{ textAlign: 'center' }}>ALTERAR PRODUTO</Modal.Header>
               <Modal.Content image>
                 <SemanticToastContainer />
                 <div style={{ height: 200, width: 300 }}>
@@ -217,15 +222,13 @@ class TableProducts extends Component {
                     fluid icon='tag' iconPosition='left'
                     placeholder='NOME' />
                   <Header as='h3'>CATEGORIA</Header>
-                  <Search
-                    loading={isLoading}
-                    onResultSelect={this.handleResultSelect}
-                    onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                      leading: true,
-                    })}
-                    results={results}
-                    value={value}
-                    {...this.props}
+                  <Select
+                    className="basic-single"
+                    classNamePrefix="Digite ou Selecione"
+                    isSearchable
+                    name="Categories"
+                    options={this.state.optionsCategories} //reducer of Categories
+                    onChange={this.handleInputChange}
                   />
 
                   <Header as='h3'>PREÇO</Header>
@@ -276,7 +279,7 @@ class TableProducts extends Component {
               dimmer="blurring"
               open={this.state.statusModalRemove}
               trigger={
-                <Button onClick={this.openModalEdit} size="small" color="red" animated='fade'>
+                <Button onClick={this.openModalRemove} size="small" color="red" animated='fade'>
                   <Button.Content visible>EXCLUIR</Button.Content>
                   <Button.Content hidden><Icon name='close' /></Button.Content>
                 </Button>}

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Form, Table, Modal, Grid, Button, Icon, Header, Segment, Search } from 'semantic-ui-react'
+import { Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
 import { toast, SemanticToastContainer } from 'react-semantic-toasts'
-import _ from 'lodash'
 import "antd/dist/antd.css";
 import TableProducts from './TableProducts'
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Select from 'react-select'
 
 import * as productsAction from '../../store/actions/products'
 
@@ -19,20 +19,26 @@ import './products.css'
 const Dragger = Upload.Dragger;
 
 class Products extends Component {
-  state = {
-    statusModalAdd: false,
-    name_product: '',
-    category_id: '',
-    category_name: '',
-    value_product: '',
-    description_product: '',
-    amount_product: '',
-    isLoading: false,
-    results: [],
-    loading: false,
-    inputImg: true,
-    imageBase64: '',
-    disable: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      statusModalAdd: false,
+      name_product: '',
+      category_id: null,
+      category_name: '',
+      value_product: '',
+      description_product: '',
+      amount_product: '',
+      isLoading: false,
+      results: [],
+      loading: false,
+      inputImg: true,
+      imageBase64: '',
+      disable: false,
+      optionsCategories: [], //Select category 
+      selectedOption: null,
+    }
+    this.baseState = this.state
   }
   messageStatus = (type, title, description = '', time = 5000) => {
     setTimeout(() => {
@@ -45,6 +51,10 @@ class Products extends Component {
         time: time,
       });
     }, 1000);
+  }
+
+  resetState = () => {
+    this.setState(this.baseState)
   }
 
   beforeUpload = (file) => {
@@ -74,7 +84,6 @@ class Products extends Component {
       return;
     }
     if (info.file.status === "done") {
-      // Get this url from response in real world.
       this.getBase64(info.file.originFileObj, imageBase64 => {
         this.setState({
           imageBase64,
@@ -91,10 +100,28 @@ class Products extends Component {
 
   componentWillMount() {
     document.title = "Produtos | ClickCompras"
+    const options = this.props.dataCategories.map(categories => ({
+      label: categories.name_categorie,
+      id: categories.id,
+      description: categories.description
+    })
+    )
+    this.setState({
+      optionsCategories: options
+    })
   }
 
   componentDidMount() {
     this.props.getProducts(localStorage.getItem('id_supermarket'))
+    console.log(this.state.optionsCategories)
+  }
+
+  //Select category
+  handleInputChange = (selectedOption) => {
+    this.setState({
+      category_id: selectedOption.id,
+      category_name: selectedOption.label,
+    })
   }
 
   showMessage(type, icon, title) {
@@ -114,50 +141,12 @@ class Products extends Component {
 
   onDeleteProduct = (id) => {
     this.props.deleteProduct(id)
-    this.setState({loading: true})
+    this.setState({ loading: true })
     setTimeout(() => {
       this.setState({ loading: false })
     }, 1000);
-    this.showMessage('success' , 'cancel', 'Produto deletado com sucesso !')
+    this.showMessage('success', 'cancel', 'Produto deletado com sucesso !')
   }
-
-  //Search
-  resetComponent = () =>
-    this.setState({ isLoading: false, results: [], value: '' })
-
-  //Search    
-  handleResultSelect = (e, { result }) => {
-    this.setState({
-      value: result.title,
-      category_id: result.id,
-      category_name: result.title
-    })
-  }
-  //Search
-  handleSearchChange = (e, { value }) => {
-    console.log(this.props.dataCategories)
-    this.props.dataCategories.map(categories => {
-      const source = _.times(5, () => ({
-        id: categories.id,
-        title: categories.name_categorie,
-        description: categories.description,
-      }))
-      this.setState({ isLoading: true, value })
-
-      setTimeout(() => {
-        if (this.state.value.length < 1) return this.resetComponent()
-
-        const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-        const isMatch = result => re.test(result.title)
-
-        this.setState({
-          isLoading: false,
-          results: _.filter(source, isMatch),
-        })
-      }, 300)
-    })
-  }
-
 
   openModalAdd = () => {
     this.setState({ statusModalAdd: true })
@@ -167,6 +156,7 @@ class Products extends Component {
   }
 
   closeModalAdd = () => {
+    this.resetState()
     this.setState({ statusModalAdd: false })
   }
   closeModalRemove = () => {
@@ -185,6 +175,7 @@ class Products extends Component {
       this.state.amount_product,
     )
     setTimeout(() => {
+      this.resetState()
       this.setState({ loading: false })
     }, 1000);
     this.showMessage('success', 'bullhorn', 'Produto adicionado com sucesso !')
@@ -197,7 +188,6 @@ class Products extends Component {
   }
 
   render() {
-    const { isLoading, value, results } = this.state
     return (
       <div>
         <MenuSuperior />
@@ -249,17 +239,14 @@ class Products extends Component {
                       fluid icon='tag' iconPosition='left'
                       placeholder='NOME' />
                     <Header as='h3'>CATEGORIA</Header>
-                    <Search
-                      loading={isLoading}
-                      onResultSelect={this.handleResultSelect}
-                      onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                        leading: true,
-                      })}
-                      results={results}
-                      value={value}
-                      {...this.props}
+                    <Select
+                      className="basic-single"
+                      classNamePrefix="Digite ou Selecione"
+                      isSearchable
+                      name="Categories"
+                      options={this.state.optionsCategories} //reducer of Categories
+                      onChange={this.handleInputChange}
                     />
-
                     <Header as='h3'>PREÇO</Header>
                     <Form.Input
                       onChange={this.onHandleChange}
@@ -317,7 +304,7 @@ class Products extends Component {
                   </Table.Header>
                   {this.props.dataProducts.map(product => {
                     return (
-                      <TableProducts onDeleteProduct={this.onDeleteProduct} data={product} />
+                      <TableProducts key={product.id} onDeleteProduct={this.onDeleteProduct} data={product} />
                     )
                   })}
                 </Table>
