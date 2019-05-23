@@ -4,6 +4,8 @@ const Database = use('Database')
 const UserModel = use('App/Models/User');
 const HandlerMessage = use('App/Services/HandlerMessage')
 
+const Hash = use('Hash')
+
 class UserController {
   async create({ request, response }) {
     const { cpf, name, address, email, password, role } = request.all();
@@ -24,14 +26,21 @@ class UserController {
 
   async update({ request, params, response }) {
     try {
-      const { cpf, name, address, email, password } = request.all();
       const { id } = params;
-      await Database
-        .table('users')
-        .where('id', id)
-        .update({ cpf, name, address, email, password })
+      const { cpf, name, address, email, password, password_new } = request.all();
       const user = await UserModel.find(id)
-      HandlerMessage.handlerUpdate(response, user)
+      const compare_password = await Hash.verify(password, user.password)
+      if (compare_password === true){
+        const crypto_password = await Hash.make(password_new)
+        await Database
+          .table('users')
+          .where('id', id)
+          .update({ cpf, name, address, email, password: crypto_password })
+        const user_updated = await UserModel.find(id)
+        HandlerMessage.handlerUpdate(response, user_updated)
+      } else {
+        HandlerMessage.handlerError(response, error)
+      }
     }
     catch (error) {
       HandlerMessage.handlerError(response, error)

@@ -1,4 +1,3 @@
-// import { push } from "connected-react-router";
 import axios from 'axios';
 const api = axios.create({
   baseURL: 'http://localhost:3001/api/',
