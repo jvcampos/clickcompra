@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
+import { Dimmer, Loader, Form, Table, Modal, Grid, Button, Icon, Header, Segment } from 'semantic-ui-react'
 import { toast, SemanticToastContainer } from 'react-semantic-toasts'
 import "antd/dist/antd.css";
 import TableProducts from './TableProducts'
@@ -7,6 +7,7 @@ import TableProducts from './TableProducts'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Select from 'react-select'
+import _ from 'lodash';
 
 import * as productsAction from '../../store/actions/products'
 
@@ -31,7 +32,8 @@ class Products extends Component {
       amount_product: '',
       isLoading: false,
       results: [],
-      loading: false,
+      loading: true,
+      loadingAddProduct: false,
       inputImg: true,
       imageBase64: '',
       disable: false,
@@ -40,7 +42,7 @@ class Products extends Component {
     }
     this.baseState = this.state
   }
-  
+
   messageStatus = (type, title, description = '', time = 5000) => {
     setTimeout(() => {
       toast({
@@ -52,6 +54,13 @@ class Products extends Component {
         time: time,
       });
     }, 1000);
+  }
+
+  refreshTable = () => {
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000);
+    this.setState({ loading: true })
   }
 
   resetState = () => {
@@ -115,6 +124,7 @@ class Products extends Component {
   componentDidMount() {
     this.props.getProducts(localStorage.getItem('id_supermarket'))
     console.log(this.state.optionsCategories)
+    this.refreshTable()
   }
 
   //Select category
@@ -146,7 +156,7 @@ class Products extends Component {
     setTimeout(() => {
       this.setState({ loading: false })
     }, 1000);
-    this.showMessage('success' , 'cancel', 'Produto deletado com sucesso !')
+    this.showMessage('success', 'cancel', 'Produto deletado com sucesso !')
   }
 
   //Search
@@ -328,6 +338,9 @@ class Products extends Component {
             <Grid.Row>
               <Grid.Column width={10}>
                 <Table className="table_categories" loading={true} color={'green'}>
+                  <Dimmer active={this.state.loading} inverted>
+                    <Loader content="Buscando produtos..." />
+                  </Dimmer>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>IMAGEM</Table.HeaderCell>
@@ -341,7 +354,11 @@ class Products extends Component {
                   </Table.Header>
                   {this.props.dataProducts.map(product => {
                     return (
-                      <TableProducts key={product.id} onDeleteProduct={this.onDeleteProduct} data={product} />
+                      <TableProducts key={product.id}
+                        onDeleteProduct={this.onDeleteProduct}
+                        onUpdateProduct={this.onUpdateProduct}
+                        data={product}
+                      />
                     )
                   })}
                 </Table>
