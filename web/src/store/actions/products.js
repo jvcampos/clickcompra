@@ -21,14 +21,14 @@ export function addProduct(id_category, name_category, name_product, imageBase64
 
 export function updateProduct(id_product, id_category, name_category, name_product, imageBase64, description, value, amount) {
   return (dispatch) => {
-    return api.put(`product/${id_product}`, {id_category, name_category, name_product, imageBase64, description, value, amount}, {
+    return api.put(`product/${id_product}`, { id_category, name_category, name_product, imageBase64, description, value, amount }, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     })
-    .then(() => {
-      this.getProducts(localStorage.getItem('id'))
-    })
+      .then(() => {
+        this.getProducts(localStorage.getItem('id'))
+      })
   }
 }
 
@@ -37,6 +37,7 @@ export function getProducts(id_manager) {
     api.get(`products/${id_manager}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
     })
       .then(response => {
         console.log(response)
