@@ -16,26 +16,26 @@ export function getManager(id_manager) {
   }
 }
 
-export function updateManager(data_manager) {
-  const { id } = data_manager
-  return (dispatch) => {
-    api.put(`user/${id}`, data_manager , {
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    .then(response => {
-      dispatch(updatedManager(response.data.data))
-    })
-  }
-}
+// export function updateManager(data_manager) {
+//   const { id } = data_manager
+//   return (dispatch) => {
+//     api.put(`user/${id}`, data_manager , {
+//       headers: {
+//         'Authorization': 'Bearer ' + localStorage.getItem('token')
+//       }
+//     })
+//     .then(response => {
+//       dispatch(updatedManager(response.data.data))
+//     })
+//   }
+// }
 
-export const updatedManager = (data) => {
-  return {
-    type: 'UPDATE_MANAGER',
-    data
-  }
-}
+// export const updatedManager = (data) => {
+//   return {
+//     type: 'UPDATE_MANAGER',
+//     data
+//   }
+// }
 
 export const receiveManager = (data) => {
   return {
