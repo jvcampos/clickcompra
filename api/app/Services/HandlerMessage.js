@@ -1,6 +1,6 @@
 class HandlerMessage{
   handlerError(response, error){
-    response.status(500).json({
+    response.status(406).json({
       error: error.code,
       error_message: error.sqlMessage,
     })

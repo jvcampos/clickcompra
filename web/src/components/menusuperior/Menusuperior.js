@@ -3,13 +3,18 @@ import { Dropdown, Menu } from 'semantic-ui-react'
 import { Button, Header, Icon, Modal, Form, Input } from 'semantic-ui-react'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 import { bindActionCreators } from 'redux'
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { getManager } from '../../store/actions/manager'
-import { updateManager } from '../../store/actions/manager'
+// import { updateManager } from '../../store/actions/manager'
 
 import ActionRenderComponent from '../../store/actions/renderComponent'
 
 import './menusuperior.css'
+
+const api = axios.create({
+	baseURL: 'http://localhost:3001/api/',
+  });
 
 class MenuSuperior extends Component {
 	state = {
@@ -24,15 +29,16 @@ class MenuSuperior extends Component {
 			password: '',
 			password_new : '',
 		},
-		password_new_confirm : '',
 		status_label_password_new: false,
 		status_label_all_password: false,
+		isLoading: false,
 	}
 
 	componentDidMount = () => {
 		const id_manager = localStorage.getItem('id')
 		document.title = 'Home | ClickCompras';
 		this.props.getManager(id_manager)
+		console.log(this.props.manager)
 	};
 
 	handleItemClick = (e, { name }) => {
@@ -47,11 +53,6 @@ class MenuSuperior extends Component {
 			}
 		})
 	}
-
-	onChangeConfirmNewPassword = (e) => {
-		this.setState({ [e.target.name]  : e.target.value })
-	}
-
 
 	closeModalEdit = () => {
 		this.setState({ statusModalEdit: false })
@@ -85,17 +86,30 @@ class MenuSuperior extends Component {
 	}
 
 	onSubmitForm = () => {
+		this.setState({ isLoading: true })
+		setTimeout(() => {
+			this.setState({ isLoading: false })
+		}, 1000);
 		if(this.state.manager.password && this.state.manager.password_new === ''){
-			this.showMessage('error', 'cancel', 'Campos de senha não podem ficar vázios!')
+			this.showMessage('error', 'cancel', 'Campos senha não podem ficar vázios!')
 			this.setState({ status_label_all_password : true, status_label_password_new : true })
-		}else if (this.state.password_new === this.state.password_new_confirm){
-			this.props.updateManager(this.state.manager)
-			this.closeModalEdit()
-			this.showMessage('success', 'edit', 'Dados do gerente alterado com sucesso !')
 		}else {
-			this.props.updateManager(this.state.manager)
-			this.showMessage('error', 'lock', 'Senhas não são iguais !')
-			this.setState({ status_label_password : true })
+			this.setState({ isLoading: true })
+			setTimeout(() => {
+				this.setState({ isLoading: false })
+			}, 1000);
+			const id_manager = localStorage.getItem('id')
+			api.put(`user/${id_manager}`, this.state.manager , {
+				headers: {
+				'Authorization': 'Bearer ' + localStorage.getItem('token')
+				}
+			}).then(() => {
+				this.showMessage('success', 'edit', 'Dados do gerente alterado com sucesso !')
+				this.closeModalEdit()
+			}).catch(() => {
+				this.showMessage('error', 'lock', 'Por favor, conferir senha digitadas !')
+				this.setState({ status_label_password_new : true, status_label_all_password: true })
+			})
 		}
 	}
 
@@ -147,7 +161,6 @@ class MenuSuperior extends Component {
 											<Form.Group widths='equal'>
 												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onHandleChange} type="password" label="Senha Antiga" name='password' placeholder='Senha Antiga' />
 												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onChangeNewPassword} type="password" label="Senha Nova" name='password_new' placeholder='Nova Senha' />
-												<Form.Field error={this.state.status_label_password_new} control={Input} onChange={this.onChangeConfirmNewPassword} type="password" label="Confirmar Senha Nova" name='password_new_confirm' placeholder='Confirmar Senha' />
 											</Form.Group>
 										</Form>
 									</Modal.Content>
@@ -155,7 +168,7 @@ class MenuSuperior extends Component {
 										<Button onClick={this.closeModalEdit} color='red'>
 											<Icon name='remove' /> Cancelar
 										</Button>
-										<Button onClick={this.onSubmitForm} color='green'>
+										<Button loading={this.state.isLoading} onClick={this.onSubmitForm} color='green'>
 											<Icon name='checkmark' /> Alterar
 										</Button>
 									</Modal.Actions>
@@ -182,6 +195,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-	bindActionCreators({ render: ActionRenderComponent, getManager, updateManager }, dispatch);
+	bindActionCreators({ render: ActionRenderComponent, getManager, /*updateManager*/ }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuSuperior)
