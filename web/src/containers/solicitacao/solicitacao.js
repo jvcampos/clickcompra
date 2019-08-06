@@ -122,7 +122,7 @@ class Solicitacao extends Component {
         .required('Cpf é uma informação obrigatória'),
       name: yup.string()
         .min(5, 'Mínimo de 5 caracteres')
-        .max(80, 'Máximo de 80 caracteres')z
+        .max(80, 'Máximo de 80 caracteres')
         .required('Nome é uma informação obrigatória'),
       address: yup.string()
         .min(5, 'Mínimo de 5 caracteres')
