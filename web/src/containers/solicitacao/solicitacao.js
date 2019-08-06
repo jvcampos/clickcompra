@@ -306,7 +306,7 @@ class Solicitacao extends Component {
                         placeholder='EMAIL'
                         type='text'
                       />
-                      {this.state.email && formikProps.errors.email &&
+                      {this.state.blurEmail && formikProps.errors.email &&
                         <p style={{ color: "#ff0000", marginTop: '-15px' }}>
                           {formikProps.errors.email}
                         </p>
