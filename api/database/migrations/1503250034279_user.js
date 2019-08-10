@@ -12,6 +12,7 @@ class UserSchema extends Schema {
       table.string('email', 254).notNullable().unique()
       table.string('password', 80).notNullable().unique()
       table.enu('role', ['ADMIN', 'CUSTOMER'])
+      table.enu('mobile', ['TRUE', 'FALSE'])
       table.timestamps()
     })
   }
