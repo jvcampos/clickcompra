@@ -7,7 +7,6 @@ class SessionController {
     const token = await auth.attempt(email, password)
     const userData = await UserModel.findBy('email', email)
     const { id, role, mobile } = userData
-    console.log(token)
     if (role !== 'ADMIN') {
       if (mobile !== 'TRUE') {
         const superData = await SupermarketModel.findBy('id_manager', id)
