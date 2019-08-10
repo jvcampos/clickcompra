@@ -4,25 +4,30 @@ import {
   Image,
   Text
 } from 'react-native'
+import {withNavigation} from 'react-navigation'
 import { Button } from 'react-native-paper';
 import styles from './styles'
 
-export default Welcome = () => {
-  return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={require('../../assets/clickCompra-300x150.png')}
-        resizeMode="contain"
-      />
-      <View style={styles.buttons}>
-        <Button mode="contained" style={styles.button}>
-          Entrar
+const Welcome = ({navigation}) => (
+  <View style={styles.container}>
+    <Image
+      style={styles.image}
+      source={require('../../assets/clickCompra-300x150.png')}
+      resizeMode="contain"
+    />
+    <View style={styles.buttons}>
+      <Button mode="contained" style={styles.button}>
+        Entrar
       </Button>
-        <Button mode="contained" style={styles.button}>
-          Cadatrar
+      <Button
+        mode="contained"
+        style={styles.button}
+        onPress={() => navigation.navigate('Register')}
+      >
+        Cadastrar
       </Button>
-      </View>
     </View>
-  )
-}
+  </View>
+)
+
+export default withNavigation(Welcome)

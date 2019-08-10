@@ -4,18 +4,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 70
   },
-  image: {
-    width: 230,
-    height: 150,
-    marginBottom: 40
-  },
-  buttons: {
-    flexDirection: 'row',
+  input: {
+    marginHorizontal: 30,
+    marginVertical: 10,
   },
   button: {
-    margin: 10,
+    marginVertical: 10,
   }
 })
 
