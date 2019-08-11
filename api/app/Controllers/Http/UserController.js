@@ -8,7 +8,7 @@ const Hash = use('Hash')
 
 class UserController {
   async create({ request, response }) {
-    const { cpf, name, address, email, password, role } = request.all();
+    const { cpf, name, address, email, password, role, mobile } = request.all();
     try {
         const user = await UserModel.create({
         cpf,
@@ -17,6 +17,7 @@ class UserController {
         email,
         password,
         role,
+        mobile
       })
       HandlerMessage.handlerSuccess(response, user)
     } catch (error) {
