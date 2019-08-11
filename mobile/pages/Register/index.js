@@ -10,70 +10,93 @@ import {
 import { withNavigation } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styles from './styles'
+import { useDispatch } from 'react-redux'
+import { createUser } from '../../store/actions/user'
 
 const Register = ({ navigation }) => {
   const [user, setUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-    cpf: '',
-    address: ''
+    name: 'mobile',
+    email: 'mobile@mobile.com',
+    password: '123',
+    cpf: '57894563285',
+    address: 'rua mobile'
   })
+  let dispatch = useDispatch()
 
   return (
-  <KeyboardAwareScrollView>
-    <TextInput
-      label='Nome'
-      mode='outlined'
-      value={user.name}
-      style={styles.input}
-      onChangeText={text => {
-        setUser({name: text})
-      }}
-    />
-    <TextInput
-      label='Email'
-      mode='outlined'
-      style={styles.input}
-      onChangeText={text => {
-        setUser({email: text})
-      }}
-    />
-    <TextInput
-      secureTextEntry={true}
-      label='Senha'
-      mode='outlined'
-      type='password'
-      style={styles.input}
-      onChangeText={text => {
-        setUser({password: text})
-      }}
-    />
-    <TextInput
-      label='Cpf'
-      mode='outlined'
-      style={styles.input}
-      onChangeText={text => {
-        setUser({cpf: text})
-      }}
-    />
-    <TextInput
-      label='Endereço'
-      mode='outlined'
-      style={styles.input}
-      onChangeText={text => {
-        setUser({address: text})
-      }}
-    />
-    <View style={styles.container}>
-      <Button
-        mode="contained"
-        style={styles.button}
-      >
-        Cadastrar
+    <KeyboardAwareScrollView>
+      <TextInput
+        label='Nome'
+        mode='outlined'
+        value={user.name}
+        style={styles.input}
+        onChangeText={text => {
+          setUser({
+             ...user,
+             name: text 
+            })
+        }}
+      />
+      <TextInput
+        label='Email'
+        mode='outlined'
+        value={user.email}
+        style={styles.input}
+        onChangeText={text => {
+          setUser({
+             ...user,
+             email: text 
+            })
+        }}
+      />
+      <TextInput
+        secureTextEntry={true}
+        label='Senha'
+        mode='outlined'
+        value={user.password}
+        type='password'
+        style={styles.input}
+        onChangeText={text => {
+          setUser({
+             ...user,
+             password: text 
+            })
+        }}
+      />
+      <TextInput
+        label='Cpf'
+        mode='outlined'
+        value={user.cpf}
+        style={styles.input}
+        onChangeText={text => {
+          setUser({
+             ...user,
+             cpf: text 
+            })
+        }}
+      />
+      <TextInput
+        label='Endereço'
+        mode='outlined'
+        value={user.address}
+        style={styles.input}
+        onChangeText={text => {
+          setUser({
+             ...user,
+             address: text 
+            })
+        }}
+      />
+      <View style={styles.container}>
+        <Button
+          onPress={() => dispatch(createUser(user))}
+          mode="contained"
+          style={styles.button}
+        >
+          Cadastrar
     </Button>
-    </View>
-  </KeyboardAwareScrollView>
+      </View>
+    </KeyboardAwareScrollView>
   )
 }
 
