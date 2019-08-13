@@ -5,7 +5,8 @@ const userReducer = (state = {
   cpf: '',
   address: '',
   role: 2,
-  mobile: 1
+  mobile: 1,
+  redirect: false
 }, action) => {
   switch (action.type) {
     case 'REGISTER':

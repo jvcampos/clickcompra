@@ -2,6 +2,7 @@ import { createStackNavigator } from 'react-navigation'
 
 import Welcome from './pages/Welcome'
 import Register from './pages/Register'
+import Login from './pages/Login'
 
 const Routes = createStackNavigator({
   Welcome: {
@@ -9,6 +10,9 @@ const Routes = createStackNavigator({
   },
   Register: {
     screen: Register
+  },
+  Login: {
+    screen: Login
   }
 },
   {

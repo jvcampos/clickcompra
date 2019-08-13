@@ -1,4 +1,5 @@
 import superagent from 'superagent'
+import { AsyncStorage } from 'react-native'
 
 export function createUser(user) {
   return (dispatch) => {
@@ -33,5 +34,34 @@ export function createUser(user) {
           }
         })
       })
+  }
+}
+
+export function login(user) {
+  return async (dispatch) => {
+    try {
+      const res = await superagent
+        .post('http://10.0.2.2:3001/api/login')
+        .query({
+          email: user.email,
+          password: user.password,
+        })
+      await AsyncStorage.setItem('@ClickCompra:token', res.data.token)
+      console.log('Login feito com sucesso')
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          message: 'Login feito com sucesso!😃'
+        }
+      })
+    } catch (_err) {
+      console.log(err)
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          message: 'Erro ao fazer login'
+        }
+      })
+    }
   }
 }
