@@ -11,11 +11,14 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 40
   },
-  buttons: {
-    flexDirection: 'row',
-  },
   button: {
+    width: 300,
     margin: 10,
+  },
+  buttonRegister: {
+    width: 300,
+    margin: 10,
+    backgroundColor: '#2ecc71'
   }
 })
 
