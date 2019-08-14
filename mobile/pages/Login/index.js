@@ -15,11 +15,8 @@ import { login } from '../../store/actions/user'
 
 const Login = ({ navigation }) => {
   const [user, setUser] = useState({
-    name: '',
     email: '',
     password: '',
-    cpf: '',
-    address: ''
   })
   let dispatch = useDispatch()
 

@@ -1,5 +1,5 @@
 import superagent from 'superagent'
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export function createUser(user) {
   return (dispatch) => {
@@ -46,15 +46,16 @@ export function login(user) {
           email: user.email,
           password: user.password,
         })
-      await AsyncStorage.setItem('@ClickCompra:token', res.data.token)
+      await AsyncStorage.setItem('@ClickCompra:token', res.body.token.token)
       console.log('Login feito com sucesso')
+      console.log('AsyncStorage: ', await AsyncStorage.getItem('@ClickCompra:token'))
       dispatch({
         type: 'LOGIN',
         payload: {
           message: 'Login feito com sucesso!😃'
         }
       })
-    } catch (_err) {
+    } catch (err) {
       console.log(err)
       dispatch({
         type: 'LOGIN',
