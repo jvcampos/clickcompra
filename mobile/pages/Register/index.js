@@ -15,11 +15,11 @@ import { createUser } from '../../store/actions/user'
 
 const Register = ({ navigation }) => {
   const [user, setUser] = useState({
-    name: 'mobile',
-    email: 'mobile@mobile.com',
-    password: '123',
-    cpf: '57894563285',
-    address: 'rua mobile'
+    name: '',
+    email: '',
+    password: '',
+    cpf: '',
+    address: ''
   })
   let dispatch = useDispatch()
 
