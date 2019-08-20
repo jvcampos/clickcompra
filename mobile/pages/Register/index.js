@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import {
   View,
-  Text
+  Image,
+  KeyboardAvoidingView,
+  Dimensions,
+  Platform,
+  ScrollView,
 } from 'react-native'
 import {
   Button,
   TextInput
 } from 'react-native-paper';
 import { withNavigation } from 'react-navigation'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styles from './styles'
 import { useDispatch } from 'react-redux'
 import { createUser } from '../../store/actions/user'
+import BGImage from '../../assets/BGImage.png';
+import SimpleHeaderLeft from '../../components/SimpleHeaderLeft';
 
 const Register = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -24,80 +29,25 @@ const Register = ({ navigation }) => {
   let dispatch = useDispatch()
 
   return (
-    <KeyboardAwareScrollView>
-      <TextInput
-        label='Nome'
-        mode='outlined'
-        value={user.name}
-        style={styles.input}
-        onChangeText={text => {
-          setUser({
-             ...user,
-             name: text 
-            })
-        }}
-      />
-      <TextInput
-        label='Email'
-        mode='outlined'
-        value={user.email}
-        style={styles.input}
-        onChangeText={text => {
-          setUser({
-             ...user,
-             email: text 
-            })
-        }}
-      />
-      <TextInput
-        secureTextEntry={true}
-        label='Senha'
-        mode='outlined'
-        value={user.password}
-        type='password'
-        style={styles.input}
-        onChangeText={text => {
-          setUser({
-             ...user,
-             password: text 
-            })
-        }}
-      />
-      <TextInput
-        label='Cpf'
-        mode='outlined'
-        value={user.cpf}
-        style={styles.input}
-        onChangeText={text => {
-          setUser({
-             ...user,
-             cpf: text 
-            })
-        }}
-      />
-      <TextInput
-        label='Endereço'
-        mode='outlined'
-        value={user.address}
-        style={styles.input}
-        onChangeText={text => {
-          setUser({
-             ...user,
-             address: text 
-            })
-        }}
-      />
-      <View style={styles.container}>
-        <Button
-          onPress={() => dispatch(createUser(user))}
-          mode="contained"
-          style={styles.button}
-        >
-          Cadastrar
-    </Button>
-      </View>
-    </KeyboardAwareScrollView>
+    <View style={styles.imageBG}>
+      <Image source={BGImage} style={{ width: '100%', height: Dimensions.get( 'window' ).height, position: 'absolute' }} resizeMode="cover" />
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={Platform.OS === 'ios'}>
+        <SimpleHeaderLeft title="Voltar" onGoBack={() => navigation.goBack()} />
+        <View style={styles.container}>
+          <View style={styles.fieldsContainer}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 15 }}>
+              <TextInput label='Nome' mode='outlined' value={user.name} style={styles.input} onChangeText={text => { setUser( { ...user, name: text } ) }} />
+              <TextInput label='Email' mode='outlined' value={user.email} style={styles.input} onChangeText={text => { setUser( { ...user, email: text } ) }} />
+              <TextInput secureTextEntry={true} label='Senha' mode='outlined' value={user.password} type='password' style={styles.input} onChangeText={text => { setUser( { ...user, password: text } ) }} />
+              <TextInput label='Cpf' mode='outlined' value={user.cpf} style={styles.input} onChangeText={text => { setUser( { ...user, cpf: text } ) }} />
+              <TextInput label='Endereço' mode='outlined' value={user.address} style={styles.input} onChangeText={text => { setUser( { ...user, address: text } ) }} />
+              <Button onPress={() => dispatch( createUser( user ) )} mode="contained" style={styles.button}>Cadastrar</Button>
+            </ScrollView>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </View >
   )
 }
 
-export default withNavigation(Register)
+export default withNavigation( Register )
