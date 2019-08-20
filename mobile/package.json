@@ -32,7 +32,8 @@
     "eslint-config-airbnb": "^17.1.1",
     "jest": "^24.8.0",
     "metro-react-native-babel-preset": "^0.55.0",
-    "react-test-renderer": "16.8.6"
+    "react-test-renderer": "16.8.6",
+    "reactotron-react-native": "^3.6.5"
   },
   "jest": {
     "preset": "react-native"
