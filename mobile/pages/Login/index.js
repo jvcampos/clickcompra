@@ -7,11 +7,12 @@ import {
   Button,
   TextInput
 } from 'react-native-paper';
-import { withNavigation } from 'react-navigation'
+import { withNavigation, StackActions, NavigationActions } from 'react-navigation'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styles from './styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../../store/actions/user'
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = ({ navigation }) => {
   const [user, setUser] = useState({
@@ -19,6 +20,19 @@ const Login = ({ navigation }) => {
     password: '',
   })
   let dispatch = useDispatch()
+  let UserReducer = useSelector(
+    (state) => state.UserReducer
+  )
+  const tokenUser = async () => {
+    return await AsyncStorage.getItem('@ClickCompra:token')
+  }
+  const resetAction = StackActions.reset({
+    index: 0,
+    actions: [
+      NavigationActions.navigate({ routeName: 'Tab', params: { token: tokenUser } }),
+    ],
+  })
+  UserReducer.login && navigation.dispatch(resetAction)
 
   return (
     <KeyboardAwareScrollView

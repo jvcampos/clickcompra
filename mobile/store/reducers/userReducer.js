@@ -10,7 +10,7 @@ const userReducer = (state = {
 }, action) => {
   switch (action.type) {
     case 'REGISTER':
-      state= {
+      state = {
         ...state,
         redirect: action.payload.redirect,
         message: action.payload.message
@@ -25,6 +25,12 @@ const userReducer = (state = {
         address: action.payload.address,
         role: action.payload.role,
         mobile: action.payload.mobile
+      }
+    case 'LOGIN':
+      state = {
+        ...state,
+        login: action.payload.login,
+        message: action.payload.message
       }
     default:
       return state

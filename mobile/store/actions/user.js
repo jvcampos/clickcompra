@@ -52,6 +52,7 @@ export function login(user) {
       dispatch({
         type: 'LOGIN',
         payload: {
+          login: true,
           message: 'Login feito com sucesso!😃'
         }
       })
