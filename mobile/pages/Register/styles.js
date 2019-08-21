@@ -1,22 +1,16 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-  containerTop: {
+  imageBG: {
+    height: '100%',
+    width: '100%',
     flex: 1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    paddingBottom: 30
+    backgroundColor: 'white',
   },
-  text: {
-    // fontFamily: 'Roboto',
-    fontSize: 20
-  },
-  containerInputs: {
-    top: 80,
-  },
-  containerButton: {
+  container: {
     flex: 1,
-    alignItems: 'center',
+    paddingTop: 25,
+    paddingHorizontal: 16,
   },
   input: {
     marginHorizontal: 30,
@@ -25,8 +19,14 @@ const styles = StyleSheet.create({
   button: {
     width: 300,
     marginVertical: 10,
-    backgroundColor: '#2ecc71'
-  }
+    width: '50%',
+    alignSelf: 'center'
+  },
+  fieldsContainer: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+  },
 })
 
 export default styles

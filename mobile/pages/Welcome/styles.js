@@ -4,7 +4,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 70
+    marginTop: 150,
+    paddingHorizontal: 16,
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#FFFF',
   },
   image: {
     width: 230,
