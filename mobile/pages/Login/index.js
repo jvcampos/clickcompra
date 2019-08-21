@@ -28,18 +28,15 @@ const Login = ({ navigation }) => {
   let UserReducer = useSelector(
     (state) => state.UserReducer
   )
-  const tokenUser = async () => {
-    return await AsyncStorage.getItem('@ClickCompra:token')
+  const auth = async () => {
+    await dispatch(login(user))
+    const token = await AsyncStorage.getItem('userToken')
+    console.log(token)
+    if(token){
+      navigation.navigate('Tab', {token: token})
+    }
   }
-  const resetAction = StackActions.reset({
-    index: 0,
-    actions: [
-      NavigationActions.navigate({ routeName: 'Tab', params: { token: tokenUser } }),
-    ],
-  })
-  UserReducer.login && navigation.dispatch(resetAction)
 
-  console.log(navigation)
   return (
     <View style={styles.imageBG}>
       <Image source={BGImage} style={{width: '100%', height: Dimensions.get('window').height, position: 'absolute'}} resizeMode="cover" />
@@ -83,7 +80,7 @@ const Login = ({ navigation }) => {
               />
               <View>
                 <Button
-                  onPress={() => dispatch(login(user))}
+                  onPress={() => auth()}
                   mode="contained"
                   style={styles.button}
                 >

@@ -1,6 +1,7 @@
 import React from 'react'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 
+import AuthLoading from './pages/AuthLoading'
 import Welcome from './pages/Welcome'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -9,11 +10,12 @@ import Product from './pages/Product'
 import User from './pages/User'
 
 const Tab = createBottomTabNavigator({
-  Home,
   Product,
+  Home,
   User
 },
   {
+    initialRouteName: "Home",
     animationEnabled: true,
     swipeEnabled: true,
     tabBarOptions: {
@@ -27,13 +29,14 @@ const Tab = createBottomTabNavigator({
 )
 
 const Routes = createStackNavigator({
+  AuthLoading,
   Welcome,
   Register,
   Login,
   Tab
 },
   {
-    initialRouteName: "Welcome",
+    initialRouteName: "AuthLoading",
     headerMode: 'none'
   })
 

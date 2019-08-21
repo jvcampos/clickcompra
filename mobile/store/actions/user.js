@@ -46,9 +46,9 @@ export function login(user) {
           email: user.email,
           password: user.password,
         })
-      await AsyncStorage.setItem('@ClickCompra:token', res.body.token.token)
+      await AsyncStorage.setItem('userToken', res.body.token.token)
       console.log('Login feito com sucesso')
-      console.log('AsyncStorage: ', await AsyncStorage.getItem('@ClickCompra:token'))
+      console.log('AsyncStorage: ', await AsyncStorage.getItem('userToken'))
       dispatch({
         type: 'LOGIN',
         payload: {
