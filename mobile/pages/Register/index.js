@@ -11,6 +11,7 @@ import {
   Button,
   TextInput
 } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation'
 import styles from './styles'
 import { useDispatch } from 'react-redux'

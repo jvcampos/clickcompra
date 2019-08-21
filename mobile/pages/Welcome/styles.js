@@ -16,7 +16,13 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   button: {
+    width: 300,
     margin: 10,
+  },
+  buttonRegister: {
+    width: 300,
+    margin: 10,
+    backgroundColor: '#2ecc71'
   }
 })
 
