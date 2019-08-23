@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
 import { Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -11,8 +11,10 @@ export default function User({ navigation }) {
   }
 
   return (
-    <Button onPress={() => sair()}>
+    <View style={{flex: 1, justifyContent: 'center'}}>
+    <Button mode='outlined' onPress={() => sair()}>
       Sair
     </Button>
+    </View>
   )
 }

@@ -5542,7 +5542,7 @@ react-native-safe-area-view@^0.14.1:
   dependencies:
     debounce "^1.2.0"
 
-react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
+react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.4.1.tgz#f113cd87485808f0c991abec937f70fa380478b9"
   integrity sha512-Bke8KkDcDhvB/z0AS7MnQKMD2p6Kwfc1rSKlMOvg9CC5CnClQ2QEnhPSbwegKDYhUkBI92iH/BYy7hNSm5kbUQ==
@@ -5599,10 +5599,29 @@ react-navigation-drawer@~1.2.1:
   dependencies:
     react-native-tab-view "^1.2.0"
 
+react-navigation-material-bottom-tabs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-material-bottom-tabs/-/react-navigation-material-bottom-tabs-1.0.0.tgz#4fc3f21c57891e3a5bff88679afd84801d69adb7"
+  integrity sha512-fmPOt82xYpNYWh7gDdk38ce2TDmKuGnVaC7Pd67Ss62bjZ2CwmX9kOXExThtdY039zDGIcABDq9h65c8TQeTUA==
+  dependencies:
+    hoist-non-react-statics "^2.5.0"
+    prop-types "^15.6.0"
+    react-navigation-tabs "1.0.0"
+
 react-navigation-stack@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.4.0.tgz#69cdb029ea4ee5877d7e933b3117dc90bc841eb2"
   integrity sha512-zEe9wCA0Ot8agarYb//0nSWYW1GM+1R0tY/nydUV0EizeJ27At0EklYVWvYEuYU6C48va6cu8OPL7QD/CcJACw==
+
+react-navigation-tabs@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-tabs/-/react-navigation-tabs-1.0.0.tgz#f9fe3eb8b77787551d017d1279ec049c3bed4950"
+  integrity sha512-2oWPk+XfwHihgdOBhuAuzzU94NPhwdvuzseL30R3VsggunfVB4cUtNiQjRP4rVVpdGgJygQtws1eRbUsQ9cECA==
+  dependencies:
+    hoist-non-react-statics "^2.5.0"
+    prop-types "^15.6.1"
+    react-lifecycles-compat "^3.0.4"
+    react-native-tab-view "^1.0.0"
 
 react-navigation-tabs@~1.1.4:
   version "1.1.4"
@@ -5773,6 +5792,11 @@ realpath-native@^1.1.0:
   integrity sha512-wlgPA6cCIIg9gKz0fgAPjnzh4yR/LnXovwuo9hvyGvx3h8nX4+/iLZplfUWasXpqD8BdnGnP5njOFjkUwPzvjA==
   dependencies:
     util.promisify "^1.0.0"
+
+redux-devtools-extension@^2.13.8:
+  version "2.13.8"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
+  integrity sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
 
 redux-thunk@^2.3.0:
   version "2.3.0"

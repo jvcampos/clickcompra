@@ -1,8 +1,11 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
+import styles from './styles'
 
 export default function Product (){
   return (
-    <Text>Product</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>Produtos 💸</Text>
+    </View>
   )
 }

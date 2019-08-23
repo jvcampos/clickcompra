@@ -1,6 +1,5 @@
 apply plugin: "com.android.application"
 import com.android.build.OutputFile
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -191,9 +190,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    compile project(':react-native-vector-icons')
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
