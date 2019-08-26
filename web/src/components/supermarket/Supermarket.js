@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Segment, Header } from 'semantic-ui-react'
 
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -6,11 +7,20 @@ import { connect } from 'react-redux';
 import MenuSuperior from '../menusuperior/Menusuperior'
 
 class Supermarket extends Component {
+  componentDidMount(){
+    document.title = 'Supermercado | ClickCompras';
+  }
+
+
   render() {
     return (
       <div>
         <MenuSuperior />
-        <h3>Supermercado Noêmia</h3>
+        <Segment>
+          <Header as="h2">
+            SEÇÃO DO SUPERMERCADO
+          </Header>
+        </Segment>
       </div>
     );
   }

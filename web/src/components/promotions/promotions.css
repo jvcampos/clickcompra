@@ -1,0 +1,24 @@
+.ui.grid.grid-pai-promocoes{
+    margin-left: 10%;
+    margin-right: 10px;
+}
+
+.ui.segment.segments-promocoes{
+    width: 80% !important;
+}
+
+.ui.dropdown-categorias{
+    width: 72%;
+}
+
+.field.inputs-form{
+    width: 72%;
+    margin-left: 14%;
+    margin-top: 20px;
+    margin-bottom: 40px
+}
+
+.basic-single{
+    width: 72%;
+    margin-left: 14%
+}

@@ -14,7 +14,7 @@ import './menusuperior.css'
 
 const api = axios.create({
 	baseURL: 'http://localhost:3001/api/',
-  });
+});
 
 class MenuSuperior extends Component {
 	state = {
@@ -27,7 +27,7 @@ class MenuSuperior extends Component {
 			email: this.props.manager.email,
 			name: this.props.manager.name,
 			password: '',
-			password_new : '',
+			password_new: '',
 		},
 		status_label_password_new: false,
 		status_label_all_password: false,
@@ -49,7 +49,7 @@ class MenuSuperior extends Component {
 		this.setState({
 			manager: {
 				...this.state.manager,
-				[e.target.name] : e.target.value
+				[e.target.name]: e.target.value
 			}
 		})
 	}
@@ -67,7 +67,7 @@ class MenuSuperior extends Component {
 			status_label_password_new: false, status_label_all_password: false,
 			manager: {
 				...this.state.manager,
-				[e.target.name] : e.target.value
+				[e.target.name]: e.target.value
 			}
 		})
 	}
@@ -90,25 +90,25 @@ class MenuSuperior extends Component {
 		setTimeout(() => {
 			this.setState({ isLoading: false })
 		}, 1000);
-		if(this.state.manager.password && this.state.manager.password_new === ''){
+		if (this.state.manager.password && this.state.manager.password_new === '') {
 			this.showMessage('error', 'cancel', 'Campos senha não podem ficar vázios!')
-			this.setState({ status_label_all_password : true, status_label_password_new : true })
-		}else {
+			this.setState({ status_label_all_password: true, status_label_password_new: true })
+		} else {
 			this.setState({ isLoading: true })
 			setTimeout(() => {
 				this.setState({ isLoading: false })
 			}, 1000);
 			const id_manager = localStorage.getItem('id')
-			api.put(`user/${id_manager}`, this.state.manager , {
+			api.put(`user/${id_manager}`, this.state.manager, {
 				headers: {
-				'Authorization': 'Bearer ' + localStorage.getItem('token')
+					'Authorization': 'Bearer ' + localStorage.getItem('token')
 				}
 			}).then(() => {
 				this.showMessage('success', 'edit', 'Dados do gerente alterado com sucesso !')
 				this.closeModalEdit()
 			}).catch(() => {
 				this.showMessage('error', 'lock', 'Por favor, conferir senha digitadas !')
-				this.setState({ status_label_password_new : true, status_label_all_password: true })
+				this.setState({ status_label_password_new: true, status_label_all_password: true })
 			})
 		}
 	}
@@ -126,7 +126,8 @@ class MenuSuperior extends Component {
 					<Menu.Item
 						className="menu_superior_item"
 						name='home'
-						active={activeItem === 'home'} onClick={this.handleItemClick}>
+						active={activeItem === 'home'}
+						onClick={this.handleItemClick}>
 					</Menu.Item>
 					<Menu.Item
 						className="menu_superior_item"
@@ -144,6 +145,11 @@ class MenuSuperior extends Component {
 						active={activeItem === 'products'}
 						onClick={this.handleItemClick}
 					/>
+					<Menu.Item
+						name='promotions'
+						active={activeItem === 'promotions'}
+						onClick={this.handleItemClick}
+					/>
 					<Menu.Menu position='right'>
 						<Dropdown text="Configuração" pointing className="dropdown_conta_configuracao">
 							<Dropdown.Menu>
@@ -156,7 +162,7 @@ class MenuSuperior extends Component {
 												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.name} label="Nome" name='name' placeholder='Nome Completo' />
 												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.cpf} label="CPF" name='cpf' placeholder='CPF' />
 												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.address} label="Endereço" name='address' placeholder='Endereço' />
-												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.email} label="E-mail"name='email' placeholder='E-mail' />
+												<Form.Field control={Input} onChange={this.onHandleChange} value={this.state.manager.email} label="E-mail" name='email' placeholder='E-mail' />
 											</Form.Group>
 											<Form.Group widths='equal'>
 												<Form.Field error={this.state.status_label_all_password} control={Input} onChange={this.onHandleChange} type="password" label="Senha Antiga" name='password' placeholder='Senha Antiga' />
@@ -172,7 +178,7 @@ class MenuSuperior extends Component {
 											<Icon name='checkmark' /> Alterar
 										</Button>
 									</Modal.Actions>
-									</Modal>
+								</Modal>
 							</Dropdown.Menu>
 						</Dropdown>
 						<Menu.Item
