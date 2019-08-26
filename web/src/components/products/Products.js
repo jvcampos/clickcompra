@@ -123,6 +123,7 @@ class Products extends Component {
 
   componentDidMount() {
     this.props.getProducts(localStorage.getItem('id_supermarket'))
+    document.title = 'Produtos | ClickCompras';
     console.log(this.state.optionsCategories)
     this.refreshTable()
   }
@@ -203,7 +204,7 @@ class Products extends Component {
   }
 
   closeModalAdd = () => {
-    this.resetState()
+    // this.resetState()
     this.setState({ statusModalAdd: false })
   }
   closeModalRemove = () => {

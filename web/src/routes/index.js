@@ -8,6 +8,7 @@ import Solicitacao from '../containers/solicitacao/solicitacao'
 import Supermarket from '../components/supermarket/Supermarket'
 import Categories from '../components/categories/Categories'
 import Products from '../components/products/Products'
+import Promotions from '../components/promotions/Promotions'
 import Home from '../components/home/Home'
 import Admin from '../containers/admin/admin'
 
@@ -23,6 +24,7 @@ const Routes = () => (
       <Route path="/categories" component={Categories} />
       <Route path="/supermarket" component={Supermarket} />
       <Route path="/products" component={Products} />
+      <Route path="/promotions" component={Promotions} />
     </Switch>
   </ConnectedRouter>
 );
