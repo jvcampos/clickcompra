@@ -1,6 +1,9 @@
-.chartPie {
-  background-color: #e5e5e5;
+.chart {
+  background-color: #ffffff;
   border-radius: 20;
   text-align: center;
-  margin: 30
+  margin: 30;
+  margin-top: 30px;
+  margin-right: 20px;
+  width: 25%;
 }
