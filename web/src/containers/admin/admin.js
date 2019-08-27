@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Dimmer, Loader, Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
 import axios from 'axios';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
+import MenuSuperior from '../../components/menusuperior/Menusuperior'
 
 import { connect } from 'react-redux';
 
@@ -22,6 +23,7 @@ class Admin extends Component {
   }
 
   componentDidMount() {
+    localStorage.setItem('isAdmin', true)
     document.title = 'Painel Administrativo - ClickCompras';
     console.log(this.props.token)
     api.get('supermarkets/unproved', {
@@ -75,6 +77,7 @@ class Admin extends Component {
     return (
       <div className="background-page">
       <SemanticToastContainer />
+      <MenuSuperior/>
         <style>{`
         body > div,
         body > div > div,
@@ -83,14 +86,6 @@ class Admin extends Component {
         }
         `}
         </style>
-        <Menu className="menu_superior_admin" pointing secondary>
-          <Menu.Menu position='right'>
-            <Menu.Item
-              name='sair'
-              onClick={this.logout}
-            />
-          </Menu.Menu>
-        </Menu>
         <Grid verticalAlign='middle' textAlign='center' style={{ height: '90%' }} >
           <Grid.Row>
             <Grid.Column width={10} >
