@@ -57,7 +57,7 @@ const Routes = createStackNavigator({
   Tab
 },
   {
-    initialRouteName: "AuthLoading",
+    initialRouteName: "Tab",
     headerMode: 'none'
   })
 
