@@ -53,7 +53,7 @@ class CategoryController {
     }
   }
 
-  async getAllSupermarket() {
+  async getAllCategories() {
     const categories = await Database
       .select('id', 'name_categorie', 'description')
       .from('categories')
