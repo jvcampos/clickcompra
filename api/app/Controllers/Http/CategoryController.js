@@ -8,9 +8,8 @@ const SuperMarketModel = use('App/Models/Supermarket')
 
 class CategoryController {
   async create({ request }) {
-    const { id_supermarket, name_categorie, description } = request.all()
+    const { name_categorie, description } = request.all()
     const category = await CategoryModel.create({
-      id_supermarket,
       name_categorie,
       description
     })
@@ -54,13 +53,10 @@ class CategoryController {
     }
   }
 
-  async getAllSupermarket({ params }) {
-    const { id } = params;
-    const supermarketData = await SuperMarketModel.findBy('id_manager', id)
+  async getAllCategories() {
     const categories = await Database
       .select('id', 'name_categorie', 'description')
       .from('categories')
-      .where('id_supermarket', supermarketData.id)
     return categories
   }
 }

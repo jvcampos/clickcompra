@@ -123,33 +123,40 @@ class MenuSuperior extends Component {
 		return (
 			<div>
 				<Menu className="menu_superior" pointing secondary>
-					<Menu.Item
-						className="menu_superior_item"
-						name='home'
-						active={activeItem === 'home'}
-						onClick={this.handleItemClick}>
-					</Menu.Item>
-					<Menu.Item
-						className="menu_superior_item"
-						name='supermarket'
-						active={activeItem === 'supermarket'}
-						onClick={this.handleItemClick}
-					/>
-					<Menu.Item
-						name='categories'
-						active={activeItem === 'categories'}
-						onClick={this.handleItemClick}
-					/>
-					<Menu.Item
-						name='products'
-						active={activeItem === 'products'}
-						onClick={this.handleItemClick}
-					/>
-					<Menu.Item
-						name='promotions'
-						active={activeItem === 'promotions'}
-						onClick={this.handleItemClick}
-					/>
+					{console.log(localStorage.isAdmin)}
+					{localStorage.isAdmin === "true" ?
+						<>
+							<Menu.Item
+								name='admin'
+								active={activeItem === 'admin'}
+								onClick={this.handleItemClick}
+							/>
+							<Menu.Item
+								name='categories'
+								active={activeItem === 'categories'}
+								onClick={this.handleItemClick}
+							/>
+						</>
+						:
+						<>
+							<Menu.Item
+								className="menu_superior_item"
+								name='home'
+								active={activeItem === 'home'} onClick={this.handleItemClick}>
+							</Menu.Item>
+							<Menu.Item
+								className="menu_superior_item"
+								name='supermarket'
+								active={activeItem === 'supermarket'}
+								onClick={this.handleItemClick}
+							/>
+							<Menu.Item
+								name='products'
+								active={activeItem === 'products'}
+								onClick={this.handleItemClick}
+							/>
+						</>
+					}
 					<Menu.Menu position='right'>
 						<Dropdown text="Configuração" pointing className="dropdown_conta_configuracao">
 							<Dropdown.Menu>
