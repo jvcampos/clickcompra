@@ -22,8 +22,11 @@ class Admin extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     localStorage.setItem('isAdmin', true)
+  }
+
+  componentDidMount() {
     document.title = 'Painel Administrativo - ClickCompras';
     console.log(this.props.token)
     api.get('supermarkets/unproved', {

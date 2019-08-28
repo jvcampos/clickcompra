@@ -119,12 +119,12 @@ class MenuSuperior extends Component {
 	};
 
 	render() {
-		console.log(this.props)
 		const { activeItem } = this.state
 		return (
 			<div>
 				<Menu className="menu_superior" pointing secondary>
-					{localStorage.isAdmin && localStorage.isAdmin === "true" ?
+					{console.log(localStorage.isAdmin)}
+					{localStorage.isAdmin === "true" ?
 						<>
 							<Menu.Item
 								name='admin'
