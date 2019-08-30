@@ -7,8 +7,13 @@ import Welcome from './pages/Welcome'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Home, { navigationOptions } from './pages/Home'
+import Cart from './pages/Cart'
 import Product from './pages/Product'
 import User from './pages/User'
+import UserAddress from './pages/User/Address'
+import UserPassword from './pages/User/Password'
+import UserPersonal from  './pages/User/Personal'
+
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Tab = createMaterialBottomTabNavigator({
@@ -30,12 +35,21 @@ const Tab = createMaterialBottomTabNavigator({
       ),
     }),
   },
+  Cart: {
+    screen: Cart,
+    navigationOptions: () => ({
+      tabBarLabel: 'Carrinho',
+      tabBarIcon: ({ focused }) => (
+        <Icon name="shopping-cart" size={25} color={focused ? '#000' : '#ddd'} />
+      ),
+    }),
+  },
   User: {
     screen: User,
     navigationOptions: () => ({
-      tabBarLabel: 'Configurações',
+      tabBarLabel: 'Perfil',
       tabBarIcon: ({ focused }) => (
-        <Icon name="cog" size={25} color={focused ? '#000' : '#ddd'} />
+        <Icon name="user" size={25} color={focused ? '#000' : '#ddd'} />
       ),
     }),
   }
@@ -54,6 +68,9 @@ const Routes = createStackNavigator({
   Welcome,
   Register,
   Login,
+  UserAddress,
+  UserPassword,
+  UserPersonal,
   Tab
 },
   {

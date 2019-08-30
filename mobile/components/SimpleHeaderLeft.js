@@ -3,11 +3,11 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, FONTS } from '../constants/styles';
 
-const SimpleHeaderLeft = ({style, title, onGoBack}) =>
+const SimpleHeaderLeft = ({style, title, onGoBack, color, titleStyle}) =>
   <TouchableOpacity style={[styles.headerContainer, style]} onPress={onGoBack}>
     <View style={styles.headerLeft}>
-      <Icon name="arrow-left" size={30} color={COLORS.white} />
-      <Text style={{color: COLORS.white, paddingLeft: 5, fontFamily: FONTS.bold}}>{title}</Text>
+      <Icon name="arrow-left" size={30} color={color ? color : COLORS.white} />
+      <Text style={[{color: color ? color : COLORS.white , paddingLeft: 5, fontFamily: FONTS.bold}, titleStyle]}>{title}</Text>
     </View>
   </TouchableOpacity>;
 
