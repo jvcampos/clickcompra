@@ -9,7 +9,6 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 class ProductController {
   async create({ request }) {
     const { id_category, name_category, name_product, imageBase64, description, value, amount } = request.all()
-    console.log(id_category, name_category, name_product, imageBase64, description, value, amount)
     const product = await ProductModel.create({
       id_category,
       name_category,
@@ -60,11 +59,11 @@ class ProductController {
   }
 
   async getAll({ params }) {
-    const { id } = params
     const products = await Database
-      .table('categories')
-      .where('categories.id_supermarket', id)
-      .innerJoin('products', 'categories.id', 'products.id_category')
+      .select('id', 'id_category', 'name_category',
+        'name_product', 'imageBase64', 'description',
+        'value', 'amount'  )
+      .from('products')
     return products
   }
 }
