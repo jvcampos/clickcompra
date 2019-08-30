@@ -1,58 +1,58 @@
 import axios from 'axios';
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api/',
+    baseURL: 'http://localhost:3001/api/',
 })
 
-export function addCategorie(id_supermarket, name_categorie, description){
+export function addCategorie(id_supermarket, name_categorie, description) {
     return (dispatch) => {
         return api.post('category', { id_supermarket, name_categorie, description }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-        .then(response => {
-            dispatch(newCategory(response.data))
-        })
-      }
+            .then(response => {
+                dispatch(newCategory(response.data))
+            })
+    }
 }
 
-export function getCategories(id_manager){
+export function getCategories() {
     return (dispatch) => {
-        api.get(`categories/${id_manager}`, {
+        api.get(`categories`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-        .then(response =>  {
-            dispatch(getAllCategories(response.data))
-        })
+            .then(response => {
+                dispatch(getAllCategories(response.data))
+            })
     }
 }
 
 
-export function deleteCategory(id){
+export function deleteCategory(id) {
     return (dispatch) => {
         api.delete(`category/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-        .then(response =>  {
-            dispatch(removeCategory(response.data))
-        })
+            .then(response => {
+                dispatch(removeCategory(response.data))
+            })
     }
 }
 
-export function updateCategory(id_category, name_categorie, description ){
+export function updateCategory(id_category, name_categorie, description) {
     return (dispatch) => {
         api.put(`category/${id_category}`, { name_categorie, description }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-        .then(() =>  {
-            this.getCategories(localStorage.getItem('id'))
-        })
+            .then(() => {
+                this.getCategories(localStorage.getItem('id'))
+            })
     }
 }
 

@@ -38,7 +38,6 @@ class MenuSuperior extends Component {
 		const id_manager = localStorage.getItem('id')
 		document.title = 'Home | ClickCompras';
 		this.props.getManager(id_manager)
-		console.log(this.props.manager)
 	};
 
 	handleItemClick = (e, { name }) => {
@@ -123,7 +122,6 @@ class MenuSuperior extends Component {
 		return (
 			<div>
 				<Menu className="menu_superior" pointing secondary>
-					{console.log(localStorage.isAdmin)}
 					{localStorage.isAdmin === "true" ?
 						<>
 							<Menu.Item

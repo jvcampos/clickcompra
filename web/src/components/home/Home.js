@@ -32,11 +32,7 @@ class Home extends Component {
       ["Domingo", 900]
     ]
   }
-
-  componentDidMount() {
-    console.log(localStorage.getItem('id_supermarket'))
-  }
-
+  
   render() {
     return (
       <div>

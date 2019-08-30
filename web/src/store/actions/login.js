@@ -8,7 +8,6 @@ export default function userLogin(email, password){
   return (dispatch) => {
     return api.post('login', { email, password })
     .then(response => {
-      console.log(response)
       if (response.data.role === 'ADMIN'){
         dispatch(loginSucess(response.data, email, password, response.id_supermarket))
         dispatch(push("/admin"));
