@@ -29,7 +29,7 @@ class Categories extends Component {
   }
 
   componentDidMount() {
-    this.props.getCategories(localStorage.getItem('id'))
+    this.props.getCategories()
     document.title = 'Categorias | ClickCompras';
     this.refreshTable()
   }
