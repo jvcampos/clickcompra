@@ -59,7 +59,6 @@ export default class Login extends Component {
         }
         this.setState({ loading: false })
       } catch (error) {
-        console.log(error)
         this.setState({ loading: true })
         this.messageStatus('warning', 'Você não tem autorização até o momento!');
         this.setState({ loading: false })
