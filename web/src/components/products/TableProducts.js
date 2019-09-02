@@ -28,8 +28,8 @@ class TableProducts extends Component {
     selectedOption: null,
   }
 
-  componentWillMount = () => {
-    console.log(this.props.data)
+  componentDidMount() {
+    this.props.getProducts(localStorage.getItem('id_supermarket'))
     document.title = "Produtos | ClickCompras"
     const options = this.props.dataCategories.map(categories => ({
       label: categories.name_categorie,
@@ -40,10 +40,6 @@ class TableProducts extends Component {
     this.setState({
       optionsCategories: options
     })
-  }
-
-  componentDidMount() {
-    this.props.getProducts(localStorage.getItem('id_supermarket'))
   }
 
   openModalEdit = () => {
@@ -68,7 +64,6 @@ class TableProducts extends Component {
 
   //Alter dada
   updateProduct = (id) => {
-    console.log(this.state.category_id, this.state.category_name)
     this.props.updateProduct(
       id,
       this.state.category_id,

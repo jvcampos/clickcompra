@@ -16,6 +16,7 @@ import MenuSuperior from '../menusuperior/Menusuperior'
 import 'antd/dist/antd.css';
 import { Upload, Icon as IconAntd } from 'antd';
 import './products.css'
+import axios from 'axios'
 
 const Dragger = Upload.Dragger;
 
@@ -65,6 +66,21 @@ class Products extends Component {
 
   resetState = () => {
     this.setState(this.baseState)
+    axios.get(`http://localhost:3001/api/categories`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+      .then(response => {
+        const options = response.data.map(categories => ({
+          label: categories.name_categorie,
+          id: categories.id,
+          description: categories.description
+        }))
+        this.setState({
+          optionsCategories: options
+        })
+      })
   }
 
   beforeUpload = (file) => {
@@ -110,21 +126,26 @@ class Products extends Component {
 
   componentWillMount() {
     document.title = "Produtos | ClickCompras"
-    const options = this.props.dataCategories.map(categories => ({
-      label: categories.name_categorie,
-      id: categories.id,
-      description: categories.description
+    axios.get(`http://localhost:3001/api/categories`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
     })
-    )
-    this.setState({
-      optionsCategories: options
-    })
+      .then(response => {
+        const options = response.data.map(categories => ({
+          label: categories.name_categorie,
+          id: categories.id,
+          description: categories.description
+        }))
+        this.setState({
+          optionsCategories: options
+        })
+      })
   }
 
   componentDidMount() {
     this.props.getProducts(localStorage.getItem('id_supermarket'))
     document.title = 'Produtos | ClickCompras';
-    console.log(this.state.optionsCategories)
     this.refreshTable()
   }
 
@@ -288,7 +309,6 @@ class Products extends Component {
                       placeholder='NOME' />
                     <Header as='h3'>CATEGORIA</Header>
                     <Select
-                      className="basic-single"
                       classNamePrefix="Digite ou Selecione"
                       isSearchable
                       name="Categories"
