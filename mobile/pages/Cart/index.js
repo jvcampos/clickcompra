@@ -3,46 +3,9 @@ import { Text, View, Image, StyleSheet, ScrollView, FlatList } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Button } from 'react-native-paper';
 
-const CartProduct = ( { product } ) => {
-    return (
-        <View style={{ marginBottom: 20 }}>
-            <View style={styles.productCard}>
-                <View style={styles.imagemProductCard}>
-                    <Image
-                        style={styles.imageCard}
-                        source={require( '../../assets/legumes_categorie.png' )}
-                    />
-                </View>
-                <View style={styles.containerTextProductCard}>
-                    <Text style={styles.textProductCard}>
-                        {product.description}
-                    </Text>
-                    <Text style={styles.textPriceProduct}>
-                        R$ {product.value}
-                    </Text>
-                    <View style={styles.containerTotalQtd}>
-                        <Text style={styles.textTotalQtd}>{product.qtd}</Text>
-                    </View>
-                    <View style={styles.containerNameProduct}>
-                        <Text>{product.name}</Text>
-                    </View>
-                </View>
-                <View style={styles.containerButtonAndValue}>
-                    <View style={styles.buttonsRemoveProduct}>
-                        <View>
-                            <Icon name="trash" size={25} color={'#e74c3c'} />
-                        </View>
-                    </View>
-                    <View style={styles.containerValueTotalProduct}>
-                        <Text style={styles.textValueTotalProduct}>R$ {product.valueTotal}</Text>
-                    </View>
-                </View>
-            </View>
-        </View>
-    )
-}
+import ItemCart from './ItemCart/ItemCart'
 
-const Cart = ( { navigation } ) => {
+const Cart = ({ navigation }) => {
 
     const allProducts = [
         {
@@ -77,39 +40,33 @@ const Cart = ( { navigation } ) => {
             qtd: 1,
             valueTotal: 40
         },
-        {
-            key: 5,
-            title: 'Produto 05',
-            description: 'Descrição produto 05',
-            value: 50,
-            qtd: 1,
-            valueTotal: 40
-        },
     ]
 
     return (
         <View style={styles.containerTopoTitle}>
             <Text style={styles.textTopoTitle}>Carrinho</Text>
-            <ScrollView>
+            <ScrollView style={{ marginTop: 30 }}>
                 <FlatList
-                    maxHeight={500}
+                    maxHeight={600}
                     data={allProducts}
-                    renderItem={( { item } ) => <CartProduct product={item} />}
+                    renderItem={({ item }) => <ItemCart product={item} />}
                 />
             </ScrollView>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-start', paddingTop: 20 }}>
+            <View style={styles.containerBottom}>
                 <View>
-                    <Button mode="contained">Comprar</Button>
+                    <Text style={styles.textContainerBottom}>Total: 
+                        <Text style={{ color: '#e74c3c'}}> R$ 100,00</Text>
+                    </Text>
                 </View>
-                <View>
-                    <Text style={{ fontSize: 25, fontWeight: 'bold'}}>Valor: 100,00</Text>
+                <View style={styles.buttomBuy}>
+                    <Button mode="contained">Finalizar lista</Button>
                 </View>
             </View>
         </View>
     )
 }
 
-const styles = StyleSheet.create( {
+const styles = StyleSheet.create({
     containerTopoTitle: {
         marginLeft: 30,
         marginTop: 20
@@ -118,91 +75,22 @@ const styles = StyleSheet.create( {
         fontSize: 20,
         fontWeight: '600'
     },
-    productCard: {
-        flexDirection: 'row',
-        height: 160,
-        marginBottom: 10,
-        backgroundColor: '#rgb(255, 255, 255)',
-        borderRadius: 10,
-        marginTop: 12,
-        marginRight: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1.5 },
-        shadowOpacity: 0.8,
-        elevation: 1,
-    },
-    imagemProductCard: {
-        justifyContent: 'center',
-        width: 80,
-    },
-    imageCard: {
-        alignSelf: 'center',
-        width: 50,
-        height: 50,
-    },
-    containerTextProductCard: {
-        justifyContent: 'center',
-    },
-    textProductCard: {
-        fontSize: 15,
-        fontWeight: 'bold'
-    },
-    textPriceProduct: {
-        color: '#e74c3c',
-        fontWeight: "bold"
-    },
-    containerButtonAndValue: {
-        justifyContent: 'flex-end',
-        marginLeft: 30
-    },
-    buttonsRemoveProduct: {
-        width: 25,
-        marginLeft: 50,
-        marginBottom: 30,
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end'
-    },
-    qtdProduct: {
-        flex: 1,
-        width: 10,
-        justifyContent: 'center',
-        alignItems: 'flex-end'
-    },
-    textQtdProduct: {
-        fontSize: 15,
-        fontWeight: 'bold',
-    },
-    containerTotalQtd: {
-        backgroundColor: '#ffeaa7',
-        borderColor: '#dfe6e9',
-        borderWidth: 0.5,
-        borderRadius: 10,
-        height: 30,
-        width: 30,
-        top: 30
-    },
-    textTotalQtd: {
-        marginLeft: 10,
-        marginTop: 5
-    },
-    containerNameProduct: {
-        marginTop: 5,
-        marginLeft: 40
-    },
-    containerValueTotalProduct: {
-        marginLeft: 30,
-        marginTop: 10,
-        marginBottom: 10,
-        justifyContent: 'flex-end'
-    },
-    textValueTotalProduct: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#66ed8a'
-    },
     containerBottom: {
-        backgroundColor: '#FF9800',
+        height: 100,
+        marginRight: 20,
+        // flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+    textContainerBottom: {
+        fontSize: 25,
+        fontWeight: '600'
+    },
+    buttomBuy: {
+        borderRadius: 20,
+        width: '100%',
+        marginBottom: 10
     }
-} );
+});
 
 export default Cart
