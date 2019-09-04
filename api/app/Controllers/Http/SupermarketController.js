@@ -3,6 +3,7 @@
 const Database = use('Database')
 const SuperMarketModel = use('App/Models/Supermarket')
 const HandlerMessage = use('App/Services/HandlerMessage');
+const Mail = use('Mail')
 
 class SupermarketController {
   async create({ request, response }) {
@@ -76,6 +77,12 @@ class SupermarketController {
   }
 
   async aproveSupermarket({ params, response }){
+    // await Mail.raw('<h1>Supermercado Aprovado Sucesso!</h1>', (message) => {
+    //   console.log('oloco meeeoooooo')
+    //   console.log(message)
+    //   message.from('vinicius_almeidasilva@outlook.com')
+    //   message.to('sk8_bol@hotmail.com')
+    // })
     try {
       const { id } = params;
       await Database

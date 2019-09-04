@@ -18,7 +18,7 @@ const Categories = ({ item, navigation }) => {
             </View>
             <View style={styles.containerTextCategorieBox}>
                 <Text style={styles.textCategoriesBox}>
-                    {item.title}
+                    {item.name_categorie}
                 </Text>
             </View>
         </View>

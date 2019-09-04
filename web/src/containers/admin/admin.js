@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimmer, Loader, Modal, Button, Header, Grid, Menu, Table } from 'semantic-ui-react'
+import { Dimmer, Loader, Modal, Button, Header, Grid, Table } from 'semantic-ui-react'
 import axios from 'axios';
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 import MenuSuperior from '../../components/menusuperior/Menusuperior'

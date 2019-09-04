@@ -3,9 +3,9 @@ const api = axios.create({
     baseURL: 'http://localhost:3001/api/',
 })
 
-export function addCategorie(id_supermarket, name_categorie, description) {
+export function addCategorie(name_categorie, description) {
     return (dispatch) => {
-        return api.post('category', { id_supermarket, name_categorie, description }, {
+        return api.post('category', {name_categorie, description }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }

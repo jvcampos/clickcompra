@@ -70,10 +70,8 @@ class Categories extends Component {
   }
 
   addCategorie = () => {
-    const id_supermarket = localStorage.getItem('id_supermarket')
     this.setState({ statusModalAdd: false, loading: true })
     this.props.addCategorie(
-      id_supermarket,
       this.state.name_categorie, this.state.description)
     setTimeout(() => {
       this.setState({ loading: false })
