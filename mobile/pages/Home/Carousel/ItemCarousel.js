@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Text, View, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
 import Dialog, { DialogContent, DialogTitle } from 'react-native-popup-dialog';
 import Button, { FAB } from 'react-native-paper'
@@ -6,55 +6,61 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const ItemCarousel = ({ item, navigation }) => {
     const [isModalVisible, setIsModalVisible] = useState(false)
+    const [products, setProduct] = useState([])
+
+    useEffect(() => {
+        console.log(item)
+        setProduct(item)
+    }, [])
 
     const toogleModal = () => {
         setIsModalVisible(true)
     }
 
-    const products = [
-        {
-            index: 1,
-            name: 'Produto 01',
-            description: 'Descrição produto 01',
-            value: 15
-        },
-        {
-            index: 2,
-            name: 'Produto 02',
-            description: 'Descrição produto 02',
-            value: 20
-        },
-        {
-            index: 3,
-            name: 'Produto 03',
-            description: 'Descrição produto 03',
-            value: 25
-        },
-        {
-            index: 4,
-            name: 'Produto 04',
-            description: 'Descrição produto 04',
-            value: 30
-        },
-        {
-            index: 5,
-            name: 'Produto 05',
-            description: 'Descrição produto 05',
-            value: 35
-        },
-        {
-            index: 6,
-            name: 'Produto 06',
-            description: 'Descrição produto 06',
-            value: 40
-        },
-        {
-            index: 7,
-            name: 'Produto 07',
-            description: 'Descrição produto 07',
-            value: 40
-        }
-    ]
+    // const products = [
+    //     {
+    //         index: 1,
+    //         name: 'Produto 01',
+    //         description: 'Descrição produto 01',
+    //         value: 15
+    //     },
+    //     {
+    //         index: 2,
+    //         name: 'Produto 02',
+    //         description: 'Descrição produto 02',
+    //         value: 20
+    //     },
+    //     {
+    //         index: 3,
+    //         name: 'Produto 03',
+    //         description: 'Descrição produto 03',
+    //         value: 25
+    //     },
+    //     {
+    //         index: 4,
+    //         name: 'Produto 04',
+    //         description: 'Descrição produto 04',
+    //         value: 30
+    //     },
+    //     {
+    //         index: 5,
+    //         name: 'Produto 05',
+    //         description: 'Descrição produto 05',
+    //         value: 35
+    //     },
+    //     {
+    //         index: 6,
+    //         name: 'Produto 06',
+    //         description: 'Descrição produto 06',
+    //         value: 40
+    //     },
+    //     {
+    //         index: 7,
+    //         name: 'Produto 07',
+    //         description: 'Descrição produto 07',
+    //         value: 40
+    //     }
+    // ]
 
     return (
         <React.Fragment>
@@ -80,7 +86,7 @@ const ItemCarousel = ({ item, navigation }) => {
                             </View>
                             <View style={styles.containerTextProductCard}>
                                 <Text style={styles.textProductCard}>
-                                    {item.name}
+                                    {item.name_product}
                                 </Text>
                                 <Text>
                                     {item.description}
