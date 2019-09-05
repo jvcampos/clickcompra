@@ -1,11 +1,15 @@
 import React, { useRef, useState } from 'react'
-import { Text, View, Image, StyleSheet, ScrollView, FlatList } from 'react-native'
+import { Text, View, Image, StyleSheet, ScrollView, FlatList, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+var _ = require('lodash');
 import { Button } from 'react-native-paper';
 
 import ItemCart from './ItemCart/ItemCart'
 
 const Cart = ({ navigation }) => {
+
+    var {height, width} = Dimensions.get('window');
+    console.log(height)
 
     const allProducts = [
         {
@@ -47,7 +51,7 @@ const Cart = ({ navigation }) => {
             <Text style={styles.textTopoTitle}>Carrinho</Text>
             <ScrollView style={{ marginTop: 30 }}>
                 <FlatList
-                    maxHeight={600}
+                    maxHeight={height - 230}
                     data={allProducts}
                     renderItem={({ item }) => <ItemCart product={item} />}
                 />

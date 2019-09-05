@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
 
   const getAllCategories = async () => {
     await superagent
-    .get('http://10.0.2.2:3333/api/categories').then((response) => {
+    .get('http://10.0.2.2:3001/api/categories').then((response) => {
       const categories = JSON.parse(response.text);
       setCategories(categories)
       dispatch(allCategories(categories));

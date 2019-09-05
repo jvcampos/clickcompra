@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Text, View, StyleSheet, Image, FlatList } from 'react-native'
 import { allProducts } from '../../store/actions/products'
 import { Searchbar } from 'react-native-paper'
+var _ = require('lodash');
 import Icon from 'react-native-vector-icons/FontAwesome'
 import superagent from 'superagent';
+
+import ItemProduct from './ItemProduct/ItemProduct'
 
 const Product = ({ navigation }) => {
   let dispatch = useDispatch()
 
   const [products, setProducts] = useState([]);
-  const [base64, setBase64] = useState([]);
+  const [productsFiltered, setProductsFiltered] = useState([]);
+  const [focusSearch, setFocusSearch] = useState(false);
 
   useEffect(() => {
     getAllProducts();
@@ -19,64 +23,44 @@ const Product = ({ navigation }) => {
   const getAllProducts = async () => {
     await superagent
       .get('http://10.0.2.2:3001/api/products').then(response => {
-        const product = JSON.parse(response.text);
-        // const base64Icon = product
-        console.log(product)
-        setProducts(product)
+        const products = JSON.parse(response.text);
+        setProducts(products)
         dispatch(allProducts(products));
-        console.log(products)
       }).catch(e => {
         console.log(e)
       })
   }
 
+  let ProductReducer = useSelector(
+    (state) => state.ProductReducer
+  )
+
+  const onChangeSearch = (text) => {
+    if (text === '') {
+      setFocusSearch(false)
+      setProducts(...ProductReducer)
+    } else {
+      setFocusSearch(true)
+      const filterResult = _.filter(products, (product) => {
+        return _.includes(product.name_product, text)
+      })
+      setProductsFiltered(filterResult)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Searchbar
-        placeholder="Search"
-      // onChangeText={}
-      // value={firstQuery}
+        placeholder="Procurar produto"
+        onChangeText={text => onChangeSearch(text)}
       />
       <View style={styles.containerList}>
-        <FlatList
-          data={products}
-          renderItem={({ item }) => (
-            <View style={styles.productCard}>
-              <View style={styles.imagemProductCard}>
-                <Image
-                  style={styles.imageCard}
-                  source={{ uri: item.imageBase64 }}
-                />
-              </View>
-              <View style={styles.containerTextProductCard}>
-                <Text style={styles.textProductCard}>
-                  {item.name_product}
-            </Text>
-                <Text>
-                  {item.description}
-            </Text>
-                <Text style={styles.textPriceProduct}>
-                  R$ {item.value}
-            </Text>
-              </View>
-              <View style={styles.buttonsRemoveProduct}>
-                <View>
-                  <Icon name="minus-circle" size={25} color={'#e74c3c'} />
-                </View>
-              </View>
-              <View style={styles.qtdProduct}>
-                <View>
-                  <Text style={styles.textQtdProduct}>0</Text>
-                </View>
-              </View>
-              <View style={styles.buttonsAddProduct}>
-                <View>
-                  <Icon name="plus" size={25} color={'#2ecc71'} />
-                </View>
-              </View>
-            </View>
-          )}
-        />
+        {focusSearch ? productsFiltered.map((product, id) => {
+          return <ItemProduct key={id} product={[product]} />
+        }) :
+          products.map((product, id) => {
+            return <ItemProduct key={id} product={[product]} />
+          })}
       </View>
     </View>
   )
@@ -92,66 +76,6 @@ const styles = StyleSheet.create({
   containerList: {
     marginBottom: 70
   },
-  text: {
-    fontSize: 30
-  },
-  imageCard: {
-    alignSelf: 'center',
-    width: '50%',
-    height: '50%',
-    marginLeft: 35
-  },
-  productCard: {
-    borderBottomColor: '#rgb(164, 176, 190)',
-    borderBottomWidth: 0.5,
-    flexDirection: 'row',
-    height: 80,
-    marginBottom: 10,
-    backgroundColor: '#rgb(255, 255, 255)',
-    borderRadius: 10,
-    marginTop: 15,
-    marginLeft: 15,
-    marginRight: 15
-  },
-  imagemProductCard: {
-    justifyContent: 'center',
-    width: 100,
-    marginLeft: -35
-  },
-  containerTextProductCard: {
-    justifyContent: 'center',
-  },
-  textProductCard: {
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-  textPriceProduct: {
-    color: '#e74c3c',
-    fontWeight: "bold"
-  },
-  buttonsRemoveProduct: {
-    flex: 1,
-    width: 10,
-    justifyContent: 'center',
-    alignItems: 'flex-end'
-  },
-  qtdProduct: {
-    flex: 1,
-    width: 10,
-    justifyContent: 'center',
-    alignItems: 'flex-end'
-  },
-  textQtdProduct: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  buttonsAddProduct: {
-    flex: 1,
-    width: 10,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    marginRight: 10
-  }
 })
 
 export default Product
