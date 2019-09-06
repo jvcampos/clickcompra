@@ -1,7 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
-
+import CartIcon from './components/CartIcon';
 import AuthLoading from './pages/AuthLoading'
 import Welcome from './pages/Welcome'
 import Register from './pages/Register'
@@ -40,7 +40,7 @@ const Tab = createMaterialBottomTabNavigator({
     navigationOptions: () => ({
       tabBarLabel: 'Carrinho',
       tabBarIcon: ({ focused }) => (
-        <Icon name="shopping-cart" size={25} color={focused ? '#000' : '#ddd'} />
+        <CartIcon name="shopping-cart" size={25} badgeCount={15} color={focused ? '#000' : '#ddd'} />
       ),
     }),
   },
