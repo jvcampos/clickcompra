@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Text, View, Image, StyleSheet, ScrollView, FlatList, Dimensions } from 'react-native'
+import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 var _ = require('lodash');
 import { Button } from 'react-native-paper';
@@ -9,42 +10,7 @@ import ItemCart from './ItemCart/ItemCart'
 const Cart = ({ navigation }) => {
 
     var {height, width} = Dimensions.get('window');
-    console.log(height)
-
-    const allProducts = [
-        {
-            key: 1,
-            title: 'Produto 01',
-            description: 'Descrição produto 01',
-            value: 10,
-            qtd: 2,
-            valueTotal: 20
-        },
-        {
-            key: 2,
-            title: 'Produto 02',
-            description: 'Descrição produto 02',
-            value: 20,
-            qtd: 1,
-            valueTotal: 20
-        },
-        {
-            key: 3,
-            title: 'Produto 03',
-            description: 'Descrição produto 03',
-            value: 30,
-            qtd: 1,
-            valueTotal: 30
-        },
-        {
-            key: 4,
-            title: 'Produto 04',
-            description: 'Descrição produto 04',
-            value: 40,
-            qtd: 1,
-            valueTotal: 40
-        },
-    ]
+    let allProducts = useSelector((state) => state.CartReducer)
 
     return (
         <View style={styles.containerTopoTitle}>

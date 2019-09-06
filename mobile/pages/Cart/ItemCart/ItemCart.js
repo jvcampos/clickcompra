@@ -3,7 +3,7 @@ import { Text, View, Image, StyleSheet, ScrollView, FlatList } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Button } from 'react-native-paper';
 
-const ItemCart = ( { product, navigation } ) => {
+const ItemCart = ({ product, navigation }) => {
     return (
         <View style={styles.containerPage}>
             <View style={styles.productCard}>
