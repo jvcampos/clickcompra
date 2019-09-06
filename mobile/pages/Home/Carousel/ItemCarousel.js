@@ -65,8 +65,8 @@ const ItemCarousel = ({ item, navigation }) => {
     return (
         <React.Fragment>
             <Dialog
-                height="0.5"
-                width="0.95"
+                height={0.5}
+                width={0.95}
                 visible={isModalVisible}
                 onTouchOutside={() => setIsModalVisible(false)}
                 dialogTitle={
