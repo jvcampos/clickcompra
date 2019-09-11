@@ -1,31 +1,43 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Text, View, Image, StyleSheet, ScrollView, FlatList, Dimensions } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import {connect} from 'react-redux';
+import { removeFromCart } from '../../store/actions/cart';
 import Icon from 'react-native-vector-icons/FontAwesome'
-var _ = require('lodash');
+import _ from 'lodash';
 import { Button } from 'react-native-paper';
 
 import ItemCart from './ItemCart/ItemCart'
 
-const Cart = ({ navigation }) => {
+export const Cart = ({ navigation, allProducts, removeFromCart }) => {
+    const [totalValue, setTotalValue] = useState(0)
+    let {height, width} = Dimensions.get('window');
 
-    var {height, width} = Dimensions.get('window');
-    let allProducts = useSelector((state) => state.CartReducer)
+    const qtdeProduct = useMemo(() => allProducts && allProducts.map(itemCart => itemCart.value), [allProducts]);
 
+    useEffect(() => {
+        setTotalValue(_.sum(qtdeProduct));
+    }, [qtdeProduct])
+    
+    const removeItem = (product) => {
+        removeFromCart(product);
+    };
+    
     return (
         <View style={styles.containerTopoTitle}>
             <Text style={styles.textTopoTitle}>Carrinho</Text>
             <ScrollView style={{ marginTop: 30 }}>
                 <FlatList
+                    keyExtractor={(item, index) => index.toString()}
                     maxHeight={height - 230}
                     data={allProducts}
-                    renderItem={({ item }) => <ItemCart product={item} />}
+                    renderItem={({ item, id }) => <ItemCart key={parseFloat(id)} product={item} removeItem={() => removeItem(item)} />}
                 />
             </ScrollView>
             <View style={styles.containerBottom}>
                 <View>
                     <Text style={styles.textContainerBottom}>Total: 
-                        <Text style={{ color: '#e74c3c'}}> R$ 100,00</Text>
+                        <Text style={{ color: '#e74c3c'}}> R$ {totalValue}</Text>
                     </Text>
                 </View>
                 <View style={styles.buttomBuy}>
@@ -63,4 +75,15 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Cart
+const mapStateToProps = state => {
+    return {
+        allProducts: state.CartReducer
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        removeFromCart: (product) => dispatch(removeFromCart(product))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)

@@ -55,9 +55,9 @@ const Product = ({ navigation }) => {
         onChangeText={text => onChangeSearch(text)}
       />
       <View style={styles.containerList}>
-        {focusSearch ? <FlatList data={productsFiltered} renderItem={({item, id}) => <ItemProduct key={id} product={item} /> } />
+        {focusSearch ? <FlatList data={productsFiltered} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} /> } />
          :
-          <FlatList data={products} renderItem={({item, id}) => <ItemProduct key={id} product={item} />} />
+          <FlatList data={products} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} />} />
         }
       </View>
     </View>

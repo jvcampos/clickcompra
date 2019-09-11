@@ -1,17 +1,27 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { Text, View, StyleSheet, Image, FlatList, TouchableHighlight } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import _ from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { Text, View, StyleSheet, Image } from 'react-native'
 import { addProduct, removeFromCart } from '../../../store/actions/cart';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import uuidv1 from 'uuid';
 
 const ItemProduct = ({product, navigation}) => {
+    const [qtdeProduct, setQtdeProduct] = useState(0)
     const dispatch = useDispatch();
+    
+    let allInTheCart = useSelector((state) => state.CartReducer)
+    useEffect(() => {
+        const qtdeProduct = allInTheCart.filter(itemCart => ( itemCart.id === product.id))
+        setQtdeProduct(qtdeProduct.length)
+    }, [allInTheCart]);
     const removeItem = (product) => {
-        dispatch(removeFromCart( product ) );
+        const lastProducFinded = _.findLast(allInTheCart, (n) => n.id === product.id)
+        dispatch(removeFromCart(lastProducFinded));
     }
-
     const addItem = (product) => {
-        dispatch(addProduct( product ) );
+        const idRandom = uuidv1();
+        dispatch(addProduct({...product, idRandom}));
     }
 
     return (
@@ -37,24 +47,24 @@ const ItemProduct = ({product, navigation}) => {
                 <View style={styles.buttonsRemoveProduct}>
                     <View>
                         <Icon
-                            onPress={() => removeItem( product )}
+                            onPress={qtdeProduct === 0 ? null : () => removeItem(product)}
                             name="minus-circle"
                             size={25}
-                            color={'#e74c3c'} />
+                            color={qtdeProduct === 0 ? 'grey' : '#e74c3c'} />
                     </View>
                 </View>
                 <View style={styles.qtdProduct}>
                     <View>
-                        <Text style={styles.textQtdProduct}>0</Text>
+                        <Text style={styles.textQtdProduct}>{qtdeProduct}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsAddProduct}>
                     <View>
                         <Icon
-                            onPress={() => addItem( product )}
+                            onPress={product.amount === qtdeProduct ? null : () => addItem(product)}
                             name="plus"
                             size={25}
-                            color={'#2ecc71'} />
+                            color={product.amount === qtdeProduct ? 'grey' : '#2ecc71'} />
                     </View>
                 </View>
             </View>

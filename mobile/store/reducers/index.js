@@ -8,8 +8,7 @@ const reducers = combineReducers({
   UserReducer: userReducer,
   CategoriesReducer: categoriesReducer,
   ProductReducer: productsReducer,
-  CartReducer: cartReducer,
-  
+  CartReducer: cartReducer,  
 })
 
 export default reducers
