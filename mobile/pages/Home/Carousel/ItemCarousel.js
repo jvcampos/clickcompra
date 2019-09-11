@@ -9,7 +9,6 @@ const ItemCarousel = ({ item, navigation }) => {
     const [products, setProduct] = useState([])
 
     useEffect(() => {
-        console.log(item)
         setProduct(item)
     }, [])
 
@@ -65,8 +64,8 @@ const ItemCarousel = ({ item, navigation }) => {
     return (
         <React.Fragment>
             <Dialog
-                height="0.5"
-                width="0.95"
+                height={0.5}
+                width={0.95}
                 visible={isModalVisible}
                 onTouchOutside={() => setIsModalVisible(false)}
                 dialogTitle={
@@ -74,10 +73,11 @@ const ItemCarousel = ({ item, navigation }) => {
                 }
             >
                 <FlatList
+                    keyExtractor={(item, index) => index.toString()}
                     data={products}
-                    renderItem={({ item }) => <DialogContent>
+                    renderItem={({ item, id }) => <DialogContent key={parseFloat(id)}>
 
-                        <View style={styles.productCard}>
+                        <View style={styles.productCard} key={id}>
                             <View style={styles.imagemProductCard}>
                                 <Image
                                     style={styles.imageCard}

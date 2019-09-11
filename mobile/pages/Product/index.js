@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Text, View, StyleSheet, Image, FlatList } from 'react-native'
 import { allProducts } from '../../store/actions/products'
 import { Searchbar } from 'react-native-paper'
-var _ = require('lodash');
+import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import superagent from 'superagent';
 
@@ -55,12 +55,10 @@ const Product = ({ navigation }) => {
         onChangeText={text => onChangeSearch(text)}
       />
       <View style={styles.containerList}>
-        {focusSearch ? productsFiltered.map((product, id) => {
-          return <ItemProduct key={id} product={[product]} />
-        }) :
-          products.map((product, id) => {
-            return <ItemProduct key={id} product={[product]} />
-          })}
+        {focusSearch ? <FlatList data={productsFiltered} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} /> } />
+         :
+          <FlatList data={products} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} />} />
+        }
       </View>
     </View>
   )

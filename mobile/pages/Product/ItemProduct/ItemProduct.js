@@ -1,70 +1,78 @@
-import React, { useState } from 'react'
-import { Text, View, StyleSheet, Image, FlatList, TouchableHighlight } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import _ from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { Text, View, StyleSheet, Image } from 'react-native'
+import { addProduct, removeFromCart } from '../../../store/actions/cart';
 import Icon from 'react-native-vector-icons/FontAwesome'
-const ItemProduct = ({ product, navigation }) => {
+import uuidv1 from 'uuid';
 
-    const removeItem = () => {
-        console.log('Remover clique')
+const ItemProduct = ({product, navigation}) => {
+    const [qtdeProduct, setQtdeProduct] = useState(0)
+    const dispatch = useDispatch();
+    
+    let allInTheCart = useSelector((state) => state.CartReducer)
+    useEffect(() => {
+        const qtdeProduct = allInTheCart.filter(itemCart => ( itemCart.id === product.id))
+        setQtdeProduct(qtdeProduct.length)
+    }, [allInTheCart]);
+    const removeItem = (product) => {
+        const lastProducFinded = _.findLast(allInTheCart, (n) => n.id === product.id)
+        dispatch(removeFromCart(lastProducFinded));
     }
-
-    const addItem = () => {
-        console.log('Adicionar clique')
+    const addItem = (product) => {
+        const idRandom = uuidv1();
+        dispatch(addProduct({...product, idRandom}));
     }
 
     return (
         <View>
-            <FlatList
-                data={product}
-                renderItem={({ item }) => (
-                    <View style={styles.productCard}>
-                        <View style={styles.imagemProductCard}>
-                            <Image
-                                style={styles.imageCard}
-                                source={{ uri: item.imageBase64 }}
-                            />
-                        </View>
-                        <View style={styles.containerTextProductCard}>
-                            <Text style={styles.textProductCard}>
-                                {item.name_product}
-                            </Text>
-                            <Text>
-                                {item.description}
-                            </Text>
-                            <Text style={styles.textPriceProduct}>
-                                R$ {item.value}
-                            </Text>
-                        </View>
-                        <View style={styles.buttonsRemoveProduct}>
-                            <View>
-                                <Icon
-                                    onPress={() => removeItem()} 
-                                    name="minus-circle" 
-                                    size={25} 
-                                    color={'#e74c3c'} />
-                            </View>
-                        </View>
-                        <View style={styles.qtdProduct}>
-                            <View>
-                                <Text style={styles.textQtdProduct}>0</Text>
-                            </View>
-                        </View>
-                        <View style={styles.buttonsAddProduct}>
-                            <View>
-                                <Icon
-                                    onPress={() => addItem()} 
-                                    name="plus" 
-                                    size={25} 
-                                    color={'#2ecc71'} />
-                            </View>
-                        </View>
+            <View style={styles.productCard}>
+                <View style={styles.imagemProductCard}>
+                    <Image
+                        style={styles.imageCard}
+                        source={{ uri: product?.imageBase64 }}
+                    />
+                </View>
+                <View style={styles.containerTextProductCard}>
+                    <Text style={styles.textProductCard}>
+                        {product.name_product}
+                    </Text>
+                    <Text>
+                        {product.description}
+                    </Text>
+                    <Text style={styles.textPriceProduct}>
+                        R$ {product.value}
+                    </Text>
+                </View>
+                <View style={styles.buttonsRemoveProduct}>
+                    <View>
+                        <Icon
+                            onPress={qtdeProduct === 0 ? null : () => removeItem(product)}
+                            name="minus-circle"
+                            size={25}
+                            color={qtdeProduct === 0 ? 'grey' : '#e74c3c'} />
                     </View>
-                )}
-            />
+                </View>
+                <View style={styles.qtdProduct}>
+                    <View>
+                        <Text style={styles.textQtdProduct}>{qtdeProduct}</Text>
+                    </View>
+                </View>
+                <View style={styles.buttonsAddProduct}>
+                    <View>
+                        <Icon
+                            onPress={product.amount === qtdeProduct ? null : () => addItem(product)}
+                            name="plus"
+                            size={25}
+                            color={product.amount === qtdeProduct ? 'grey' : '#2ecc71'} />
+                    </View>
+                </View>
+            </View>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create( {
     text: {
         fontSize: 30
     },
@@ -125,6 +133,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginRight: 10
     }
-})
+} )
 
 export default ItemProduct

@@ -1,9 +1,13 @@
-import React, { useRef, useState } from 'react'
-import { Text, View, Image, StyleSheet, ScrollView, FlatList } from 'react-native'
+import React from 'react'
+import _ from 'lodash';
+import { Text, View, Image, StyleSheet  } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {connect} from 'react-redux';
+
 import { Button } from 'react-native-paper';
 
-const ItemCart = ( { product, navigation } ) => {
+export const ItemCart = ({ product, removeItem }) => {
+   
     return (
         <View style={styles.containerPage}>
             <View style={styles.productCard}>
@@ -20,21 +24,15 @@ const ItemCart = ( { product, navigation } ) => {
                     <Text style={styles.textPriceProduct}>
                         R$ {product.value}
                     </Text>
-                    <View style={styles.containerTotalQtd}>
-                        <Text style={styles.textTotalQtd}>{product.qtd}</Text>
-                    </View>
                     <View style={styles.containerNameProduct}>
-                        <Text>{product.title}</Text>
+                        <Text>{product.name_product}</Text>
                     </View>
                 </View>
                 <View style={styles.containerButtonAndValue}>
                     <View style={styles.buttonsRemoveProduct}>
                         <View>
-                            <Icon name="trash" size={25} color={'#e74c3c'} />
+                            <Icon name="trash" size={25} color={'#e74c3c'} onPress={() => removeItem()} />
                         </View>
-                    </View>
-                    <View style={styles.containerValueTotalProduct}>
-                        <Text style={styles.textValueTotalProduct}>R$ {product.valueTotal}</Text>
                     </View>
                 </View>
             </View>
@@ -104,20 +102,14 @@ const styles = StyleSheet.create( {
         marginTop: 5
     },
     containerNameProduct: {
-        marginTop: 5,
-        marginLeft: 40
-    },
-    containerValueTotalProduct: {
-        marginLeft: 30,
-        marginTop: 10,
-        marginBottom: 10,
-        justifyContent: 'flex-end'
-    },
-    textValueTotalProduct: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#66ed8a'
+        marginTop: 45,
     },
 } );
 
-export default ItemCart
+function mapStateToProps(state) {
+    return {
+        allProducts: state.CartReducer
+    }
+}
+
+export default connect(mapStateToProps)(ItemCart)

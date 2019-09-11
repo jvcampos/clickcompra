@@ -58,7 +58,7 @@ class ProductController {
     }
   }
 
-  async getAll({ params }) {
+  async getAllProducts({ params }) {
     const products = await Database
       .select('id', 'id_category', 'name_category',
         'name_product', 'imageBase64', 'description',
