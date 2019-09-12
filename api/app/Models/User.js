@@ -17,6 +17,10 @@ class User extends Model {
   tokens () {
     return this.hasMany('App/Models/Token')
   }
+
+  cart() {
+    return this.hasOne('App/Models/Cart')
+  }
 }
 
 module.exports = User
