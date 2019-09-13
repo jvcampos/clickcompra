@@ -36,5 +36,12 @@ Route.group(() => {
   Route.get('product/:id', 'ProductController.getProduct').middleware('auth')
   Route.get('products/:id', 'ProductController.getAll').middleware('auth')
   Route.get('products', 'ProductController.getAllProducts')
+
+  // Routes to cart
+  Route.post('cart', 'CartController.create').middleware('auth')
+  Route.put('cart/:product_id', 'CartController.update').middleware('auth')
+  Route.delete('cart/:user_id', 'CartController.delete').middleware('auth')
+  Route.get('cart/:user_id', 'CartController.getCart').middleware('auth')
+  Route.get('cart', 'CartController.index').middleware('auth')
 })
- .prefix('api');
+  .prefix('api')
