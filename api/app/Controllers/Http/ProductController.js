@@ -64,8 +64,18 @@ class ProductController {
         'name_product', 'imageBase64', 'description',
         'value', 'amount'  )
       .from('products')
-    return products
-  }
+      return products
+    }
+
+  async getAll({ params }) {
+    console.log(params)
+    const products = await Database
+      .select('id', 'id_category', 'name_category',
+        'name_product', 'imageBase64', 'description',
+        'value', 'amount'  )
+      .from('products')
+      return products
+    }
 }
 
 module.exports = ProductController

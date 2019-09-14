@@ -4,6 +4,7 @@ import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 import { Formik } from 'formik'
 import * as yup from 'yup'
+import MaskedInput from 'react-text-mask'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -186,8 +187,13 @@ class Solicitacao extends Component {
                         onInput={formikProps.handleChange('cnpj')}
                         value={this.state.supermarket.cnpj}
                         fluid
-                        placeholder='CNPJ'
                         type='text'
+                        children={
+                          <MaskedInput
+                            mask={[/[1-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'/', /\d/,/\d/,/\d/,/\d/, '-', /\d/,/\d/]}
+                            placeholder='CNPJ'
+                          />
+                        }
                       />
                       {this.state.blurCnpj && formikProps.errors.cnpj &&
                         <p style={{ color: "#ff0000", marginTop: '-15px' }}>
@@ -237,6 +243,12 @@ class Solicitacao extends Component {
                         value={this.state.supermarket.year_foundation}
                         fluid
                         placeholder='ANO DE FUNDAÇÃO'
+                        children={
+                          <MaskedInput
+                            mask={[/[1-9]/, /\d/, '/', /\d/, /\d/, '/', /\d/,/\d/,/\d/,/\d/]}
+                            placeholder='ANO DE FUNDAÇÃO'
+                          />
+                        }
                         type='text'
                       />
                       {this.state.blurYearFoundation && formikProps.errors.year_foundation &&
@@ -269,8 +281,13 @@ class Solicitacao extends Component {
                         }}
                         onInput={formikProps.handleChange('cpf')} value={this.state.manager.cpf}
                         fluid
-                        placeholder='CPF'
                         type='text'
+                        children={
+                          <MaskedInput
+                            mask={[/[1-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/,/\d/]}
+                            placeholder='CPF'
+                          />
+                        }
                       />
                       {this.state.blurCpf && formikProps.errors.cpf &&
                         <p style={{ color: "#ff0000", marginTop: '-15px' }}>
