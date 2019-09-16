@@ -26,6 +26,10 @@ class SupermarketSchema extends Schema {
     this.drop('supermarkets')
   }
 
+  supermarket () {
+    return this.hasMany('App/Models/Product')
+  }
+
   user () {
     return this.hasMany('App/Models/User')
   }
