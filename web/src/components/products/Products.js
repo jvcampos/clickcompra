@@ -3,7 +3,7 @@ import { Dimmer, Loader, Form, Table, Modal, Grid, Button, Icon, Header, Segment
 import { toast, SemanticToastContainer } from 'react-semantic-toasts'
 import "antd/dist/antd.css";
 import TableProducts from './TableProducts'
-// import { bindActionCreators } from 'redux';
+import CurrencyInput from 'react-currency-input';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Select from 'react-select'
@@ -250,10 +250,14 @@ class Products extends Component {
     this.showMessage('success', 'bullhorn', 'Produto adicionado com sucesso !')
   }
 
-  onHandleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
+  onHandleChange = (e, masketValue) => {
+    if(e.target.name === 'value_product'){
+      this.setState({value_product: masketValue})
+    } else{
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    }
   }
 
   render() {
@@ -316,13 +320,14 @@ class Products extends Component {
                       onChange={this.handleInputChange}
                     />
                     <Header as='h3'>PREÇO</Header>
-                    <Form.Input
-                      onChange={this.onHandleChange}
-                      value={this.state.value_product}
-                      name="value_product"
-                      fluid icon='money' iconPosition='left'
-                      placeholder='PREÇO' />
-
+                    <Form.Input>
+                      <CurrencyInput
+                        onChangeEvent={this.onHandleChange}
+                        value={this.state.value_product}
+                        name="value_product"
+                        placeholder='PREÇO' 
+                      />
+                    </Form.Input>
                     <Header as='h3'>QUANTIDADE</Header>
                     <Form.Input
                       onChange={this.onHandleChange}
