@@ -33,7 +33,7 @@ Route.group(() => {
   Route.post('product', 'ProductController.create')
   Route.put('product/:id', 'ProductController.update').middleware('auth')
   Route.delete('product/:id', 'ProductController.delete').middleware('auth')
-  Route.get('product/:id', 'ProductController.getProduct').middleware('auth')
+  Route.get('product/:id', 'ProductController.getProduct')
   Route.get('products/:id', 'ProductController.getAll').middleware('auth')
   Route.get('products', 'ProductController.getAllProducts')
 

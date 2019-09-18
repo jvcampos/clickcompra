@@ -53,7 +53,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.textCategories}>Categorias</Text>
           <ScrollView>
             {categories.map((categorie, id) => {
-              return <Categories key={id} item={categorie} />
+              return <Categories key={id} item={categorie} navigation={navigation} />
             })}
           </ScrollView>
         </View>
