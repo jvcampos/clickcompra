@@ -5,7 +5,6 @@ import superagent from 'superagent';
 import SimpleHeaderLeft from '../../../../components/SimpleHeaderLeft';
 import { allProducts } from '../../../../store/actions/products';
 import ItemProduct from '../../../Product/ItemProduct/ItemProduct'
-
 const ItemCategorie = ({ navigation }) => {
   const [products, setProducts] = useState([])
   const dispatch = useDispatch();
