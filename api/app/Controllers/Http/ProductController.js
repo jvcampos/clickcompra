@@ -50,7 +50,10 @@ class ProductController {
 
   async getProduct({ params, response }) {
     const { id } = params;
-    const product = await ProductModel.find(id)
+    const product = await Database
+      .select('name_product')
+      .from('products')
+      .where('id_category', id)
     if (product) {
       HandlerMessage.handlerSuccess(response, product)
     } else {
@@ -63,6 +66,14 @@ class ProductController {
       .select('id', 'id_category', 'name_category',
         'name_product', 'imageBase64', 'description',
         'value', 'amount'  )
+      .from('products')
+    return products
+  }
+
+  async getAllProducts({ params }) {
+    const products = await Database
+      .select('id','name_product', 'description',
+        'value', 'amount', 'imageBase64')
       .from('products')
     return products
   }
