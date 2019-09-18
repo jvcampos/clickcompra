@@ -50,7 +50,10 @@ class ProductController {
 
   async getProduct({ params, response }) {
     const { id } = params;
-    const product = await ProductModel.find(id)
+    const product = await Database
+      .select('name_product')
+      .from('products')
+      .where('id_category', id)
     if (product) {
       HandlerMessage.handlerSuccess(response, product)
     } else {
@@ -76,6 +79,7 @@ class ProductController {
       .from('products')
       return products
     }
-}
+    return products
+  }
 
 module.exports = ProductController
