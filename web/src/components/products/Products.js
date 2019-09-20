@@ -144,7 +144,7 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    this.props.getProducts(localStorage.getItem('id_supermarket'))
+    this.props.getProducts(JSON.parse(localStorage.id_supermarket))
     document.title = 'Produtos | ClickCompras';
     this.refreshTable()
   }
@@ -250,17 +250,14 @@ class Products extends Component {
     this.showMessage('success', 'bullhorn', 'Produto adicionado com sucesso !')
   }
 
-  onHandleChange = (e, masketValue) => {
-    if(e.target.name === 'value_product'){
-      this.setState({value_product: masketValue})
-    } else{
-      this.setState({
-        [e.target.name]: e.target.value
-      })
-    }
+  onHandleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
   }
 
   render() {
+    const products = this.props.dataProducts
     return (
       <div>
         <MenuSuperior />
@@ -323,9 +320,10 @@ class Products extends Component {
                     <Form.Input>
                       <CurrencyInput
                         onChangeEvent={this.onHandleChange}
+                        thousandSeparator=""
                         value={this.state.value_product}
                         name="value_product"
-                        placeholder='PREÇO' 
+                        placeholder='PREÇO'
                       />
                     </Form.Input>
                     <Header as='h3'>QUANTIDADE</Header>
@@ -378,15 +376,16 @@ class Products extends Component {
                       <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-                  {this.props.dataProducts.map(product => {
-                    return (
-                      <TableProducts key={product.id}
-                        onDeleteProduct={this.onDeleteProduct}
-                        onUpdateProduct={this.onUpdateProduct}
-                        data={product}
-                      />
-                    )
-                  })}
+                  {products &&
+                    products.map(product => {
+                      return (
+                        <TableProducts key={product.id}
+                          onDeleteProduct={this.onDeleteProduct}
+                          onUpdateProduct={this.onUpdateProduct}
+                          data={product}
+                        />
+                      )
+                    })}
                 </Table>
               </Grid.Column>
             </Grid.Row>

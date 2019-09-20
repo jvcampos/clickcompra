@@ -9,6 +9,8 @@ import * as productsActions from '../../store/actions/products'
 import Select from 'react-select'
 import numeral from 'numeral';
 import CurrencyInput from 'react-currency-input';
+import axios from 'axios'
+import './products.css'
 
 const Dragger = Upload.Dragger;
 
@@ -17,7 +19,7 @@ class TableProducts extends Component {
     statusModalRemove: false,
     isLoading: false,
     name_product: this.props.data.name_product,
-    category_id: this.props.data.category_id,
+    category_id: this.props.data.id_category,
     category_name: this.props.data.name_category,
     value_product: this.props.data.value,
     description_product: this.props.data.description,
@@ -27,21 +29,30 @@ class TableProducts extends Component {
     disable: false,
     imageBase64: this.props.data.imageBase64,
     optionsCategories: [], //Select category 
-    selectedOption: null,
+    selectedOption: {
+      label: this.props.data.name_category,
+      id: this.props.data.id_category,
+    },
   }
 
   componentDidMount() {
     this.props.getProducts(localStorage.getItem('id_supermarket'))
     document.title = "Produtos | ClickCompras"
-    const options = this.props.dataCategories.map(categories => ({
-      label: categories.name_categorie,
-      id: categories.id,
-      description: categories.description
+    axios.get(`http://localhost:3001/api/categories`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
     })
-    )
-    this.setState({
-      optionsCategories: options
-    })
+      .then(response => {
+        let options = response.data.map(categories => ({
+          label: categories.name_categorie,
+          id: categories.id,
+          description: categories.description
+        }))
+        this.setState({
+          optionsCategories: options
+        })
+      })
   }
 
   openModalEdit = () => {
@@ -220,23 +231,24 @@ class TableProducts extends Component {
                     placeholder='NOME' />
                   <Header as='h3'>CATEGORIA</Header>
                   <Select
-                    className="basic-single"
                     classNamePrefix="Digite ou Selecione"
                     isSearchable
                     name="Categories"
+                    value={this.state.selectedOption}
                     options={this.state.optionsCategories} //reducer of Categories
                     onChange={this.handleInputChange}
                   />
 
                   <Header as='h3'>PREÇO</Header>
                   <Form.Input>
-                      <CurrencyInput
-                        onChangeEvent={this.onHandleChange}
-                        value={this.state.value_product}
-                        name="value_product"
-                        placeholder='PREÇO' 
-                      />
-                    </Form.Input>
+                    <CurrencyInput
+                      onChangeEvent={this.onHandleChange}
+                      thousandSeparator="" 
+                      value={this.state.value_product}
+                      name="value_product"
+                      placeholder='PREÇO'
+                    />
+                  </Form.Input>
                   <Header as='h3'>QUANTIDADE</Header>
                   <Form.Input
                     onChange={this.onHandleChange}
