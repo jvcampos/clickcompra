@@ -25,6 +25,23 @@ class Solicitacao extends Component {
     blurAddress: null,
     blurEmail: null,
     blurPassword: null,
+    // supermarket: {
+    //   cnpj: '',
+    //   social_reason: '',
+    //   address_supermarket: '',
+    //   email_supermarket: '',
+    //   year_foundation: '',
+    // },
+    // manager: {
+    //   cpf: '',
+    //   name: '',
+    //   address: '',
+    //   email: '',
+    //   password: '',
+    //   role: 2,
+    //   status: 2,
+    //   mobile: 2
+    // },
     supermarket: {
       cnpj: '',
       social_reason: '',
@@ -40,6 +57,7 @@ class Solicitacao extends Component {
       password: '',
       role: 2,
       status: 2,
+      mobile: 2
     },
     statusMessageError: 'hidden'
   }
@@ -75,12 +93,14 @@ class Solicitacao extends Component {
   }
 
   handleChangeSupermarket = (e) => {
+    console.log(this.state.supermarket.cnpj)
     this.setState({
       supermarket: {
         ...this.state.supermarket,
         [e.target.name]: e.target.value
       }
     })
+    console.log(this.state)
   }
 
   handleChangeManager = (e) => {
@@ -179,19 +199,19 @@ class Solicitacao extends Component {
                         </p>
                       }
                       <Form.Input
-                        name="cnpj"
-                        onChange={e => {
-                          this.handleChangeSupermarket(e)
-                          this.setState({ blurCnpj: true })
-                        }}
                         onInput={formikProps.handleChange('cnpj')}
                         value={this.state.supermarket.cnpj}
                         fluid
                         type='text'
                         children={
                           <MaskedInput
-                            mask={[/[1-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'/', /\d/,/\d/,/\d/,/\d/, '-', /\d/,/\d/]}
+                            name="cnpj"
+                            mask={[/[1-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
                             placeholder='CNPJ'
+                            onChange={e => {
+                              this.handleChangeSupermarket(e)
+                              this.setState({ blurCnpj: true })
+                            }}
                           />
                         }
                       />
@@ -234,19 +254,19 @@ class Solicitacao extends Component {
                         </p>
                       }
                       <Form.Input
-                        name="year_foundation"
-                        onChange={e => {
-                          this.handleChangeSupermarket(e)
-                          this.setState({ blurYearFoundation: true })
-                        }}
                         onInput={formikProps.handleChange('year_foundation')}
                         value={this.state.supermarket.year_foundation}
                         fluid
                         placeholder='ANO DE FUNDAÇÃO'
                         children={
                           <MaskedInput
-                            mask={[/[1-9]/, /\d/, '/', /\d/, /\d/, '/', /\d/,/\d/,/\d/,/\d/]}
+                            name="year_foundation"
+                            mask={[/[1-9]/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                             placeholder='ANO DE FUNDAÇÃO'
+                            onChange={e => {
+                              this.handleChangeSupermarket(e)
+                              this.setState({ blurYearFoundation: true })
+                            }}
                           />
                         }
                         type='text'
@@ -274,18 +294,18 @@ class Solicitacao extends Component {
                         </p>
                       }
                       <Form.Input
-                        name="cpf"
-                        onChange={e => {
-                          this.handleChangeManager(e)
-                          this.setState({ blurCpf: true })
-                        }}
                         onInput={formikProps.handleChange('cpf')} value={this.state.manager.cpf}
                         fluid
                         type='text'
                         children={
                           <MaskedInput
-                            mask={[/[1-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/,'-', /\d/,/\d/]}
+                            name="cpf"
+                            mask={[/[1-9]/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
                             placeholder='CPF'
+                            onChange={e => {
+                              this.handleChangeManager(e)
+                              this.setState({ blurCpf: true })
+                            }}
                           />
                         }
                       />
