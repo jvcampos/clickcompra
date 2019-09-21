@@ -51,18 +51,20 @@ class ProductController {
     }
   }
 
-  // async getProduct({ params, response }) {
-  //   const { id } = params;
-  //   const product = await Database
-  //     .select('name_product')
-  //     .from('products')
-  //     .where('id_category', id)
-  //   if (product) {
-  //     HandlerMessage.handlerSuccess(response, product)
-  //   } else {
-  //     HandlerMessage.handlerNotFound(response);
-  //   }
-  // }
+  async getProduct({ params, response }) {
+    const { id_category } = params;
+    const product = await Database
+    .select('id', 'id_category', 'name_category',
+      'name_product', 'imageBase64', 'description',
+      'value', 'amount'  )
+    .from('products')
+      .where('id_category', id_category)
+    if (product) {
+      HandlerMessage.handlerSuccess(response, product)
+    } else {
+      HandlerMessage.handlerNotFound(response);
+    }
+  }
 
   async getAll({ params }) {
     const { id } = params;
@@ -86,8 +88,7 @@ class ProductController {
       return products
     }
 
-  async getAll() {
-    console.log(params)
+  async getAllMobile() {
     const products = await Database
       .select('id', 'id_category', 'name_category',
         'name_product', 'imageBase64', 'description',

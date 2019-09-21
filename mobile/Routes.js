@@ -78,7 +78,7 @@ const Routes = createStackNavigator({
   Tab
 },
   {
-    initialRouteName: "Register",
+    initialRouteName: "Tab",
     headerMode: 'none'
   })
 
