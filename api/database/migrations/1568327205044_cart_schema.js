@@ -21,7 +21,7 @@ class CartSchema extends Schema {
         .inTable('products')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
-      table.integer('amount').notNullable()
+      table.integer('qtd').notNullable()
       table.integer('idRandom')
       table.timestamps()
     })

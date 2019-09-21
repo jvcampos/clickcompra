@@ -8,9 +8,10 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 
 class ProductController {
   async create({ request }) {
-    const { id_category, name_category, name_product, imageBase64, description, value, amount } = request.all()
+    const { id_category, id_supermarket, name_category, name_product, imageBase64, description, value, amount } = request.all()
     const product = await ProductModel.create({
       id_category,
+      id_supermarket,
       name_category,
       name_product,
       imageBase64,
@@ -56,6 +57,17 @@ class ProductController {
     } else {
       HandlerMessage.handlerNotFound(response);
     }
+  }
+
+  async getAll({ params }) {
+    const { id } = params;
+    const products = await Database
+      .select('id', 'id_category', 'name_category',
+        'name_product', 'imageBase64', 'description',
+        'value', 'amount'  )
+      .from('products')
+      .where('id_supermarket', id)
+    return products
   }
 
   async getAllProducts({ params }) {
