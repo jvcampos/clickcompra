@@ -30,7 +30,7 @@ Route.group(() => {
   Route.get('categories', 'CategoryController.getAllCategories')
 
   // NOTE Routes to products.
-  Route.post('product', 'ProductController.create')
+  Route.post('product', 'ProductController.create').middleware('auth')
   Route.put('product/:id', 'ProductController.update').middleware('auth')
   Route.delete('product/:id', 'ProductController.delete').middleware('auth')
   Route.get('product/', 'ProductController.getProduct')
@@ -44,6 +44,5 @@ Route.group(() => {
   Route.get('cart/:user_id', 'CartController.getCart')
   Route.get('cart', 'CartController.index')
   Route.post('cart/bestsupermarkets/:user_id', 'CartController.getBetterSupermarket')
-  Route.get('cart/supermarkets', 'CartController.returnIds')
 })
   .prefix('api')

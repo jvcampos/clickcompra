@@ -64,6 +64,17 @@ class ProductController {
   //   }
   // }
 
+  async getAll({ params }) {
+    const { id } = params;
+    const products = await Database
+      .select('id', 'id_category', 'name_category',
+        'name_product', 'imageBase64', 'description',
+        'value', 'amount'  )
+      .from('products')
+      .where('id_supermarket', id)
+    return products
+  }
+
   async getAllProducts({ params }) {
     const { id_supermarket } = params
     const products = await Database
