@@ -9,6 +9,9 @@ import { Button } from 'react-native-paper';
 export const ItemCart = ({ product, removeItem }) => {
    
     return (
+    <React.Fragment>
+        {
+        product.qtd > 0 &&
         <View style={styles.containerPage}>
             <View style={styles.productCard}>
                 <View style={styles.imagemProductCard}>
@@ -26,6 +29,7 @@ export const ItemCart = ({ product, removeItem }) => {
                     </Text>
                     <View style={styles.containerNameProduct}>
                         <Text>{product.name_product}</Text>
+                        <Text>{product.qtd}</Text>
                     </View>
                 </View>
                 <View style={styles.containerButtonAndValue}>
@@ -37,6 +41,8 @@ export const ItemCart = ({ product, removeItem }) => {
                 </View>
             </View>
         </View>
+        }
+    </React.Fragment>
     )
 }
 

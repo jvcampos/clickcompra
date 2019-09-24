@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, View, StyleSheet, Image } from 'react-native'
@@ -21,8 +21,11 @@ const ItemProduct = ({product, navigation}) => {
     }
     const addItem = (product) => {
         const idRandom = uuidv1();
-        dispatch(addProduct({...product, idRandom}));
+        dispatch(addProduct({...product, idRandom, add: true}));
     }
+    
+    let cart = useSelector((state) => state.CartReducer)
+    const findCartEqual = _.find(cart, ['product_id', product.id])
 
     return (
         <View>
@@ -44,18 +47,9 @@ const ItemProduct = ({product, navigation}) => {
                         R$ {product.value}
                     </Text>
                 </View>
-                <View style={styles.buttonsRemoveProduct}>
-                    <View>
-                        <Icon
-                            onPress={qtdeProduct === 0 ? null : () => removeItem(product)}
-                            name="minus-circle"
-                            size={25}
-                            color={qtdeProduct === 0 ? 'grey' : '#e74c3c'} />
-                    </View>
-                </View>
                 <View style={styles.qtdProduct}>
                     <View>
-                        <Text style={styles.textQtdProduct}>{qtdeProduct}</Text>
+                        <Text style={styles.textQtdProduct}>{findCartEqual?.qtd}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsAddProduct}>

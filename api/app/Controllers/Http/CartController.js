@@ -5,8 +5,9 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 
 const Cart = use('App/Models/Cart')
 class CartController {
-  async addOrCreate({ request }) {
+  async addOrCreate({ request, response }) {
     const { product_id, add } = request.all();
+    console.log(product_id)
     var product = await Cart.findBy('product_id', product_id)
     if(add) {
       if(!product){
@@ -14,20 +15,27 @@ class CartController {
           product_id,
           qtd: 1
         })
-        console.log(productAdded)
+        return response.status(200).json(productAdded)
       } else {
-        await Database
+          await Database
             .table('carts')
             .where('product_id', product.product_id)
             .update({qtd: product.qtd + 1})
+            var product = await Cart.findBy('product_id', product_id)
+            return product
       }
     } else {
+      console.log('aqui dentro do delete')
+      console.log(product)
+      if(product.qtd > 0){
         await Database
             .table('carts')
             .where('product_id', product.product_id)
             .update({qtd: product.qtd - 1})
+            var product = await Cart.findBy('product_id', product_id)
+            return product
+      }
     }
-    return product
   }
 
   async getCart({ params, response }) {
