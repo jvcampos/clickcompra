@@ -104,6 +104,13 @@ class SupermarketController {
       .paginate(page, 1)
       return supermarkets
   }
+
+  async getAllSupermarketsMobile({response}) {
+    const supermarkets = await Database
+      .select('id', 'social_reason')
+      .from('supermarkets')
+      return supermarkets
+  }
 }
 
 module.exports = SupermarketController

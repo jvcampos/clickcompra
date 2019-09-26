@@ -24,8 +24,6 @@ const ItemCategorie = ({ navigation }) => {
       })
   }
 
-  console.log(products)
-
   return (
     <View>
       <View style={styles.containerBack}>

@@ -21,6 +21,7 @@ Route.group(() => {
   Route.get('supermarkets/unproved', 'SupermarketController.getSupermarketUnproved').middleware('auth')
   Route.put('supermarket/aproved/:id', 'SupermarketController.aproveSupermarket')
   Route.get('supermarkets', 'SupermarketController.getAll').middleware('auth')
+  Route.get('supermarketsMobile', 'SupermarketController.getAllSupermarketsMobile')
 
   // NOTE Routes to categories.
   Route.post('category', 'CategoryController.create').middleware('auth')
@@ -42,5 +43,7 @@ Route.group(() => {
   Route.post('cart', 'CartController.addOrCreate')
   Route.get('cart/:user_id', 'CartController.getCart')
   Route.post('cart/bestsupermarkets/:user_id', 'CartController.getBetterSupermarket')
+
+  Route.post('finalizarCompra', 'FinalizarCompraController.finalizarCompra')
 })
   .prefix('api')

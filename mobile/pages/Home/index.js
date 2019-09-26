@@ -45,7 +45,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.textPromotions}>Promoções</Text>
         <Carousel
           data={promotions}
-          renderItem={({ item }) => <ItemCarousel item={item} />}
+          renderItem={({ item, id }) => <ItemCarousel id={id} item={item} />}
           sliderWidth={360}
           itemWidth={250}
         />
