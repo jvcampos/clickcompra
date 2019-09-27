@@ -71,11 +71,6 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
                     />
             </ScrollView>
             <View style={styles.containerBottom}>
-                <View>
-                    <Text style={styles.textContainerBottom}>Total: 
-                        <Text style={{ color: '#e74c3c'}}> R$ {totalValue}</Text>
-                    </Text>
-                </View>
                 <View style={styles.buttomBuy}>
                     <Button mode="contained" onPress={betterSupermarket}>Finalizar lista</Button>
                 </View>

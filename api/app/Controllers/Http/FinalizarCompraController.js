@@ -1,10 +1,7 @@
 'use strict'
 var _ = require('lodash');
 const Database = use('Database')
-const SuperMarketModel = use('App/Models/Supermarket')
-const HandlerMessage = use('App/Services/HandlerMessage');
-const CartModel = use('App/Models/Cart')
-
+const OrderModel = use('App/Models/Order')
 
 class FinalizarCompraController {
 
@@ -12,7 +9,7 @@ class FinalizarCompraController {
     const { user_id, id_supermarket, total } = request.all();
 
     const cartItems = await Database
-                .select('id_supermarket', 'qtd', 'product_id')
+                .select('id_supermarket', 'qtd', 'product_id', 'value')
                 .from('products')
                 .innerJoin('carts', 'products.id', 'carts.product_id')
                 .where({user_id: user_id, id_supermarket: id_supermarket})
@@ -23,7 +20,7 @@ class FinalizarCompraController {
                       .where('id_supermarket', id_supermarket)
 
     const newSupermarket = supermarket.map((item) => {
-      return {product_id: item.id, qtd: item.amount, id_supermarket: item.id_supermarket}
+      return {product_id: item.id, qtd: item.amount, id_supermarket: item.id_supermarket, value: item.value}
     })
 
     const getAllProductsRelatedWithCart = newSupermarket.filter((supermarket) => {
@@ -38,7 +35,27 @@ class FinalizarCompraController {
         return product
     })
 
-    Promise.all(result).then((resp) => console.log(resp))
+    const savedOrder = cartItems.map(async (item) => {
+      const order = await OrderModel.create({
+        supermarket_id: item.id_supermarket,
+        user_id: user_id,
+        qtde: item.qtd,
+        product_id: item.product_id,
+        unityValue: item.value,
+        status: 2
+      })
+      return order
+    })
+
+    const cartDeleted = await Database
+                    .table('carts')
+                    .where({user_id: user_id})
+                    .delete();
+
+                    console.log(cartDeleted)
+
+    // Promise.all(savedOrder).then((result) => console.log(result))
+    // Promise.all(result).then((resp) => console.log(resp))
 
     return {cartItems, getAllProductsRelatedWithCart}
 

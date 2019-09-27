@@ -6,6 +6,7 @@ export const addProduct = (product) => {
     .post('http://10.0.2.2:3001/api/cart')
     .query({
       product_id: product.id,
+      // aqui tem que passar o id do usuário
       add: true,
     }).then((resp) => {
       const test = {...JSON.parse(resp.text), product_id: parseInt(product.id), add: true}
@@ -16,6 +17,7 @@ export const addProduct = (product) => {
     })
   }
 }
+
 export const removeFromCart = (product) => {
   return (dispatch) => {
     superagent
@@ -32,3 +34,5 @@ export const removeFromCart = (product) => {
     })
   }
 }
+
+export const loadCart = (products) => ({type: 'LOAD_CART', products})

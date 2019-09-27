@@ -40,7 +40,9 @@ class CartController {
 
   async getCart({ params, response }) {
     const { user_id } = params
-    const cart = await Cart.find(user_id)
+    const cart = await Database
+                  .table('carts')
+                  .where('user_id', user_id)
     if (cart) {
       HandlerMessage.handlerSuccess(response, cart)
     } else {
