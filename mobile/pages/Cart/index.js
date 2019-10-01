@@ -19,6 +19,7 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
 
     const [totalValue, setTotalValue] = useState(0);
     let {height, width} = Dimensions.get('window');
+    let cart = useSelector((state) => state.CartReducer)
 
     useEffect(() => {
         getAllSupermarkets();
@@ -56,10 +57,12 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
           console.log(e)
         })
     }
-    
+
+    const closePopUp = () => setIsModalVisible(false);
+    console.log(allProducts)
     return (
         <React.Fragment>
-        {supermarketsList && <BestSupermarketsPopup supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} />}
+        {supermarketsList && <BestSupermarketsPopup navigation={navigation} supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} closePopUp={closePopUp} />}
         <View style={styles.containerTopoTitle}>
             <Text style={styles.textTopoTitle}>Carrinho</Text>
             <ScrollView style={{ marginTop: 30 }}>
@@ -70,11 +73,13 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
                     renderItem={({ item, id }) => <ItemCart key={parseFloat(id)} product={item} removeItem={() => removeItem(item)} />}
                     />
             </ScrollView>
-            <View style={styles.containerBottom}>
-                <View style={styles.buttomBuy}>
-                    <Button mode="contained" onPress={betterSupermarket}>Finalizar lista</Button>
+            {allProducts.length > 0 &&
+                <View style={styles.containerBottom}>
+                    <View style={styles.buttomBuy}>
+                        <Button mode="contained" onPress={betterSupermarket}>Finalizar lista</Button>
+                    </View>
                 </View>
-            </View>
+            }
         </View>
     </React.Fragment>
     )

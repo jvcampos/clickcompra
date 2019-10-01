@@ -4,10 +4,12 @@ import { ScrollView, FlatList, Dimensions} from 'react-native'
 import SupermarketApproved from './SupermarketApproved'
 import _ from 'lodash';
 import superagent from 'superagent'
+import { useDispatch } from 'react-redux';
+import { cleanCart } from '../../store/actions/cart';
 
-
-const BestSupermarketsPopup = ({clickedOutside, isModalVisible, supermarkets, supermarketsSelecteds }) => {
-  let {height, width} = Dimensions.get('window');
+const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supermarkets, supermarketsSelecteds, closePopUp}) => {
+  let {height} = Dimensions.get('window');
+  const dispatch = useDispatch();
   const [allSupermaketsOrdered, setAllSupermarketsOrdered] = useState([]);
   useEffect(() => {
     const grouped = _.groupBy(supermarketsSelecteds.supermarketsAproved, 'id_supermarket');
@@ -27,11 +29,12 @@ const BestSupermarketsPopup = ({clickedOutside, isModalVisible, supermarkets, su
       id_supermarket: supermarket.id,
       total: supermarket.total
     }).then((resp) => {
-      console.log(JSON.parse(resp.text))
+      dispatch(cleanCart());
+      closePopUp()
+      navigation.navigate('Home')
     }).catch((e) => {
       console.log(e)
     })
-    console.log(supermarket)
   } 
   
   return (

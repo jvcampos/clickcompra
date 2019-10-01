@@ -35,4 +35,6 @@ export const removeFromCart = (product) => {
   }
 }
 
+export const cleanCart = () => ({type: 'CLEAN_CART'})
+
 export const loadCart = (products) => ({type: 'LOAD_CART', products})

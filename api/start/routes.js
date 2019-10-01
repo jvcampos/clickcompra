@@ -44,6 +44,7 @@ Route.group(() => {
   Route.get('cart/:user_id', 'CartController.getCart')
   Route.post('cart/bestsupermarkets/:user_id', 'CartController.getBetterSupermarket')
 
+  Route.get('allOrders/:user_id', 'OrderController.allOrders')
   Route.post('finalizarCompra', 'FinalizarCompraController.finalizarCompra')
 })
   .prefix('api')

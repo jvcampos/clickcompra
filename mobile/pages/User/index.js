@@ -71,11 +71,28 @@ const User = ({ navigation }) => {
             </View>
           </View>
         </TouchableHighlight>
+        <TouchableHighlight onPress={() => navigation.navigate('ListOfOrders')}>
+          <View style={styles.cardConfiguration}>
+            <View style={styles.containerImageCard}>
+              <Icon name="list" size={20} color={'#95afc0'} />
+            </View>
+            <View style={styles.containerTextCard}>
+              <Text style={styles.textCard}>
+                Lista de Compras
+              </Text>
+            </View>
+            <View style={styles.iconRight}>
+              <View>
+                <Icon name="arrow-right" size={20} color={'#7f8c8d'} />
+              </View>
+            </View>
+          </View>
+        </TouchableHighlight>
       </View>
       <TouchableHighlight onPress={() => sair()}>
         <View style={styles.cardConfiguration}>
           <View style={styles.containerImageCard}>
-            <Icon name="undo" size={20} color={'#95afc0'} />
+            <Icon name="power-off" size={20} color={'#95afc0'} />
           </View>
           <View style={styles.containerTextCard}>
             <Text style={styles.textCard}>

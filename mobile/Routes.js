@@ -15,6 +15,7 @@ import UserAddress from './pages/User/Address'
 import UserPassword from './pages/User/Password'
 import UserPersonal from  './pages/User/Personal'
 import ItemCategorie from './pages/Home/Categories/ItemCategorie'
+import ListOfOrders from './pages/User/ListOfOrders/ListOfOrders';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -68,6 +69,7 @@ const Tab = createMaterialBottomTabNavigator({
 const Routes = createStackNavigator({
   AuthLoading,
   Welcome,
+  ListOfOrders,
   Register,
   Login,
   UserAddress,

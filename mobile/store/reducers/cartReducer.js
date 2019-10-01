@@ -30,6 +30,8 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       
       case 'LOAD_CART': 
         return [...state, ...action.products]
+      case 'CLEAN_CART': 
+        return []
     default:
       return state
   }
