@@ -4,16 +4,16 @@ import Dialog, { DialogContent, DialogTitle } from 'react-native-popup-dialog';
 import Button, { FAB } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const ItemCarousel = ({ item, navigation }) => {
-    const [isModalVisible, setIsModalVisible] = useState(false)
-    const [products, setProduct] = useState([])
+const ItemCarousel = ( { item, id, navigation } ) => {
+    const [ isModalVisible, setIsModalVisible ] = useState( false )
+    const [ products, setProduct ] = useState( [] )
 
-    useEffect(() => {
-        setProduct(item)
-    }, [])
+    useEffect( () => {
+        setProduct( item )
+    }, [] )
 
     const toogleModal = () => {
-        setIsModalVisible(true)
+        setIsModalVisible( true )
     }
 
     // const products = [
@@ -67,58 +67,54 @@ const ItemCarousel = ({ item, navigation }) => {
                 height={0.5}
                 width={0.95}
                 visible={isModalVisible}
-                onTouchOutside={() => setIsModalVisible(false)}
+                onTouchOutside={() => setIsModalVisible( false )}
                 dialogTitle={
                     <DialogTitle title={item.title} />
                 }
             >
-                <FlatList
-                    keyExtractor={(item, index) => index.toString()}
-                    data={products}
-                    renderItem={({ item, id }) => <DialogContent key={parseFloat(id)}>
+                <DialogContent key={id}>
 
-                        <View style={styles.productCard} key={id}>
-                            <View style={styles.imagemProductCard}>
-                                <Image
-                                    style={styles.imageCard}
-                                    source={require('../../../assets/drink_categorie.jpg')}
-                                />
-                            </View>
-                            <View style={styles.containerTextProductCard}>
-                                <Text style={styles.textProductCard}>
-                                    {item.name_product}
-                                </Text>
-                                <Text>
-                                    {item.description}
-                                </Text>
-                                <Text style={styles.textPriceProduct}>
-                                    R$ {item.value}
-                                </Text>
-                            </View>
-                            <View style={styles.buttonsRemoveProduct}>
-                                <View>
-                                    <Icon name="minus-circle" size={25} color={'#e74c3c'} />
-                                </View>
-                            </View>
-                            <View style={styles.qtdProduct}>
-                                <View>
-                                    <Text style={styles.textQtdProduct}>0</Text>
-                                </View>
-                            </View>
-                            <View style={styles.buttonsAddProduct}>
-                                <View>
-                                    <Icon name="plus" size={25} color={'#2ecc71'} />
-                                </View>
+                    <View style={styles.productCard} key={id}>
+                        <View style={styles.imagemProductCard}>
+                            <Image
+                                style={styles.imageCard}
+                                source={require( '../../../assets/drink_categorie.jpg' )}
+                            />
+                        </View>
+                        <View style={styles.containerTextProductCard}>
+                            <Text style={styles.textProductCard}>
+                                {item.name_product}
+                            </Text>
+                            <Text>
+                                {item.description}
+                            </Text>
+                            <Text style={styles.textPriceProduct}>
+                                R$ {item.value}
+                            </Text>
+                        </View>
+                        <View style={styles.buttonsRemoveProduct}>
+                            <View>
+                                <Icon name="minus-circle" size={25} color={'#e74c3c'} />
                             </View>
                         </View>
-                    </DialogContent>}
-                />
+                        <View style={styles.qtdProduct}>
+                            <View>
+                                <Text style={styles.textQtdProduct}>0</Text>
+                            </View>
+                        </View>
+                        <View style={styles.buttonsAddProduct}>
+                            <View>
+                                <Icon name="plus" size={25} color={'#2ecc71'} />
+                            </View>
+                        </View>
+                    </View>
+                </DialogContent>
             </Dialog>
             <TouchableOpacity onPress={toogleModal}>
                 <View style={styles.carouselContainer}>
                     <Image
                         style={styles.imageCarousel}
-                        source={require('../../../assets/beef_categorie.png')}
+                        source={require( '../../../assets/beef_categorie.png' )}
                         resizeMode="cover"
                     />
                     <Text>{item.title}</Text>
@@ -128,7 +124,7 @@ const ItemCarousel = ({ item, navigation }) => {
     )
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create( {
     carouselContainer: {
         backgroundColor: '#rgb(164, 176, 190)',
         height: 150,
@@ -196,6 +192,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-end'
     }
-});
+} );
 
 export default ItemCarousel

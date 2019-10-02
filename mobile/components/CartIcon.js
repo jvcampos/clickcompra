@@ -2,16 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import _ from 'lodash';
 export default CartIcon = ({name, badgeCount, color, size}) => {
   let cart = useSelector((state) => state.CartReducer)
+  const qtdeItems = _.sum(cart.map((item) => item.qtd));
   return (
     <View style={{ width: 24, height: 24, margin: 5 }}>
       <Icon name={name} size={size} color={color} />
       {cart.length > 0 && (
         <View style={styles.badgeIcon}>
           <Text style={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}>
-            {cart.length}
+            {qtdeItems}
           </Text>
         </View>
       )}

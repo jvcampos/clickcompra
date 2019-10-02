@@ -3,7 +3,7 @@ import { Dimmer, Loader, Form, Table, Modal, Grid, Button, Icon, Header, Segment
 import { toast, SemanticToastContainer } from 'react-semantic-toasts'
 import "antd/dist/antd.css";
 import TableProducts from './TableProducts'
-// import { bindActionCreators } from 'redux';
+import CurrencyInput from 'react-currency-input';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Select from 'react-select'
@@ -144,7 +144,7 @@ class Products extends Component {
   }
 
   componentDidMount() {
-    this.props.getProducts(localStorage.getItem('id_supermarket'))
+    this.props.getProducts(JSON.parse(localStorage.id_supermarket))
     document.title = 'Produtos | ClickCompras';
     this.refreshTable()
   }
@@ -257,6 +257,7 @@ class Products extends Component {
   }
 
   render() {
+    const products = this.props.dataProducts
     return (
       <div>
         <MenuSuperior />
@@ -316,13 +317,15 @@ class Products extends Component {
                       onChange={this.handleInputChange}
                     />
                     <Header as='h3'>PREÇO</Header>
-                    <Form.Input
-                      onChange={this.onHandleChange}
-                      value={this.state.value_product}
-                      name="value_product"
-                      fluid icon='money' iconPosition='left'
-                      placeholder='PREÇO' />
-
+                    <Form.Input>
+                      <CurrencyInput
+                        onChangeEvent={this.onHandleChange}
+                        thousandSeparator=""
+                        value={this.state.value_product}
+                        name="value_product"
+                        placeholder='PREÇO'
+                      />
+                    </Form.Input>
                     <Header as='h3'>QUANTIDADE</Header>
                     <Form.Input
                       onChange={this.onHandleChange}
@@ -373,15 +376,16 @@ class Products extends Component {
                       <Table.HeaderCell textAlign="center">AÇÃO</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-                  {this.props.dataProducts.map(product => {
-                    return (
-                      <TableProducts key={product.id}
-                        onDeleteProduct={this.onDeleteProduct}
-                        onUpdateProduct={this.onUpdateProduct}
-                        data={product}
-                      />
-                    )
-                  })}
+                  {products &&
+                    products.map(product => {
+                      return (
+                        <TableProducts key={product.id}
+                          onDeleteProduct={this.onDeleteProduct}
+                          onUpdateProduct={this.onUpdateProduct}
+                          data={product}
+                        />
+                      )
+                    })}
                 </Table>
               </Grid.Column>
             </Grid.Row>

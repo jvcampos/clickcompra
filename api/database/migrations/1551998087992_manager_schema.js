@@ -11,7 +11,7 @@ class ManagerSchema extends Schema {
         .references('id')
         .inTable('supermarkets')
         .notNullable()
-      table.string('cpf', 11).notNullable().unique()
+      table.string('cpf', 15).notNullable().unique()
       table.string('name', 80).notNullable().unique()
       table.string('password', 80).notNullable().unique()
       table.string('address',150).notNullable()

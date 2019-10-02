@@ -8,11 +8,14 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Home, { navigationOptions } from './pages/Home'
 import Cart from './pages/Cart'
+import Categorie from './pages/Home/index'
 import Product from './pages/Product'
 import User from './pages/User'
 import UserAddress from './pages/User/Address'
 import UserPassword from './pages/User/Password'
 import UserPersonal from  './pages/User/Personal'
+import ItemCategorie from './pages/Home/Categories/ItemCategorie'
+import ListOfOrders from './pages/User/ListOfOrders/ListOfOrders';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -66,11 +69,14 @@ const Tab = createMaterialBottomTabNavigator({
 const Routes = createStackNavigator({
   AuthLoading,
   Welcome,
+  ListOfOrders,
   Register,
   Login,
   UserAddress,
   UserPassword,
   UserPersonal,
+  ItemCategorie,
+  Categorie,
   Tab
 },
   {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import TextInputMask from 'react-native-text-input-mask';
 import {
   View,
   Image,
@@ -40,7 +41,14 @@ const Register = ({ navigation }) => {
               <TextInput label='Nome' mode='outlined' value={user.name} style={styles.input} onChangeText={text => { setUser( { ...user, name: text } ) }} />
               <TextInput label='Email' mode='outlined' value={user.email} style={styles.input} onChangeText={text => { setUser( { ...user, email: text } ) }} />
               <TextInput secureTextEntry={true} label='Senha' mode='outlined' value={user.password} type='password' style={styles.input} onChangeText={text => { setUser( { ...user, password: text } ) }} />
-              <TextInput label='Cpf' mode='outlined' value={user.cpf} style={styles.input} onChangeText={text => { setUser( { ...user, cpf: text } ) }} />
+              <TextInput label='Cpf' mode='outlined' value={user.cpf} style={styles.input} onChangeText={text => { setUser( { ...user, cpf: text } ) }} 
+                render={props => 
+                  <TextInputMask 
+                    {...props}
+                    mask="[000].[000].[000]-[00]"
+                  />
+                }
+              />
               <TextInput label='Endereço' mode='outlined' value={user.address} style={styles.input} onChangeText={text => { setUser( { ...user, address: text } ) }} />
               <Button onPress={() => dispatch( createUser( user ) )} mode="contained" style={styles.button}>Cadastrar</Button>
             </ScrollView>

@@ -21,6 +21,7 @@ Route.group(() => {
   Route.get('supermarkets/unproved', 'SupermarketController.getSupermarketUnproved').middleware('auth')
   Route.put('supermarket/aproved/:id', 'SupermarketController.aproveSupermarket')
   Route.get('supermarkets', 'SupermarketController.getAll').middleware('auth')
+  Route.get('supermarketsMobile', 'SupermarketController.getAllSupermarketsMobile')
 
   // NOTE Routes to categories.
   Route.post('category', 'CategoryController.create').middleware('auth')
@@ -33,16 +34,17 @@ Route.group(() => {
   Route.post('product', 'ProductController.create').middleware('auth')
   Route.put('product/:id', 'ProductController.update').middleware('auth')
   Route.delete('product/:id', 'ProductController.delete').middleware('auth')
-  Route.get('product/:id', 'ProductController.getProduct').middleware('auth')
-  Route.get('products/:id', 'ProductController.getAll').middleware('auth')
-  Route.get('products', 'ProductController.getAllProducts')
+  Route.get('product/:id_category', 'ProductController.getProduct')
+  Route.get('products', 'ProductController.getAllMobile')
+  Route.get('product/:id', 'ProductController.getAll').middleware('auth')
+  Route.get('products/:id_supermarket', 'ProductController.getAllProducts')
 
   // Routes to cart
-  Route.post('cart', 'CartController.create')
-  Route.put('cart/:product_id', 'CartController.update')
-  Route.delete('cart/:user_id', 'CartController.delete')
+  Route.post('cart', 'CartController.addOrCreate')
   Route.get('cart/:user_id', 'CartController.getCart')
-  Route.get('cart', 'CartController.index')
   Route.post('cart/bestsupermarkets/:user_id', 'CartController.getBetterSupermarket')
+
+  Route.get('allOrders/:user_id', 'OrderController.allOrders')
+  Route.post('finalizarCompra', 'FinalizarCompraController.finalizarCompra')
 })
   .prefix('api')

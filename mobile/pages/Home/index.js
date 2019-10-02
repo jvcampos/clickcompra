@@ -6,12 +6,14 @@ import ItemCarousel from './Carousel/ItemCarousel'
 import Categories from './Categories/Categories'
 import { useDispatch } from 'react-redux';
 import { allCategories } from '../../store/actions/categories';
+import { loadCart } from '../../store/actions/cart';
 
 const Home = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     getAllCategories();
+    cartLoad();
   }, [])
 
   const getAllCategories = async () => {
@@ -24,6 +26,17 @@ const Home = ({ navigation }) => {
       console.log(e)
     })
   }
+
+  const cartLoad = async () => {
+    await superagent
+    .get(`http://10.0.2.2:3001/api/cart/${1}`).then((response) => {
+      const allIensFromCart = JSON.parse(response.text);
+      dispatch(loadCart(allIensFromCart.data));
+    }).catch((e) => {
+      console.log(e)
+    })
+  }
+
   const promotions = [
     {
       index: 1,
@@ -45,7 +58,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.textPromotions}>Promoções</Text>
         <Carousel
           data={promotions}
-          renderItem={({ item }) => <ItemCarousel item={item} />}
+          renderItem={({ item, id }) => <ItemCarousel id={id} item={item} />}
           sliderWidth={360}
           itemWidth={250}
         />
@@ -53,7 +66,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.textCategories}>Categorias</Text>
           <ScrollView>
             {categories.map((categorie, id) => {
-              return <Categories key={id} item={categorie} />
+              return <Categories key={id} item={categorie} navigation={navigation} />
             })}
           </ScrollView>
         </View>

@@ -15,7 +15,7 @@ class SupermarketSchema extends Schema {
       table.string('social_reason', 80).notNullable().unique()
       table.string('address_supermarket',150).notNullable()
       table.string('email_supermarket', 254).notNullable().unique()
-      table.date('year_foundation').notNullable()
+      table.string('year_foundation', 10).notNullable()
       table.enu('status', ['APROVED', 'ANALYZING'])
       table.increments()
       table.timestamps()

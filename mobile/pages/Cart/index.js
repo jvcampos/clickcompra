@@ -6,24 +6,62 @@ import { removeFromCart } from '../../store/actions/cart';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash';
 import { Button } from 'react-native-paper';
+import superagent from 'superagent'
+import Dialog, { DialogContent, DialogTitle } from 'react-native-popup-dialog';
+import BestSupermarketsPopup from '../Cart/BestSupermarketsPopup';
 
 import ItemCart from './ItemCart/ItemCart'
 
 export const Cart = ({ navigation, allProducts, removeFromCart }) => {
-    const [totalValue, setTotalValue] = useState(0)
+    const [ isModalVisible, setIsModalVisible ] = useState(false);
+    const [supermarketsList, setSupermarketList] = useState([]);
+    const [allSupermarkets, setAllSupermarket] = useState([]);
+
+    const [totalValue, setTotalValue] = useState(0);
     let {height, width} = Dimensions.get('window');
+    let cart = useSelector((state) => state.CartReducer)
 
-    const qtdeProduct = useMemo(() => allProducts && allProducts.map(itemCart => itemCart.value), [allProducts]);
-
+    useEffect(() => {
+        getAllSupermarkets();
+    }, [])
+    
+    const getAllSupermarkets = async () => {
+        await superagent
+        .get('http://10.0.2.2:3001/api/supermarketsMobile')
+        .then((resp) => {            
+            const result = JSON.parse(resp.text)
+            setAllSupermarket(result)
+        }).catch((e) => {
+            console.log(e)
+        })
+    }
+    
     useEffect(() => {
         setTotalValue(_.sum(qtdeProduct));
     }, [qtdeProduct])
+
+    const qtdeProduct = useMemo(() => allProducts && allProducts.map(itemCart => itemCart.value), [allProducts]);
     
     const removeItem = (product) => {
         removeFromCart(product);
     };
-    
+
+    const betterSupermarket = async () => {
+        await superagent
+        .post(`http://10.0.2.2:3001/api/cart/bestsupermarkets/${1}`) // aqui o id vai ser de quem estiver logado
+        .then((resp) => {            
+            const result = JSON.parse(resp.text)
+            setSupermarketList(result)
+            setIsModalVisible(true)
+        }).catch((e) => {
+          console.log(e)
+        })
+    }
+
+    const closePopUp = () => setIsModalVisible(false);
     return (
+        <React.Fragment>
+        {supermarketsList && <BestSupermarketsPopup navigation={navigation} supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} closePopUp={closePopUp} />}
         <View style={styles.containerTopoTitle}>
             <Text style={styles.textTopoTitle}>Carrinho</Text>
             <ScrollView style={{ marginTop: 30 }}>
@@ -32,19 +70,17 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
                     maxHeight={height - 230}
                     data={allProducts}
                     renderItem={({ item, id }) => <ItemCart key={parseFloat(id)} product={item} removeItem={() => removeItem(item)} />}
-                />
+                    />
             </ScrollView>
-            <View style={styles.containerBottom}>
-                <View>
-                    <Text style={styles.textContainerBottom}>Total: 
-                        <Text style={{ color: '#e74c3c'}}> R$ {totalValue}</Text>
-                    </Text>
+            {allProducts.length > 0 &&
+                <View style={styles.containerBottom}>
+                    <View style={styles.buttomBuy}>
+                        <Button mode="contained" onPress={betterSupermarket}>Finalizar lista</Button>
+                    </View>
                 </View>
-                <View style={styles.buttomBuy}>
-                    <Button mode="contained">Finalizar lista</Button>
-                </View>
-            </View>
+            }
         </View>
+    </React.Fragment>
     )
 }
 

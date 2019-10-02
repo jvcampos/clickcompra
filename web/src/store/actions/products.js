@@ -6,8 +6,18 @@ const api = axios.create({
 })
 
 export function addProduct(id_category, name_category, name_product, imageBase64, description, value, amount) {
+  console.log(amount)
   return (dispatch) => {
-    return api.post('product', { id_category, name_category, name_product, imageBase64, description, value, amount },
+    return api.post('product', {
+      id_category,
+      name_category,
+      name_product,
+      imageBase64,
+      description,
+      value,
+      amount,
+      id_supermarket: JSON.parse(localStorage.id_supermarket),
+    },
       {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -32,9 +42,9 @@ export function updateProduct(id_product, id_category, name_category, name_produ
   }
 }
 
-export function getProducts(id_manager) {
+export function getProducts(id_supermarket) {
   return (dispatch) => {
-    api.get(`products/${id_manager}`, {
+    api.get(`products/${id_supermarket}`, {
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }

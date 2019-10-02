@@ -9,6 +9,8 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 class ProductController {
   async create({ request }) {
     const { id_category, id_supermarket, name_category, name_product, imageBase64, description, value, amount } = request.all()
+    console.log(id_supermarket)
+    console.log(request.all())
     const product = await ProductModel.create({
       id_category,
       id_supermarket,
@@ -50,8 +52,13 @@ class ProductController {
   }
 
   async getProduct({ params, response }) {
-    const { id } = params;
-    const product = await ProductModel.find(id)
+    const { id_category } = params;
+    const product = await Database
+    .select('id', 'id_category', 'name_category',
+      'name_product', 'imageBase64', 'description',
+      'value', 'amount'  )
+    .from('products')
+      .where('id_category', id_category)
     if (product) {
       HandlerMessage.handlerSuccess(response, product)
     } else {
@@ -71,13 +78,24 @@ class ProductController {
   }
 
   async getAllProducts({ params }) {
+    const { id_supermarket } = params
+    const products = await Database
+      .select('id', 'id_category', 'name_category',
+        'name_product', 'imageBase64', 'description',
+        'value', 'amount')
+      .from('products')
+      .where('id_supermarket', id_supermarket)
+      return products
+    }
+
+  async getAllMobile() {
     const products = await Database
       .select('id', 'id_category', 'name_category',
         'name_product', 'imageBase64', 'description',
         'value', 'amount'  )
       .from('products')
-    return products
+      return products
+    }
   }
-}
 
 module.exports = ProductController

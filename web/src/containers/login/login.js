@@ -51,6 +51,7 @@ export default class Login extends Component {
           this.setState({admin: true })
         }
         else if (result.data.role === "CUSTOMER") {
+          console.log(result)
           this.messageStatus('success', 'Seja Bem Vindo :D');
           localStorage.setItem('token', result.data.token.token);
           localStorage.setItem('id', result.data.id)
