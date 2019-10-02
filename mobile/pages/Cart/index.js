@@ -59,7 +59,6 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
     }
 
     const closePopUp = () => setIsModalVisible(false);
-    console.log(allProducts)
     return (
         <React.Fragment>
         {supermarketsList && <BestSupermarketsPopup navigation={navigation} supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} closePopUp={closePopUp} />}

@@ -6,7 +6,7 @@ class OrderController {
     const { user_id } = params;
     const orders = await Database
       .select('id_compra', 'product_id',
-        'name_product', 'qtde', 'created_at'  )
+        'name_product', 'qtde', 'created_at', 'status'  )
       .from('orders')
       .where('user_id', user_id)
     return orders

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native'
 import { Button, TextInput } from 'react-native-paper';
 import SimpleHeaderLeft from '../../../components/SimpleHeaderLeft';
 import _ from 'lodash';
 import superagent from 'superagent'
+import Order from './Order';
 
 const Address = ({navigation}) => {
   const [orders, setOrders] = useState([]);
@@ -19,7 +20,7 @@ const Address = ({navigation}) => {
       const result = JSON.parse(resp.text)
       const groupedOrders = _.groupBy(result, 'id_compra');
       _.forEach(groupedOrders, (value, key) => {
-        orders.push({key, title: value[0].created_at, data: value})
+        orders.push({key, title: value[0].created_at, status: value[0].status, data: value})
       })
       setOrders(orders)
     }).catch((e) => {
@@ -34,10 +35,13 @@ const Address = ({navigation}) => {
         <SimpleHeaderLeft titleStyle={styles.fontSizeTitleBack} color="#7f8c8d" title="Voltar" onGoBack={() => navigation.goBack()} />
       </View>
       <View style={styles.containerTop}>
-          <Text style={styles.textTop}>
-            Lista de Compras!
-          </Text>
+        <Text style={styles.textTop}>
+          Lista de Compras!
+        </Text>
       </View>
+      <ScrollView>
+        <FlatList data={orders} renderItem={({item, id}) => <Order key={id} order={item} />} />
+      </ScrollView>
     </View>
   )
 }
