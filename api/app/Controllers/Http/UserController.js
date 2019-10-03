@@ -2,7 +2,10 @@
 
 const Database = use('Database')
 const UserModel = use('App/Models/User');
+const ForgotPasswordModel = use('App/Models/ForgotPassword')
 const HandlerMessage = use('App/Services/HandlerMessage')
+const uuidv1 = require('uuid/v1');
+const Mail = use('Mail')
 
 const Hash = use('Hash')
 
@@ -24,6 +27,64 @@ class UserController {
       HandlerMessage.handlerError(response, error)
     }
   }
+
+  async forgotPassword ({request}) {
+    const { email } = request.all();
+    const token = uuidv1();
+    //PRECISA VALIDAR SE O USUÁRIO EXISTE CADASTRADO NA BASE
+    const user = await UserModel.findBy('email', email)
+    if(user){
+      const result = await ForgotPasswordModel.create({email: email, token: token})
+      if(result){
+        await Mail.raw(`<a target="_blank" href="http://localhost:3000/changepassword/${token}">Clique aqui para alterar sua senha</a>`, (message) => {
+          message.from('vinicius_almeidasilva@outlook.com')
+          message.to(email)
+        })
+      }
+      return result;
+    } else{
+      return {success: false, msg: 'Usuário não encontrado'}
+    }
+  }
+
+  async getUserToken({ params, response }) {
+    const { token } = params;
+    const user = await ForgotPasswordModel.findBy('token', token)
+    if (user) {
+      HandlerMessage.handlerSuccess(response, user)
+    }else{
+      HandlerMessage.handlerNotFound(response);
+    }
+  }
+
+  async updatePassword({ request, params, response }) {
+    const { email, newPassword } = request.all();
+    console.log(email)
+    console.log(newPassword)
+    try {
+      const user = await UserModel.findBy('email', email)
+      if (user){
+        const crypto_password = await Hash.make(newPassword)
+        await Database
+        .table('users')
+        .where('id', user.id)
+        .update('password', crypto_password)
+
+        const test = await Database
+        .table('forgot_passwords')
+        .where('email', email)
+        .delete()
+        HandlerMessage.handlerUpdate(response, user)
+      } else {
+        HandlerMessage.handlerError(response, error)
+      }
+    }
+    catch (error) {
+      HandlerMessage.handlerError(response, error)
+    }
+  }
+
+
 
   async update({ request, params, response }) {
     try {
@@ -79,3 +140,5 @@ class UserController {
 }
 
 module.exports = UserController
+
+{/* <a target="_blank" href="http://localhost:3000/changepassword/${token}"> */}

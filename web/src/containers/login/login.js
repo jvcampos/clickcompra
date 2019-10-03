@@ -116,6 +116,7 @@ export default class Login extends Component {
                   <Message>
                     Quer se juntar ? <Link to="/solicitacao"> Realizar solicitação </Link>
                   </Message>
+                  <Link to="/forgotpassword">Esqueci Minha Senha </Link>
             </Segment>
             </Form>
         </Grid.Column>
