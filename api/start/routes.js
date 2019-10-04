@@ -24,6 +24,10 @@ Route.group(() => {
   Route.get('supermarkets/unproved', 'SupermarketController.getSupermarketUnproved').middleware('auth')
   Route.put('supermarket/aproved/:id', 'SupermarketController.aproveSupermarket')
   Route.get('supermarkets', 'SupermarketController.getAll').middleware('auth')
+  Route.get('supermarkets/orders/:id_supermarket', 'SupermarketController.getOrdens')
+  Route.put('supermarkets/orders/aproved/:id_order', 'SupermarketController.aprovedOrder')
+  Route.put('supermarkets/orders/unproved/:id_order', 'SupermarketController.unprovedOrder')
+  Route.get('supermarkets/orders/products/:id_compra', 'SupermarketController.getProducts')
   Route.get('supermarketsMobile', 'SupermarketController.getAllSupermarketsMobile')
 
   // NOTE Routes to categories.

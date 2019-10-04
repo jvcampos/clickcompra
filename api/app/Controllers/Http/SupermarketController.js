@@ -1,7 +1,11 @@
 'use strict'
 
+var _ = require('lodash');
 const Database = use('Database')
 const SuperMarketModel = use('App/Models/Supermarket')
+const OrderModel = use('App/Models/Order')
+const ProductModel = use('App/Models/Product')
+const UserModel = use('App/Models/User')
 const HandlerMessage = use('App/Services/HandlerMessage');
 const Mail = use('Mail')
 
@@ -111,6 +115,56 @@ class SupermarketController {
       .from('supermarkets')
       return supermarkets
   }
+
+  async getOrdens({ params }) {
+    const { id_supermarket } = params;
+    const orders = await Database
+    .table('orders')
+    .where('supermarket_id', id_supermarket)
+   return orders
+  }
+
+  async aprovedOrder({ response, params }) {
+    const { id_order } = params;
+    await Database
+    .table('orders')
+    .where('id', id_order)
+    .update({ status: 1})
+    const order = await OrderModel.find(id_order)
+    HandlerMessage.handlerUpdate(response, order)
+  }
+
+  async unprovedOrder({ response, params }) {
+    const { id_order } = params;
+    const order = await OrderModel.find(id_order)
+    await order.delete();
+    HandlerMessage.handlerDelete(response, order)
+  }
+
+  async getProducts({ response, params }){
+    const { id_compra } = params;
+
+    const idProductsFromOrder = await Database
+      .select('user_id', 'product_id', 'qtde')
+      .table('orders')
+      .where('id_compra', id_compra)
+
+    const products = await Database
+      .select('*')
+      .table('products')
+
+    const userInfo = await UserModel.find(idProductsFromOrder[0].user_id)
+    console.log(userInfo)
+
+      const nameProducts = idProductsFromOrder.map(item => {
+        const product = _.find(products, ['id', item.product_id])
+        return { name: product.name_product, quantiy: item.qtde }
+      })
+
+      return { user: userInfo, nameProducts }
+
+  }
+
 }
 
 module.exports = SupermarketController

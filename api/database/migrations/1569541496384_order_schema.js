@@ -14,6 +14,7 @@ class OrderSchema extends Schema {
         .inTable('supermarkets')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
+      table.string('id_compra').notNullable()
       table
         .integer('user_id').notNullable()
         .unsigned()
