@@ -12,19 +12,27 @@ const Hash = use('Hash')
 class UserController {
   async create({ request, response }) {
     const { cpf, name, address, email, password, role, mobile } = request.all();
-    try {
-        const user = await UserModel.create({
-        cpf,
-        name,
-        address,
-        email,
-        password,
-        role,
-        mobile
-      })
-      HandlerMessage.handlerSuccess(response, user)
-    } catch (error) {
-      HandlerMessage.handlerError(response, error)
+    const isThereCpf = await UserModel.findBy('cpf', cpf)
+    const isThereEmail = await UserModel.findBy('email', email)
+    if(isThereCpf){
+      return response.status(406).json({msg: "Já Existe um usuário com esse CPF"})
+    } else if(isThereEmail){
+      return response.status(406).json({msg: "Já Existe um usuário com esse Email"})
+    }else {
+      try {
+          const user = await UserModel.create({
+          cpf,
+          name,
+          address,
+          email,
+          password,
+          role,
+          mobile
+        })
+        return response.status(200).json({success: "Cadastrado com sucesso!", data: user})
+      } catch (error) {
+        return HandlerMessage.handlerError(response, error)
+      }
     }
   }
 

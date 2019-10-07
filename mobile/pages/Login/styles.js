@@ -2,14 +2,12 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   imageBG: {
-    height: '100%',
-    width: '100%',
     flex: 1,
     backgroundColor: 'white',
   },
   container: {
     flex: 1,
-    paddingTop: 100,
+    paddingTop: 50,
     paddingHorizontal: 16,
   },
   input: {

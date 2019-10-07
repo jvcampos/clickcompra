@@ -1,57 +1,37 @@
 import React, { useState, useRef } from 'react'
 import superagent from 'superagent'
-import {View, ScrollView, KeyboardAvoidingView, Dimensions, Platform, Image, TouchableOpacity, Text} from 'react-native'
+import {View, ScrollView, KeyboardAvoidingView, Dimensions, Platform, Image, StyleSheet} from 'react-native'
 import {Button, TextInput} from 'react-native-paper';
 import { withNavigation } from 'react-navigation'
-import styles from './styles'
-import { useDispatch } from 'react-redux'
-import AsyncStorage from '@react-native-community/async-storage';
 import BGImage from '../../assets/BGImage.png';
 import SimpleHeaderLeft from '../../components/SimpleHeaderLeft';
 import Toast from 'react-native-easy-toast';
 
 const Login = ({ navigation }) => {
-  let dispatch = useDispatch()
   const toastLogin = useRef();
 
-  const [user, setUser] = useState({email: 'vinicius_almeidasilva@outlook.com', password: '123456789'})
+  const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false);
-  const auth = async () => {
-    if(!user.email || !user.password) return;
+  const recoverPassword = async () => {
+    if(!email) return;
     setLoading(true)
     try {
       const res = await superagent
-        .post('http://10.0.2.2:3001/api/login')
+        .post('http://10.0.2.2:3001/api/forgotpassword')
         .query({
-          email: user.email,
-          password: user.password,
+          email: email,
         })
       if(res.status === 200){
-        AsyncStorage.setItem('userToken', res.body.token.token)
-        AsyncStorage.setItem('idUser', res.body.token.id)
-        dispatch({
-          type: 'LOGIN',
-          payload: {
-            login: true,
-            message: 'Login feito com sucesso!😃'
-          }
-        })
-        toastLogin.current.show('Bem-Vindo!', 5000);
+        toastLogin.current.show('Enviado com sucesso! Por favor verifique seu e-mail', 5000);
         setTimeout(() => {
-          navigation.navigate('Tab'); 
-          setUser({name: '', email: ''})
+          navigation.navigate('Login'); 
+          setEmail('')
           setLoading(false)       
         }, 3000);
       }
     } catch (err) {
       toastLogin.current.show('Ocorreu um erro por favor tente mais tarde!', 5000);
       console.log(err)
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          message: 'Erro ao fazer login'
-        }
-      })
       setLoading(false)
     }
   }
@@ -75,40 +55,18 @@ const Login = ({ navigation }) => {
               <TextInput
                 label='Email'
                 mode='outlined'
-                value={user.email}
+                value={email}
                 style={styles.input}
-                onChangeText={text => {
-                  setUser({
-                    ...user,
-                    email: text
-                  })
-                }}
-              />
-              <TextInput
-                secureTextEntry={true}
-                label='Senha'
-                mode='outlined'
-                value={user.password}
-                type='password'
-                style={styles.input}
-                onChangeText={text => {
-                  setUser({
-                    ...user,
-                    password: text
-                  })
-                }}
+                onChangeText={text => {setEmail(text)}}
               />
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                  <Text style={{textAlign: 'right', fontWeight: 'bold', fontSize: 15, padding: 5}}>Esqueci Minha Senha</Text>
-                </TouchableOpacity>
                 <Button
-                  onPress={auth}
+                  onPress={recoverPassword}
                   mode="contained"
                   style={styles.button}
                   loading={loading}
                 >
-                  Entrar
+                  Recuperar Senha
                   </Button>
               </View>
             </View>
@@ -118,5 +76,37 @@ const Login = ({ navigation }) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  imageBG: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  container: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 16,
+  },
+  input: {
+    marginHorizontal: 30,
+    marginVertical: 10,
+  },
+  button: {
+    marginVertical: 10,
+    width: '50%',
+    alignSelf: 'center'
+  },
+  image: {
+    width: 230,
+    height: 150,
+    marginLeft: 73,
+  },
+  fieldsContainer: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    paddingBottom: 15,
+  },
+})
 
 export default withNavigation(Login)
