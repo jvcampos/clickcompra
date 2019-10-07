@@ -16,6 +16,7 @@ import UserPassword from './pages/User/Password'
 import UserPersonal from  './pages/User/Personal'
 import ItemCategorie from './pages/Home/Categories/ItemCategorie'
 import ListOfOrders from './pages/User/ListOfOrders/ListOfOrders';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -77,10 +78,11 @@ const Routes = createStackNavigator({
   UserPersonal,
   ItemCategorie,
   Categorie,
-  Tab
+  Tab,
+  ForgotPassword
 },
   {
-    initialRouteName: "Tab",
+    initialRouteName: "Welcome",
     headerMode: 'none'
   })
 

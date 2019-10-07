@@ -26,12 +26,14 @@ class SessionController {
       else {
         return {
           token,
+          id,
           role,
           status: 'APROVED'
         }
       }
     } else {
       return {
+        id,
         token,
         role,
         status: 'APROVED'
