@@ -6,6 +6,7 @@ import _ from 'lodash';
 import superagent from 'superagent'
 import { useDispatch } from 'react-redux';
 import { cleanCart } from '../../store/actions/cart';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supermarkets, supermarketsSelecteds, closePopUp}) => {
   let {height} = Dimensions.get('window');
@@ -22,10 +23,11 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
   }, [supermarketsSelecteds])
 
   const sendSupermarketSelected = async (supermarket) => {
+    const idUser = await AsyncStorage.getItem('idUser')
     await superagent
     .post('http://10.0.2.2:3001/api/finalizarCompra')
     .query({
-      user_id: 1,
+      user_id: idUser,
       id_supermarket: supermarket.id,
       total: supermarket.total
     }).then((resp) => {

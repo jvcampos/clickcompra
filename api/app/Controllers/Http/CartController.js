@@ -6,13 +6,14 @@ const HandlerMessage = use('App/Services/HandlerMessage');
 const Cart = use('App/Models/Cart')
 class CartController {
   async addOrCreate({ request, response }) {
-    const { product_id, add } = request.all();
+    const { product_id, add, user_id } = request.all();
     console.log(product_id)
     var product = await Cart.findBy('product_id', product_id)
     if(add) {
       if(!product){
         const productAdded = await Cart.create({
           product_id,
+          user_id,
           qtd: 1
         })
         return response.status(200).json(productAdded)

@@ -9,7 +9,8 @@ class FinalizarCompraController {
   async finalizarCompra({ request, response }) {
     const id_compra = uuidv1();
     const { user_id, id_supermarket, total } = request.all();
-
+    console.log("user id ", user_id)
+    console.log("id_supermarket ", id_supermarket)
     const cartItems = await Database
                 .select('id_supermarket', 'qtd', 'product_id', 'value', 'name_product')
                 .from('products')
@@ -38,6 +39,7 @@ class FinalizarCompraController {
     })
 //ADD DUAS NOVAS COLUNAS NA TABELA DE ORDERS id_category e name_product, depois fazer a migrate
     const savedOrder = cartItems.map(async (item) => {
+      console.log("dentro do finalizarCompraController", item)
       const order = await OrderModel.create({
         supermarket_id: item.id_supermarket,
         user_id: user_id,

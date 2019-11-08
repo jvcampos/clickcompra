@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Text, View, Image, StyleSheet, TouchableHighlight } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { useSelector } from 'react-redux';
 
 const User = ({ navigation }) => {
   const sair = async () => {
@@ -9,14 +10,13 @@ const User = ({ navigation }) => {
     navigation.navigate('Login')
     console.log(await AsyncStorage.getItem('userToken'))
   }
-
-  console.log(navigation)
+  let user = useSelector((state) => state.UserReducer)
 
   return (
     <View>
       <View style={styles.containerNameUser}>
         <Text style={styles.textNameUser}>
-          Nome do usuário
+          {user.name}
           </Text>
       </View>
       <View style={styles.containerCards}>
@@ -45,7 +45,7 @@ const User = ({ navigation }) => {
             <View style={styles.containerTextCard}>
               <Text style={styles.textCard}>
                 Endereço
-          </Text>
+              </Text>
             </View>
             <View style={styles.iconRight}>
               <View>

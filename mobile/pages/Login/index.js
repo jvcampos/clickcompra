@@ -14,7 +14,7 @@ const Login = ({ navigation }) => {
   let dispatch = useDispatch()
   const toastLogin = useRef();
 
-  const [user, setUser] = useState({email: 'vinicius_almeidasilva@outlook.com', password: '123456789'})
+  const [user, setUser] = useState({email: 'vinicius_almeiddaa@hotmail.com', password: '1547852'})
   const [loading, setLoading] = useState(false);
   const auth = async () => {
     if(!user.email || !user.password) return;
@@ -27,14 +27,12 @@ const Login = ({ navigation }) => {
           password: user.password,
         })
       if(res.status === 200){
+        console.log(res)
         AsyncStorage.setItem('userToken', res.body.token.token)
-        AsyncStorage.setItem('idUser', res.body.token.id)
+        AsyncStorage.setItem('idUser', JSON.stringify(res.body.id))
         dispatch({
           type: 'LOGIN',
-          payload: {
-            login: true,
-            message: 'Login feito com sucesso!😃'
-          }
+          payload: res.body.data
         })
         toastLogin.current.show('Bem-Vindo!', 5000);
         setTimeout(() => {
