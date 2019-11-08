@@ -15,22 +15,15 @@ const userReducer = (state = {
         redirect: action.payload.redirect,
         message: action.payload.message
       }
-    case 'GET_USER':
+    case 'UPDATE_USER':
       state = {
         ...state,
-        name: action.payload.name,
-        email: action.payload.email,
-        password: action.payload.password,
-        cpf: action.payload.cpf,
-        address: action.payload.address,
-        role: action.payload.role,
-        mobile: action.payload.mobile
+        ...action.payload,
       }
     case 'LOGIN':
       state = {
         ...state,
-        login: action.payload.login,
-        message: action.payload.message
+        ...action.payload,
       }
     default:
       return state

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Text, View, StyleSheet, Image } from 'react-native'
 import { addProduct, removeFromCart } from '../../../store/actions/cart';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-community/async-storage';
 import uuidv1 from 'uuid';
 
 const ItemProduct = ({product, navigation}) => {
@@ -19,9 +20,10 @@ const ItemProduct = ({product, navigation}) => {
         const lastProducFinded = _.findLast(allInTheCart, (n) => n.id === product.id)
         dispatch(removeFromCart(lastProducFinded));
     }
-    const addItem = (product) => {
+    const addItem = async (product) => {
+        const idUser = await AsyncStorage.getItem('idUser')
         const idRandom = uuidv1();
-        dispatch(addProduct({...product, idRandom, add: true}));
+        dispatch(addProduct({...product, idRandom, add: true, user_id: idUser}));
     }
     
     let cart = useSelector((state) => state.CartReducer)

@@ -4,13 +4,17 @@ import Carousel from 'react-native-snap-carousel';
 import superagent from 'superagent';
 import ItemCarousel from './Carousel/ItemCarousel'
 import Categories from './Categories/Categories'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { allCategories } from '../../store/actions/categories';
 import { loadCart } from '../../store/actions/cart';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const Home = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
+  let user = useSelector((state) => state.UserReducer)
+  console.log(user)
   useEffect(() => {
     getAllCategories();
     cartLoad();
@@ -28,8 +32,9 @@ const Home = ({ navigation }) => {
   }
 
   const cartLoad = async () => {
+    const idUser = await AsyncStorage.getItem('idUser')
     await superagent
-    .get(`http://10.0.2.2:3001/api/cart/${1}`).then((response) => {
+    .get(`http://10.0.2.2:3001/api/cart/${idUser}`).then((response) => {
       const allIensFromCart = JSON.parse(response.text);
       dispatch(loadCart(allIensFromCart.data));
     }).catch((e) => {

@@ -92,24 +92,33 @@ class UserController {
     }
   }
 
-
-
   async update({ request, params, response }) {
+    console.log('aquiiiiii')
     try {
       const { id } = params;
       const { cpf, name, address, email, password, password_new } = request.all();
       const user = await UserModel.find(id)
-      const compare_password = await Hash.verify(password, user.password)
-      if (compare_password === true){
-        const crypto_password = await Hash.make(password_new)
+      if(password && password_new){
+        const compare_password = await Hash.verify(password, user.password)
+        console.log(compare_password)
+        if (compare_password === true){
+          const crypto_password = await Hash.make(password_new)
+          await Database
+            .table('users')
+            .where('id', id)
+            .update({ cpf, name, address, email, password: crypto_password })
+          const user_updated = await UserModel.find(id)
+          HandlerMessage.handlerUpdate(response, user_updated)
+        } else {
+          HandlerMessage.handlerError(response, error)
+        }
+      } else {
         await Database
-          .table('users')
-          .where('id', id)
-          .update({ cpf, name, address, email, password: crypto_password })
+        .table('users')
+        .where('id', id)
+        .update({ cpf, name, address, email})
         const user_updated = await UserModel.find(id)
         HandlerMessage.handlerUpdate(response, user_updated)
-      } else {
-        HandlerMessage.handlerError(response, error)
       }
     }
     catch (error) {

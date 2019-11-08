@@ -28,7 +28,9 @@ class SessionController {
           token,
           id,
           role,
-          status: 'APROVED'
+          status: 'APROVED',
+          data: userData
+
         }
       }
     } else {
@@ -36,7 +38,8 @@ class SessionController {
         id,
         token,
         role,
-        status: 'APROVED'
+        status: 'APROVED',
+        data: userData
       }
     }
   }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Text, View, StyleSheet, Image, FlatList } from 'react-native'
+import { View, StyleSheet, Image, FlatList, SafeAreaView, RefreshControl, ScrollView } from 'react-native'
 import { allProducts } from '../../store/actions/products'
 import { Searchbar } from 'react-native-paper'
 import _ from 'lodash';
@@ -10,6 +10,7 @@ import superagent from 'superagent';
 import ItemProduct from './ItemProduct/ItemProduct'
 
 const Product = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false);
   let dispatch = useDispatch()
 
   const [products, setProducts] = useState([]);
@@ -19,6 +20,20 @@ const Product = ({ navigation }) => {
   useEffect(() => {
     getAllProducts();
   }, [])
+
+  const onRefresh = useCallback(async() => {
+    setRefreshing(true);
+    await superagent
+    .get('http://10.0.2.2:3001/api/products').then(response => {
+      const products = JSON.parse(response.text);
+      setProducts(products)
+      dispatch(allProducts(products));
+      setRefreshing(false)
+    }).catch(e => {
+      console.log(e)
+      setRefreshing(false);
+    })
+  }, [refreshing]);
 
   const getAllProducts = async () => {
     await superagent
@@ -49,18 +64,20 @@ const Product = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Searchbar
         placeholder="Procurar produto"
         onChangeText={text => onChangeSearch(text)}
       />
-      <View style={styles.containerList}>
-        {focusSearch ? <FlatList data={productsFiltered} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} /> } />
-         :
-          <FlatList data={products} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} />} />
-        }
+      <ScrollView contentContainerStyle={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <View style={styles.containerList}>
+          {focusSearch ? <FlatList data={productsFiltered} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} /> } />
+          :
+            <FlatList data={products} keyExtractor={(item, index) => index.toString()} renderItem={({item, id}) => <ItemProduct key={parseFloat(id)} product={item} />} />
+          }
       </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

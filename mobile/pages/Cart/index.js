@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Text, View, Image, StyleSheet, ScrollView, FlatList, Dimensions } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {connect} from 'react-redux';
 import { removeFromCart } from '../../store/actions/cart';
-import Icon from 'react-native-vector-icons/FontAwesome'
 import _ from 'lodash';
 import { Button } from 'react-native-paper';
 import superagent from 'superagent'
-import Dialog, { DialogContent, DialogTitle } from 'react-native-popup-dialog';
 import BestSupermarketsPopup from '../Cart/BestSupermarketsPopup';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import ItemCart from './ItemCart/ItemCart'
 
@@ -16,6 +15,7 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
     const [ isModalVisible, setIsModalVisible ] = useState(false);
     const [supermarketsList, setSupermarketList] = useState([]);
     const [allSupermarkets, setAllSupermarket] = useState([]);
+    const [idUser, setIdUser] = useState(null)
 
     const [totalValue, setTotalValue] = useState(0);
     let {height, width} = Dimensions.get('window');
@@ -34,8 +34,11 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
         }).catch((e) => {
             console.log(e)
         })
+        const idUser = await AsyncStorage.getItem('idUser')
+        setIdUser(idUser)
+        console.log(await AsyncStorage.getItem('userToken'))
+        console.log(idUser)
     }
-    
     useEffect(() => {
         setTotalValue(_.sum(qtdeProduct));
     }, [qtdeProduct])
@@ -45,10 +48,9 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
     const removeItem = (product) => {
         removeFromCart(product);
     };
-
     const betterSupermarket = async () => {
         await superagent
-        .post(`http://10.0.2.2:3001/api/cart/bestsupermarkets/${1}`) // aqui o id vai ser de quem estiver logado
+        .post(`http://10.0.2.2:3001/api/cart/bestsupermarkets/${idUser}`) // aqui o id vai ser de quem estiver logado
         .then((resp) => {            
             const result = JSON.parse(resp.text)
             setSupermarketList(result)
@@ -59,10 +61,12 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
     }
 
     const closePopUp = () => setIsModalVisible(false);
+    if(_.isEmpty(allProducts)) return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Image source={require('../../assets/emptyCart.png')} style={{width: 200, height: 200}} /></View>
     return (
         <React.Fragment>
         {supermarketsList && <BestSupermarketsPopup navigation={navigation} supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} closePopUp={closePopUp} />}
         <View style={styles.containerTopoTitle}>
+        {_.isEmpty(allProducts) && <View style={{flex: 1}}><Image source={require('../../assets/emptyCart.png')} style={{width: '50%', height: '60%'}} /></View>}
             <Text style={styles.textTopoTitle}>Carrinho</Text>
             <ScrollView style={{ marginTop: 30 }}>
                 <FlatList
