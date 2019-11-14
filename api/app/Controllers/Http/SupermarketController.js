@@ -117,11 +117,37 @@ class SupermarketController {
   }
 
   async getOrdens({ params }) {
+    let orderItem = []
     const { id_supermarket } = params;
+
+
+    // const listOfProducts = await Database
+    // .select('*')
+    // .from('products')
+    // .innerJoin('carts', 'products.id', 'carts.product_id')
+    // .where('user_id', user_id)
+
+
     const orders = await Database
-    .table('orders')
-    .where('supermarket_id', id_supermarket)
-   return orders
+    .select('orders.id_compra' , 'orders.name_product', 'orders.user_id',
+            'orders.product_id', 'orders.qtde', 'orders.unityValue', 'orders.status',
+            'users.cpf', 'users.name', 'users.address','users.email')
+    .from('orders')
+    .innerJoin('users', 'users.id', 'orders.user_id')
+    .where({ 'status' : 2 , 'supermarket_id' : id_supermarket})
+
+    console.log(orders)
+
+     orders.map( async order => {
+      await orderItem.push({id_compra: order.id_compra, order : []})
+
+      if(orderItem.some( e => e.id_compra === order.id_compra)){
+        orderItem[order.id_compra].order.push(order)
+      }
+    })
+
+    return orderItem
+
   }
 
   async aprovedOrder({ response, params }) {
@@ -141,8 +167,10 @@ class SupermarketController {
     HandlerMessage.handlerDelete(response, order)
   }
 
+
   async getProducts({ response, params }){
     const { id_compra } = params;
+
 
     const idProductsFromOrder = await Database
       .select('user_id', 'product_id', 'qtde')
