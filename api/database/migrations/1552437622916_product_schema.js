@@ -19,7 +19,7 @@ class ProductSchema extends Schema {
         .notNullable()
       table.string('name_category', 200).notNullable()
       table.string('name_product', 200).notNullable()
-      table.text('imageBase64', 'mediumtext').notNullable()
+      table.text('imageBase64', 'longtext').notNullable()
       table.string('description').notNullable()
       table.float('value').notNullable()
       table.integer('amount').notNullable()
