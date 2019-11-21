@@ -38,6 +38,8 @@ Route.group(() => {
   Route.get('categories', 'CategoryController.getAllCategories')
 
   // NOTE Routes to products.
+  Route.get('products/betterproducts/:id_supermarket', 'ProductController.betterProducts')
+  Route.get('products/bettercategory/:id_supermarket', 'ProductController.bestCategory')
   Route.post('product', 'ProductController.create').middleware('auth')
   Route.put('product/:id', 'ProductController.update').middleware('auth')
   Route.delete('product/:id', 'ProductController.delete').middleware('auth')
