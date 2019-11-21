@@ -12,6 +12,7 @@ Route.group(() => {
   Route.delete('user/:id', 'UserController.delete').middleware('auth')
   Route.get('user/:id', 'UserController.getUser').middleware('auth')
   Route.get('users', 'UserController.getAll').middleware('auth')
+  Route.get('users/betteruser/:id_supermarket', 'UserController.betterUser')
   Route.post('forgotPassword', 'UserController.forgotPassword')
   Route.get('getUserToken/:token', 'UserController.getUserToken')
   Route.post('updatePassword', 'UserController.updatePassword')

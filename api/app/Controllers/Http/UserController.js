@@ -7,6 +7,7 @@ const HandlerMessage = use('App/Services/HandlerMessage')
 const uuidv1 = require('uuid/v1');
 const Mail = use('Mail')
 
+var _ = require('lodash');
 const Hash = use('Hash')
 
 class UserController {
@@ -154,7 +155,36 @@ class UserController {
       .paginate(page, 1)
     return users
   }
+
+  async betterUser({ params }) {
+    const { id_supermarket } = params;
+
+    // const teste = []
+
+    const users = await Database.select("users.id" , "users.name")
+    .from("orders")
+    .innerJoin("users", "users.id", "orders.user_id")
+    .where({"status" : 1, "supermarket_id" : id_supermarket})
+    .orderBy("user_id", "desc")
+
+    // users.map( async user => {
+    //   teste.push({ user_id: user.id, qtd: 1, user: ''} )
+
+    //   console.log(teste[user.id].user)
+
+    //   if(teste.some( u => u.id === user.id)){
+    //     console.log('existe')
+    //     teste.push({ user, qtd: u.qtd + 1} )
+    //     // const aa = teste_.find(teste, {id : u.id})
+    //   }
+    // })
+
+    return users
+
+  }
+
 }
+
 
 module.exports = UserController
 

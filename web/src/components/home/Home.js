@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Segment, Grid } from "semantic-ui-react";
 import "./home.css";
 import { SemanticToastContainer } from "react-semantic-toasts";
-import { LineChart, PieChart, ColumnChart } from "react-chartkick";
+import * as Chart from "react-chartkick";
 import "chart.js";
 import axios from "axios";
 import _ from "lodash";
@@ -16,15 +16,7 @@ class Home extends Component {
   state = {
     dataCategories: [],
     dataProducts: [],
-    dataDays: [
-      ["Segunda", 100],
-      ["Terça", 200],
-      ["Quarta", 500],
-      ["Quinta", 50],
-      ["Sexta", 150],
-      ["Sábado", 1000],
-      ["Domingo", 900]
-    ]
+    dataUsers: []
   };
 
   async componentDidMount() {
@@ -47,6 +39,7 @@ class Home extends Component {
           ])
         });
         this.loadingCategories();
+        this.loadinUsers();
       });
   }
 
@@ -64,9 +57,28 @@ class Home extends Component {
       )
       .then(response => {
         const tt =  _.countBy(response.data, 'name_category')
-        this.setState({dataCategories: Object.entries(tt) })
-        console.log('dentro do then',Object.entries(tt))        
+        this.setState({dataCategories: Object.entries(tt) })   
+        console.log(this.state.dataCategories)  
       });
+  }
+
+  async loadinUsers(){
+    await axios
+      .get(
+        `http://localhost:3001/api/users/betteruser/${JSON.parse(
+          localStorage.id_supermarket
+        )}`,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        }
+      )
+      .then(response => {
+        const tt =  _.countBy(response.data, 'name')
+        this.setState({dataUsers: Object.entries(tt) }) 
+        console.log(this.state.dataUsers)
+        })      
   }
 
   render() {
@@ -79,9 +91,9 @@ class Home extends Component {
         </Segment>
         <Grid verticalAlign="center">
           <Grid.Row verticalAlign="center">
-            <Grid.Column width={10}>
-              <h3>Dias da semana e total de vendas</h3>
-              <ColumnChart data={this.state.dataDays} />
+            <Grid.Column width={5}>
+              <h3>Clientes com maiores compras</h3>
+              <Chart.ColumnChart data={this.state.dataUsers} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -89,12 +101,12 @@ class Home extends Component {
           <Grid.Row>
             <div className="chart" style={{ width: 400 }}>
               <h3>Categorias mais vendidas</h3>
-              <PieChart data={this.state.dataCategories} />
+              <Chart.PieChart data={this.state.dataCategories} />
             </div>
             <Grid.Column width={3}>
               <div className="chart" style={{ width: 400 }}>
                 <h3>Produtos mais vendidos</h3>
-                <PieChart data={this.state.dataProducts} />
+                <Chart.PieChart data={this.state.dataProducts} />
               </div>
             </Grid.Column>
           </Grid.Row>
