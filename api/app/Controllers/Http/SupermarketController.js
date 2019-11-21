@@ -152,19 +152,24 @@ class SupermarketController {
 
   async aprovedOrder({ response, params }) {
     const { id_order } = params;
+
     await Database
     .table('orders')
-    .where('id', id_order)
+    .where('id_compra', id_order)
     .update({ status: 1})
-    const order = await OrderModel.find(id_order)
-    HandlerMessage.handlerUpdate(response, order)
+
+    // const order = await OrderModel.find(id_order)
+    // HandlerMessage.handlerUpdate(response, order)
   }
 
   async unprovedOrder({ response, params }) {
     const { id_order } = params;
-    const order = await OrderModel.find(id_order)
-    await order.delete();
-    HandlerMessage.handlerDelete(response, order)
+
+    await Database
+    .table('orders')
+    .where('id_compra', id_order)
+    .delete()
+
   }
 
 

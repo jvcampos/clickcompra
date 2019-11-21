@@ -7,9 +7,30 @@ import { connect } from 'react-redux';
 import MenuSuperior from '../menusuperior/Menusuperior'
 import TableOrders from '../supermarket/Orders/TableOrders'
 
+import axios from 'axios'
+
 class Supermarket extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      order: []
+    };
+  }
+
   componentDidMount(){
     document.title = 'Supermercado | ClickCompras';
+
+    axios.get(`http://localhost:3001/api/supermarkets/orders/${localStorage.getItem('id_supermarket')}`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+      .then(response => {
+       const orderFiltered = response.data.filter( order => {
+          return order.order.length > 0
+        })
+        this.setState({ order: orderFiltered})
+      })
   }
 
 
@@ -35,7 +56,9 @@ class Supermarket extends Component {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  <TableOrders />
+                  { this.state.order.map( (itemOrder, i ) => {
+                    return <TableOrders order={itemOrder} index={i} />
+                  })}
                 </Table.Body>
               </Table>
             </Grid.Column>

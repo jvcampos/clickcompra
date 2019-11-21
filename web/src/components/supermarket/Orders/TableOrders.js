@@ -10,6 +10,7 @@ import {
   Label
 } from "semantic-ui-react";
 import { SemanticToastContainer, toast } from "react-semantic-toasts";
+import _ from 'lodash';
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -17,14 +18,45 @@ import { connect } from "react-redux";
 import "../../categories/categories.css";
 import * as ordersAction from "../../../store/actions/orders";
 
+import axios from 'axios'
+
 class TableOrders extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      total: 0,
+      valueOrder: []
+    };
   }
 
   componentDidMount() {
-    console.log(this.props);
+    const valueTotal = this.props.order.order.map((itemOrder) => {
+      return itemOrder.unityValue * itemOrder.qtde
+    })
+
+    this.setState({ valueOrder: valueTotal })
+  }
+
+  aprovedItem = (id_compra) => {
+    axios.put(`http://localhost:3001/api/supermarkets/orders/aproved/${id_compra}`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+      .then(() => {
+       window.location.reload()
+      })
+  }
+
+  unprovedItem = (id_compra) => {
+    axios.put(`http://localhost:3001/api/supermarkets/orders/unproved/${id_compra}`, {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+      .then(() => {
+       window.location.reload()
+      })
   }
 
   showMessage(type, icon, title) {
@@ -38,68 +70,80 @@ class TableOrders extends Component {
     }, 1000);
   }
 
+
+
   render() {
     return (
       <Table.Row>
-        <Table.Cell>ITEM 1</Table.Cell>
-        <Table.Cell>ITEM 2</Table.Cell>
+        <Table.Cell>{this.props.order.order[this.props.index].name}</Table.Cell>
+        <Table.Cell>R$ {this.state.valueOrder[this.props.index]}</Table.Cell>
         <Table.Cell textAlign="center">
           <Table.Row textAlign="center">
             <Modal
               className="modal_dados_pedido"
               dimmer="blurring"
-              size="large"
+              size="small"
               trigger={
                 <Button className="btn_verificar_pedido">
-                  Verificar dados
+                  Informações do pedido
                 </Button>
               }
             >
               <Modal.Header style={{ textAlign: "center" }}>
-                Informações Pedido
+                Informações Cliente
               </Modal.Header>
               <Modal.Content>
                 <Modal.Description>
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <div
                       style={{
-                        marginRight: 50,
                         display: "flex",
                         flexDirection: "column"
                       }}
                     >
-                      <Label>
-                        Nome
-                        <Label.Detail>teste1</Label.Detail>
+                      <Label style={{ marginBottom: '10px' }}>
+                        CPF
+                        <Label.Detail>{this.props.order.order[this.props.index].cpf}</Label.Detail>
                       </Label>
-                      <Label>
-                        Valor:
-                        <Label.Detail>1000000.00</Label.Detail>
-                      </Label>
-                      <Label>
+                      <Label style={{ marginBottom: '10px' }}>
                         Endereço:
-                        <Label.Detail>rua sei lá</Label.Detail>
+                        <Label.Detail>{this.props.order.order[this.props.index].address}</Label.Detail>
                       </Label>
-                      <Label>
-                        Bairro:
-                        <Label.Detail>bairro sei lá o que</Label.Detail>
+                      <Label style={{ marginBottom: '10px' }}>
+                        E-mail:
+                        <Label.Detail>{this.props.order.order[this.props.index].email}</Label.Detail>
                       </Label>
-                    </div>
-                    <div
-                      style={{
-                        height: "100%",
-                        overflowY: "auto",
-                        display: "flex",
-                        flexDirection: "column"
-                      }}
-                    >
-                      <div>Produtos: </div>
-                      <div>varios</div>
-                      <div>Produtos</div>
-                      <div>diferentes</div>
                     </div>
                   </div>
                 </Modal.Description>
+              </Modal.Content>
+              <Modal.Header style={{ textAlign: "center", fontSize: '1.3em', fontWeight: 'bold', paddingTop: '10px' }}>
+                Informações Pedido
+                  </Modal.Header>
+              <Modal.Content>
+                {this.props.order.order.map(itemOrder => {
+                  return (
+                    <Modal.Description>
+                      <div style={{ display: "flex", justifyContent: "center" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row"
+                          }}
+                        >
+                          <Label style={{ marginBottom: '10px' }}>
+                            NOME PRODUTO
+                        <Label.Detail>{itemOrder.name_product}</Label.Detail>
+                          </Label>
+                          <Label style={{ marginBottom: '10px' }}>
+                            QUANTIDADE
+                        <Label.Detail>{itemOrder.qtde}</Label.Detail>
+                          </Label>
+                        </div>
+                      </div>
+                    </Modal.Description>
+                  )
+                })}
               </Modal.Content>
             </Modal>
           </Table.Row>
@@ -107,20 +151,20 @@ class TableOrders extends Component {
         <Table.Cell textAlign="center">
           <Button
             onClick={() => {
-              this.props.acceptOrReject(); // Colocar os parametros (id, true)
+              this.aprovedItem(this.props.order.id_compra); // Colocar os parametros (id, true)
             }}
             size="small"
             color="green"
             animated="fade"
           >
-            <Button.Content visible>APROVAR</Button.Content>
+            <Button.Content visible >APROVAR</Button.Content>
             <Button.Content hidden>
               <Icon name="close" />
             </Button.Content>
           </Button>
           <Button
             onClick={() => {
-              this.props.acceptOrReject(); // Colocar os parametros (id, true)
+              this.unprovedItem(this.props.order.id_compra); // Colocar os parametros (id, true)
             }}
             size="small"
             color="red"
