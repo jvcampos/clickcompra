@@ -14,7 +14,7 @@ const Login = ({ navigation }) => {
   let dispatch = useDispatch()
   const toastLogin = useRef();
 
-  const [user, setUser] = useState({email: 'vinicius_almeiddaa@hotmail.com', password: '1547852'})
+  const [user, setUser] = useState({email: 'joao@outlook.com.br', password: '123'})
   const [loading, setLoading] = useState(false);
   const auth = async () => {
     if(!user.email || !user.password) return;

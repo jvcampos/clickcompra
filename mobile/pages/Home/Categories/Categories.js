@@ -2,17 +2,18 @@ import React, { useRef, useState } from 'react'
 import { Text, View, Image, StyleSheet, TouchableHighlight } from 'react-native'
 
 const Categories = ({ item, navigation }) => {
+    console.log('ITEM', item)
     return (
         <TouchableHighlight 
             onPress={() => navigation.navigate('ItemCategorie', { item })}>
             <View style={styles.categorieBox}>
-                <View style={styles.imagemCategorieBox}>
+                {/* <View style={styles.imagemCategorieBox}>
                     <Image
                         style={styles.imageCard}
                         source={require('../../../assets/beef_categorie.png')}
                         resizeMode="stretch"
                     />
-                </View>
+                </View> */}
                 <View style={styles.containerTextCategorieBox}>
                     <Text style={styles.textCategoriesBox}>
                         {item.name_categorie}

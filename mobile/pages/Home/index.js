@@ -8,16 +8,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { allCategories } from '../../store/actions/categories';
 import { loadCart } from '../../store/actions/cart';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { allProducts } from '../../store/actions/products';
 
 const Home = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([])
+
   const dispatch = useDispatch();
   let user = useSelector((state) => state.UserReducer)
-  console.log(user)
   useEffect(() => {
     getAllCategories();
     cartLoad();
+    getProducts();
   }, [])
 
   const getAllCategories = async () => {
@@ -40,6 +42,17 @@ const Home = ({ navigation }) => {
     }).catch((e) => {
       console.log(e)
     })
+  }
+
+  const getProducts = async () => {
+    await superagent
+      .get(`http://10.0.2.2:3001/api/products`).then((response) => {
+        const products = JSON.parse(response.text);
+        console.log('PRODUCTS', products)
+        dispatch(allProducts(products));
+      }).catch((e) => {
+        console.log(e)
+      })
   }
 
   const promotions = [

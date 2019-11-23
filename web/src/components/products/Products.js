@@ -95,20 +95,6 @@ class Products extends Component {
       });
   };
 
-  beforeUpload = file => {
-    const isJPG = file.type === "image/jpeg";
-    if (!isJPG) {
-      this.messageStatus("error", "Só é permitido tipo JPG");
-      return;
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      this.messageStatus("error", "Imagem deve ter até 2MB!");
-      return;
-    }
-    return isJPG && isLt2M;
-  };
-
   getBase64 = (img, callback) => {
     this.messageStatus("success", "Imagem adicionada com sucesso");
     const reader = new FileReader();
@@ -283,6 +269,7 @@ class Products extends Component {
           >
             <Grid.Column width={5} style={{ left: "-22.5%" }}>
               <Modal
+                style={{'overflow': 'auto', 'height': '80%'}}
                 centered={false}
                 open={this.state.statusModalAdd}
                 className="modal_dados_gerente"
@@ -313,7 +300,6 @@ class Products extends Component {
                       name="file"
                       disabled={this.state.disable}
                       action="//jsonplaceholder.typicode.com/posts/"
-                      beforeUpload={this.beforeUpload}
                       onChange={this.handleChange}
                     >
                       <p className="ant-upload-drag-icon">

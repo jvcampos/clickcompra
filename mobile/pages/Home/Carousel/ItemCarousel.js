@@ -75,12 +75,12 @@ const ItemCarousel = ( { item, id, navigation } ) => {
                 <DialogContent key={id}>
 
                     <View style={styles.productCard} key={id}>
-                        <View style={styles.imagemProductCard}>
+                        {/* <View style={styles.imagemProductCard}>
                             <Image
                                 style={styles.imageCard}
                                 source={require( '../../../assets/drink_categorie.jpg' )}
                             />
-                        </View>
+                        </View> */}
                         <View style={styles.containerTextProductCard}>
                             <Text style={styles.textProductCard}>
                                 {item.name_product}
@@ -112,11 +112,11 @@ const ItemCarousel = ( { item, id, navigation } ) => {
             </Dialog>
             <TouchableOpacity onPress={toogleModal}>
                 <View style={styles.carouselContainer}>
-                    <Image
+                    {/* <Image
                         style={styles.imageCarousel}
                         source={require( '../../../assets/beef_categorie.png' )}
                         resizeMode="cover"
-                    />
+                    /> */}
                     <Text>{item.title}</Text>
                 </View >
             </TouchableOpacity>

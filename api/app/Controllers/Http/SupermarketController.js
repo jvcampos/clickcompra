@@ -81,12 +81,7 @@ class SupermarketController {
   }
 
   async aproveSupermarket({ params, response }){
-    // await Mail.raw('<h1>Supermercado Aprovado Sucesso!</h1>', (message) => {
-    //   console.log('oloco meeeoooooo')
-    //   console.log(message)
-    //   message.from('vinicius_almeidasilva@outlook.com')
-    //   message.to('sk8_bol@hotmail.com')
-    // })
+
     try {
       const { id } = params;
       await Database
@@ -94,6 +89,10 @@ class SupermarketController {
         .where('id', id)
         .update('status', 1)
       const supermarket = await SuperMarketModel.find(id)
+      await Mail.raw('<h1>Supermercado Aprovado Sucesso!</h1>', (message) => {
+        message.from('adm@clickcompra.com')
+        message.to(supermarket.email_supermarket)
+      })
       HandlerMessage.handlerUpdate(response, supermarket)
     }
     catch (error) {

@@ -11,11 +11,26 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import ItemCart from './ItemCart/ItemCart'
 
-export const Cart = ({ navigation, allProducts, removeFromCart }) => {
+export const Cart = ({ navigation, allProducts, removeFromCart, allProductsFromAllSupermarket }) => {
     const [ isModalVisible, setIsModalVisible ] = useState(false);
     const [supermarketsList, setSupermarketList] = useState([]);
     const [allSupermarkets, setAllSupermarket] = useState([]);
     const [idUser, setIdUser] = useState(null)
+    const [productsFiltered, setProductFiltered] = useState([])
+
+    const teste = _.filter(allProductsFromAllSupermarket[0], (item) => {
+         return  allProducts.find((item2) => item.id === item2.product_id)
+        }
+    )
+
+    // const productsFiltered = allProducts.map((item, i) => {
+    //     const foundEqual = _.find(teste, (tt) => tt.id === item.product_id)
+    //     console.log('found equal')
+    //     if(foundEqual){
+    //         return {...foundEqual, ...item}
+    //     }
+    // })
+    
 
     const [totalValue, setTotalValue] = useState(0);
     let {height, width} = Dimensions.get('window');
@@ -23,7 +38,15 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
 
     useEffect(() => {
         getAllSupermarkets();
-    }, [])
+        const productsFiltered = allProducts.map((item, i) => {
+            const foundEqual = _.find(teste, (tt) => tt.id === item.product_id)
+            if(foundEqual){
+                return {...foundEqual, ...item}
+            }
+        })
+        console.log(productsFiltered)
+        setProductFiltered(productsFiltered)
+    }, [allProducts])
     
     const getAllSupermarkets = async () => {
         await superagent
@@ -72,11 +95,11 @@ export const Cart = ({ navigation, allProducts, removeFromCart }) => {
                 <FlatList
                     keyExtractor={(item, index) => index.toString()}
                     maxHeight={height - 230}
-                    data={allProducts}
+                    data={productsFiltered}
                     renderItem={({ item, id }) => <ItemCart key={parseFloat(id)} product={item} removeItem={() => removeItem(item)} />}
                     />
             </ScrollView>
-            {allProducts.length > 0 &&
+            {_.sumBy(productsFiltered, 'qtd') > 0 &&
                 <View style={styles.containerBottom}>
                     <View style={styles.buttomBuy}>
                         <Button mode="contained" onPress={betterSupermarket}>Finalizar lista</Button>
@@ -117,7 +140,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        allProducts: state.CartReducer
+        allProducts: state.CartReducer,
+        allProductsFromAllSupermarket: state.ProductReducer
     }
 }
 const mapDispatchToProps = dispatch => {

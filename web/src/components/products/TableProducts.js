@@ -188,6 +188,7 @@ class TableProducts extends Component {
           <Table.Cell>{this.props.data.description}</Table.Cell>
           <Table.Cell textAlign="center">
             <Modal
+            style={{overflow: 'auto', height: '80%'}}
               centered={false}
               open={this.state.statusModalEdit}
               className="modal_dados_gerente"
@@ -301,7 +302,7 @@ class TableProducts extends Component {
                     {this.props.data.name_product}</span> ?</p>
               </Modal.Content>
               <Modal.Actions>
-                <Button basic onClick={this.closeModalEdit} color='red' inverted>
+                <Button basic onClick={this.closeModalRemove} color='red' inverted>
                   <Icon name='remove' /> Cancelar
                 </Button>
                 <Button color='green' onClick={() => this.props.onDeleteProduct(this.props.data.id)} inverted>

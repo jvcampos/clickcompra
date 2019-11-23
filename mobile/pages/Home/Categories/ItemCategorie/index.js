@@ -30,7 +30,7 @@ const ItemCategorie = ({ navigation }) => {
         <SimpleHeaderLeft titleStyle={styles.fontSizeTitleBack} color="#7f8c8d" title="Voltar" onGoBack={() => navigation.goBack()} />
         <ScrollView>
           {products.map((product, id) => {
-            return <ItemProduct key={id} product={[product]} />
+            return <ItemProduct key={id} product={product} />
           })}
         </ScrollView>
       </View>

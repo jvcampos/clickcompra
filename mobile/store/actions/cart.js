@@ -22,6 +22,7 @@ export const addProduct = (product) => {
 }
 
 export const removeFromCart = (product) => {
+  console.log('PRODUCT', product)
   return (dispatch) => {
     superagent
     .post('http://10.0.2.2:3001/api/cart')

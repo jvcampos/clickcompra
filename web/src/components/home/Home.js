@@ -86,31 +86,32 @@ class Home extends Component {
       <div>
         <SemanticToastContainer />
         <MenuSuperior />
-        <Segment>
-          Welcome , <strong> {this.props.dataLogin.email}</strong>
-        </Segment>
-        <Grid verticalAlign="center">
-          <Grid.Row verticalAlign="center">
-            <Grid.Column width={5}>
-              <h3>Clientes com maiores compras</h3>
-              <Chart.ColumnChart data={this.state.dataUsers} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <Grid verticalAlign="center" textAlign="left" style={{ height: "90%" }}>
-          <Grid.Row>
-            <div className="chart" style={{ width: 400 }}>
-              <h3>Categorias mais vendidas</h3>
-              <Chart.PieChart data={this.state.dataCategories} />
-            </div>
-            <Grid.Column width={3}>
-              <div className="chart" style={{ width: 400 }}>
-                <h3>Produtos mais vendidos</h3>
-                <Chart.PieChart data={this.state.dataProducts} />
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {this.state.dataCategories.length || this.state.dataProducts.length || this.state.dataUsers.length &&
+        <React.Fragment>
+          <Grid verticalAlign="center" style={{'padding-top': '40px'}}>
+            <Grid.Row verticalAlign="center">
+              <Grid.Column width={5}>
+                <h3>Clientes com maiores compras</h3>
+                <Chart.ColumnChart data={this.state.dataUsers} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+            <Grid verticalAlign="center" textAlign="left" style={{ height: "90%" }}>
+              <Grid.Row>
+                <div className="chart" style={{ width: 400 }}>
+                  <h3>Categorias mais vendidas</h3>
+                  <Chart.PieChart data={this.state.dataCategories} />
+                </div>
+                <Grid.Column width={3}>
+                  <div className="chart" style={{ width: 400 }}>
+                    <h3>Produtos mais vendidos</h3>
+                    <Chart.PieChart data={this.state.dataProducts} />
+                  </div>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </React.Fragment>
+          }
       </div>
     );
   }
