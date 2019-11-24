@@ -148,7 +148,8 @@ class ProductController {
     const products = await Database.select("name_product", "qtde")
       .from("orders")
       .where({"status" : 1, "supermarket_id" : id_supermarket})
-      .orderBy("qtde", "desc");
+      .orderBy("qtde", "desc")
+      .limit(5)
 
     return products;
   }
@@ -159,7 +160,8 @@ class ProductController {
       .from("orders")
       .innerJoin("products", "products.id", "orders.product_id")
       .where({"status" : 1, "supermarket_id" : id_supermarket})
-      .orderBy("qtde", "desc");
+      .orderBy("qtde", "desc")
+      .limit(5)
 
     return products;
   }

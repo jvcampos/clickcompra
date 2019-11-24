@@ -166,6 +166,7 @@ class UserController {
     .innerJoin("users", "users.id", "orders.user_id")
     .where({"status" : 1, "supermarket_id" : id_supermarket})
     .orderBy("user_id", "desc")
+    .limit(5)
 
     // users.map( async user => {
     //   teste.push({ user_id: user.id, qtd: 1, user: ''} )
