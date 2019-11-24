@@ -13,7 +13,8 @@ class OrderController {
       "status"
     )
       .from("orders")
-      .where("user_id", user_id);
+      .where("user_id", user_id)
+      .where('qtde', '>', 0);
     return orders;
   }
 }

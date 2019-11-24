@@ -30,11 +30,8 @@ class TableOrders extends Component {
   }
 
   componentDidMount() {
-    const valueTotal = this.props.order.order.map((itemOrder) => {
-      return itemOrder.unityValue * itemOrder.qtde
-    })
-
-    this.setState({ valueOrder: valueTotal })
+    // valueTotal = _.sum(valueTotal)
+    // this.setState({ valueOrder: valueTotal })
   }
 
   aprovedItem = (id_compra) => {
@@ -75,8 +72,8 @@ class TableOrders extends Component {
   render() {
     return (
       <Table.Row>
-        <Table.Cell>{this.props.order.order[this.props.index].name}</Table.Cell>
-        <Table.Cell>R$ {this.state.valueOrder[this.props.index]}</Table.Cell>
+        <Table.Cell>{this.props.order[0].name}</Table.Cell>
+        <Table.Cell>R$ {_.sum(_.map(this.props.order, (item) => item.qtde * item.unityValue))}</Table.Cell>
         <Table.Cell textAlign="center">
           <Table.Row textAlign="center">
             <Modal
@@ -103,15 +100,15 @@ class TableOrders extends Component {
                     >
                       <Label style={{ marginBottom: '10px' }}>
                         CPF
-                        <Label.Detail>{this.props.order.order[this.props.index].cpf}</Label.Detail>
+                        <Label.Detail>{this.props.order[0].cpf}</Label.Detail>
                       </Label>
                       <Label style={{ marginBottom: '10px' }}>
                         Endereço:
-                        <Label.Detail>{this.props.order.order[this.props.index].address}</Label.Detail>
+                        <Label.Detail>{this.props.order[0].address}</Label.Detail>
                       </Label>
                       <Label style={{ marginBottom: '10px' }}>
                         E-mail:
-                        <Label.Detail>{this.props.order.order[this.props.index].email}</Label.Detail>
+                        <Label.Detail>{this.props.order[0].email}</Label.Detail>
                       </Label>
                     </div>
                   </div>
@@ -121,7 +118,7 @@ class TableOrders extends Component {
                 Informações Pedido
                   </Modal.Header>
               <Modal.Content>
-                {this.props.order.order.map(itemOrder => {
+                {this.props.order.map(itemOrder => {
                   return (
                     <Modal.Description>
                       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -151,7 +148,7 @@ class TableOrders extends Component {
         <Table.Cell textAlign="center">
           <Button
             onClick={() => {
-              this.aprovedItem(this.props.order.id_compra); // Colocar os parametros (id, true)
+              this.aprovedItem(this.props.order[0].id_compra); // Colocar os parametros (id)
             }}
             size="small"
             color="green"
@@ -164,7 +161,7 @@ class TableOrders extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.unprovedItem(this.props.order.id_compra); // Colocar os parametros (id, true)
+              this.unprovedItem(this.props.order[0].id_compra); // Colocar os parametros (id)
             }}
             size="small"
             color="red"

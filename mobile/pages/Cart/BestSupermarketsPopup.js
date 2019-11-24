@@ -12,14 +12,20 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
   let {height} = Dimensions.get('window');
   const dispatch = useDispatch();
   const [allSupermaketsOrdered, setAllSupermarketsOrdered] = useState([]);
-  useEffect(() => {
-    const grouped = _.groupBy(supermarketsSelecteds.supermarketsAproved, 'id_supermarket');
-    const separeEachSupermarket = Object.keys(grouped).map((key) => grouped[key]);
-    const supermarketAprovedAndValue = separeEachSupermarket.map((supermarket, i) => {
-      const total = _.sumBy(supermarket, (o) => o.productotal)
-      return {id: supermarket[i].id_supermarket, total}
+  useEffect(() => {   
+    const supermarketAprovedAndValue = supermarketsSelecteds.map((supermarket, i) => {
+      console.log(supermarket)
+
+      const total = _.sumBy(supermarket.map((item) => {
+        if(item.qtd > 0) {
+          return item.value * item.qtd
+        }
+      }))
+
+      return {id: supermarket[0]?.id_supermarket, total}
     })
-    setAllSupermarketsOrdered(_.orderBy(supermarketAprovedAndValue, 'total'))
+    setAllSupermarketsOrdered(supermarketAprovedAndValue)
+    // setAllSupermarketsOrdered(_.orderBy(supermarketAprovedAndValue, 'total'))
   }, [supermarketsSelecteds])
 
   const sendSupermarketSelected = async (supermarket) => {
@@ -38,7 +44,7 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
       console.log(e)
     })
   } 
-  
+  console.log(allSupermaketsOrdered)
   return (
     <Dialog height={0.5} width={0.95} visible={isModalVisible} onTouchOutside={clickedOutside} dialogTitle={<DialogTitle title="Melhores Opções" />}>
       <DialogContent>
@@ -47,7 +53,7 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
               keyExtractor={(item, index) => index.toString()}
               maxHeight={height - 230}
               data={allSupermaketsOrdered}
-              renderItem={({ item, id }) => <SupermarketApproved key={id} nameSupermarket={_.find(supermarkets, ['id', item.id]).social_reason} total={item.total} selectSupermarket={() => sendSupermarketSelected(item)} />}
+              renderItem={({ item, id }) => <SupermarketApproved key={id} nameSupermarket={_.find(supermarkets, ['id', item.id])?.social_reason} total={item.total} selectSupermarket={() => sendSupermarketSelected(item)} />}
               />
         </ScrollView>
       </DialogContent>

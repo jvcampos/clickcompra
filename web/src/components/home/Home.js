@@ -86,7 +86,7 @@ class Home extends Component {
       <div>
         <SemanticToastContainer />
         <MenuSuperior />
-        {this.state.dataCategories.length || this.state.dataProducts.length || this.state.dataUsers.length &&
+        
         <React.Fragment>
           <Grid verticalAlign="center" style={{'padding-top': '40px'}}>
             <Grid.Row verticalAlign="center">
@@ -111,7 +111,6 @@ class Home extends Component {
               </Grid.Row>
             </Grid>
           </React.Fragment>
-          }
       </div>
     );
   }

@@ -77,6 +77,7 @@ export const Cart = ({ navigation, allProducts, removeFromCart, allProductsFromA
         .then((resp) => {            
             const result = JSON.parse(resp.text)
             setSupermarketList(result)
+            console.log(result)
             setIsModalVisible(true)
         }).catch((e) => {
           console.log(e)

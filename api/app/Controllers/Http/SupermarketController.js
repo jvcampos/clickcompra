@@ -134,17 +134,16 @@ class SupermarketController {
     .from('orders')
     .innerJoin('users', 'users.id', 'orders.user_id')
     .where({ 'status' : 2 , 'supermarket_id' : id_supermarket})
+    .where('qtde', '>', 0);
 
-    console.log(orders)
-
-     orders.map( async order => {
+     orders.map( async (order, i) => {
       await orderItem.push({id_compra: order.id_compra, order : []})
 
+
       if(orderItem.some( e => e.id_compra === order.id_compra)){
-        orderItem[order.id_compra].order.push(order)
+        orderItem[0].order.push(order)
       }
     })
-
     return orderItem
 
   }

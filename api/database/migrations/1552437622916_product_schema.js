@@ -18,6 +18,7 @@ class ProductSchema extends Schema {
         .inTable('supermarkets')
         .notNullable()
       table.string('name_category', 200).notNullable()
+      table.string('upc_code', 200).notNullable()
       table.string('name_product', 200).notNullable()
       table.text('imageBase64', 'longtext').notNullable()
       table.string('description').notNullable()

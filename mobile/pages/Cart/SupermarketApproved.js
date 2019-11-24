@@ -6,7 +6,7 @@ export const SupermarketApproved = ({nameSupermarket, selectSupermarket, total})
   return (
     <TouchableOpacity style={styles.container} onPress={() => selectSupermarket()}>
       <View style={styles.nameSupermarket}>
-        <Text style={{fontWeight: 'bold', fontSize: 18}}>{nameSupermarket.toUpperCase()}</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 18}}>{nameSupermarket?.toUpperCase()}</Text>
       </View>
       <View style={styles.total}>
         <Text style={{fontWeight: 'bold', fontSize: 18}}>{numeral(total).format('$0,0.00')}</Text>

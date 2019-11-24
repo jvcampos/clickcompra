@@ -29,7 +29,17 @@ class Supermarket extends Component {
        const orderFiltered = response.data.filter( order => {
           return order.order.length > 0
         })
-        this.setState({ order: orderFiltered})
+
+        function group(arr, key) {
+          return [...arr.reduce((acc, o) => 
+              acc.set(o[key], (acc.get(o[key]) || []).concat(o))
+          , new Map).values()];
+      }
+        if(orderFiltered[0]){
+          const arrayOrdered = group(orderFiltered[0].order, 'id_compra')
+          console.log(arrayOrdered)
+          this.setState({ order: arrayOrdered})
+        }
       })
   }
 

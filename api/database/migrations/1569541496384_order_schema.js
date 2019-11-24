@@ -26,7 +26,7 @@ class OrderSchema extends Schema {
         .onDelete('CASCADE')
       table.integer('product_id').notNullable()
       table.integer('qtde').notNullable()
-      table.integer('unityValue').notNullable()
+      table.float('unityValue').notNullable()
       table.enu('status', ['APROVED', 'ANALYZING'])
       table.timestamps()
     })

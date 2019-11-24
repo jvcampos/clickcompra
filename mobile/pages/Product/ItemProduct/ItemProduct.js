@@ -10,6 +10,7 @@ import uuidv1 from 'uuid';
 const ItemProduct = ({product, navigation}) => {
     const [qtdeProduct, setQtdeProduct] = useState(0)
     const dispatch = useDispatch();
+
     
     let allInTheCart = useSelector((state) => state.CartReducer)
     useEffect(() => {
@@ -57,10 +58,10 @@ const ItemProduct = ({product, navigation}) => {
                 <View style={styles.buttonsAddProduct}>
                     <View>
                         <Icon
-                            onPress={product.amount === qtdeProduct ? null : () => addItem(product)}
+                            onPress={product.amount === findCartEqual?.qtd ? null : () => addItem(product)}
                             name="plus"
                             size={25}
-                            color={product.amount === qtdeProduct ? 'grey' : '#2ecc71'} />
+                            color={product.amount === findCartEqual?.qtd ? 'grey' : '#2ecc71'} />
                     </View>
                 </View>
             </View>
