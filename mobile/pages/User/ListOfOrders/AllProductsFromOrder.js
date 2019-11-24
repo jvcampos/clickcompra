@@ -1,8 +1,9 @@
 import React from 'react'
 import Dialog, { DialogContent, DialogTitle } from 'react-native-popup-dialog';
 import { ScrollView, FlatList, Dimensions, View, Text} from 'react-native'
+import numeral from 'numeral';
 
-const AllProductsFromOrder = ({isModalVisible, products, clickedOutside}) => {
+const AllProductsFromOrder = ({isModalVisible, products, clickedOutside, totalValue}) => {
   let {height} = Dimensions.get('window');
   console.log(isModalVisible)
   return (
@@ -19,6 +20,9 @@ const AllProductsFromOrder = ({isModalVisible, products, clickedOutside}) => {
                   <Text>Quantidade: {item.qtde}</Text>
                 </View>}
               />
+              <View style={{justifyContent: 'center', textAlign: 'center', paddingTop: 30}}>
+                <Text style={{fontWeight: 'bold', fontSize: 18}}>VALOR TOTAL: {numeral(totalValue).format('$0,0.00')}</Text>
+              </View>
         </ScrollView>
       </DialogContent>
     </Dialog>

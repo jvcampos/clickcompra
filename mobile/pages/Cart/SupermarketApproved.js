@@ -2,7 +2,9 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import numeral from 'numeral';
 
-export const SupermarketApproved = ({nameSupermarket, selectSupermarket, total}) => {
+export const SupermarketApproved = ({nameSupermarket, selectSupermarket, total, item, cart}) => {
+  console.log('ITEM', item)
+  console.log('CART', cart)
   return (
     <TouchableOpacity style={styles.container} onPress={() => selectSupermarket()}>
       <View style={styles.nameSupermarket}>

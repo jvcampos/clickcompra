@@ -25,8 +25,9 @@ const Product = ({ navigation }) => {
     setRefreshing(true);
     await superagent
     .get('http://10.0.2.2:3001/api/products').then(response => {
-      const products = JSON.parse(response.text);
-      setProducts(products)
+      let products = JSON.parse(response.text);
+      products = _.uniqBy(products, 'name_product')
+      console.log('PRODUCTS', products)
       dispatch(allProducts(products));
       setRefreshing(false)
     }).catch(e => {
@@ -38,7 +39,9 @@ const Product = ({ navigation }) => {
   const getAllProducts = async () => {
     await superagent
       .get('http://10.0.2.2:3001/api/products').then(response => {
-        const products = JSON.parse(response.text);
+        let products = JSON.parse(response.text);
+        products = _.uniqBy(products, 'name_product')
+        console.log('PRODUCTS', products)
         setProducts(products)
         dispatch(allProducts(products));
       }).catch(e => {

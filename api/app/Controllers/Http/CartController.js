@@ -7,14 +7,16 @@ const _ = require('lodash');
 const Cart = use('App/Models/Cart')
 class CartController {
   async addOrCreate({ request, response }) {
-    const { product_id, add, user_id } = request.all();
-    console.log(product_id)
+    const { product_id, add, user_id, cart_product_name } = request.all();
+    console.log('cart_product_name', cart_product_name)
     var product = await Cart.findBy('product_id', product_id)
+
     if(add) {
       if(!product){
         const productAdded = await Cart.create({
           product_id,
           user_id,
+          cart_product_name,
           qtd: 1
         })
         return response.status(200).json(productAdded)
@@ -22,7 +24,7 @@ class CartController {
           await Database
             .table('carts')
             .where('product_id', product.product_id)
-            .update({qtd: product.qtd + 1})
+            .update({qtd: product.qtd + 1, cart_product_name})
             var product = await Cart.findBy('product_id', product_id)
             return product
       }
@@ -57,8 +59,6 @@ class CartController {
     const itemOrdered = []
     try {
       const { user_id } = params;
-      const supermarkets_aproved = []
-      const supermarkets_unproved = []
       const listOfProducts = await Database
       .select('*')
       .from('products')
@@ -95,34 +95,6 @@ class CartController {
     }
 
       const bb = group(sorted, 'id_supermarket')
-      
-
-      // const totalPriceOfAllsupermarkets = listOfProducts.map(product => {
-      //   var productotal = product.qtd * product.value;
-      //   return {id_supermarket: product.id_supermarket, productotal, id_product: product.id, qtd: product.qtd}
-      // })
-
-
-      // listOfProducts.forEach(product => {
-      //   if(product.qtd > product.amount){
-      //     supermarkets_unproved.push(product.id_supermarket)
-      //   } else {
-      //     supermarkets_aproved.push(product.id_supermarket)
-      //   }
-      // })
-
-
-      // const listSuper = {aproved: supermarkets_aproved, unproved: supermarkets_unproved}
-      // const result = listSuper.aproved.filter((data, i) => {
-      //   return data !== listSuper.unproved[i]
-      // })
-      // const new_list_super = {aproved: result, unproved: supermarkets_unproved}
-
-      // const supermarketsAproved = totalPriceOfAllsupermarkets.filter((supermarket) => {
-      //   return new_list_super.aproved.includes(supermarket.id_supermarket)
-      // })
-
-      // const finalResult = {supermarketsAproved, unproved: new_list_super.unproved}
 
       return response.status(200).json(bb)
     } catch (error) {

@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import Moment from 'moment';
 import { TouchableOpacity, Text, StyleSheet} from 'react-native'
 import AllProductsFromOrder from './AllProductsFromOrder';
+import _ from 'lodash';
 
 const Order = ({order}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -9,10 +10,10 @@ const Order = ({order}) => {
   
   const showProduct = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
-  console.log(isModalVisible)
+  console.log(order.data)
   return (
     <React.Fragment>
-      <AllProductsFromOrder products={order.data} isModalVisible={isModalVisible} clickedOutside={closeModal} />
+      <AllProductsFromOrder totalValue={_.sum(_.map(order.data, (item) => item.qtde * item.unityValue))} products={order.data} isModalVisible={isModalVisible} clickedOutside={closeModal} />
       <TouchableOpacity style={styles.container} onPress={showProduct}>
         <Text style={{fontSize: 18}}>{Moment(order.title).format('DD/MM/YYYY | HH:mm')}</Text>
         <Text style={{fontSize: 13}}>{order.status === 'ANALYZING' ? 'Analisando' : 'Aprovado'}</Text>

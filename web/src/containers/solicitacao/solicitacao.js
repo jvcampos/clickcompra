@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Message, Button, Segment, Form, Grid, Header } from 'semantic-ui-react'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts'
 import { Formik } from 'formik'
@@ -86,6 +86,8 @@ class Solicitacao extends Component {
     this.props.solicitation(this.state)
     this.setState({ statusLoading: true })
     this.showMessage()
+    return <Redirect to="/" />
+    
   }
 
   handleChange = (e) => {

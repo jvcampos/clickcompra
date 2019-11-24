@@ -40,7 +40,7 @@ const Address = ({navigation}) => {
         const result = JSON.parse(resp.text)
         const groupedOrders = _.groupBy(result, 'id_compra');
         _.forEach(groupedOrders, (value, key) => {
-          orders.push({key, title: value[0].created_at, status: value[0].status, data: value})
+          orders.push({key, title: value[0].created_at, status: value[0].status, data: value, unityValue: value.unityValue})
         })
         setOrders(orders)
       }).catch((e) => {

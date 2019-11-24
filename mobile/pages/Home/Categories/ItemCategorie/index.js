@@ -5,6 +5,7 @@ import superagent from 'superagent';
 import SimpleHeaderLeft from '../../../../components/SimpleHeaderLeft';
 import { allProducts } from '../../../../store/actions/products';
 import ItemProduct from '../../../Product/ItemProduct/ItemProduct'
+import _ from 'lodash';
 const ItemCategorie = ({ navigation }) => {
   const [products, setProducts] = useState([])
   const dispatch = useDispatch();
@@ -16,8 +17,9 @@ const ItemCategorie = ({ navigation }) => {
   const getProducts = async () => {
     await superagent
       .get(`http://10.0.2.2:3001/api/product/${navigation.state.params.item.id}`).then((response) => {
+        
         const products = JSON.parse(response.text);
-        setProducts(products.data)
+        setProducts(_.uniqBy(products.data, 'name_product'))
         dispatch(allProducts(products.data));
       }).catch((e) => {
         console.log(e)

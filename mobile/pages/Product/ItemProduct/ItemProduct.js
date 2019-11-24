@@ -46,9 +46,9 @@ const ItemProduct = ({product, navigation}) => {
                     <Text>
                         {product.description}
                     </Text>
-                    <Text style={styles.textPriceProduct}>
+                    {/* <Text style={styles.textPriceProduct}>
                         R$ {product.value}
-                    </Text>
+                    </Text> */}
                 </View>
                 <View style={styles.qtdProduct}>
                     <View>

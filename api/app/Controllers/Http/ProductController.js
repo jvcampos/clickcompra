@@ -16,7 +16,7 @@ class ProductController {
       imageBase64,
       description,
       value,
-      amount
+      amount,
     } = request.all();
     console.log(id_supermarket);
     console.log(request.all());
@@ -28,7 +28,8 @@ class ProductController {
       imageBase64,
       description,
       value,
-      amount
+      amount,
+      upc_code: 1
     });
     return product;
   }

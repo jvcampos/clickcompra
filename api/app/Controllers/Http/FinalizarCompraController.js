@@ -9,13 +9,39 @@ class FinalizarCompraController {
   async finalizarCompra({ request, response }) {
     const id_compra = uuidv1();
     const { user_id, id_supermarket, total } = request.all();
-    console.log("user id ", user_id)
-    console.log("id_supermarket ", id_supermarket)
+    console.log("user id: ", user_id)
+    console.log("id_supermarket:", id_supermarket)
+
+    const allProductsSupermarketSelected = await Database
+      .select('name_product', "id")
+      .from('products')
+      .where({"id_supermarket": id_supermarket})
+  
+    const getNameAllProduct = await Database
+      .select("name_product", "id_supermarket")
+      .from("products")
+      .innerJoin('carts', 'products.id', 'carts.product_id')
+      .where({"user_id": user_id})
+
+      console.log('getNameAllProduct', getNameAllProduct)
+      console.log('allProductsSupermarketSelected', allProductsSupermarketSelected)
+ 
+
+    allProductsSupermarketSelected.forEach(async product => {
+        await Database
+          .select('*')
+          .from('carts')
+          .where({'user_id': user_id, "cart_product_name" : product.name_product})
+          .update('product_id', product.id)
+    })
+
+    
     const cartItems = await Database
                 .select('id_supermarket', 'qtd', 'product_id', 'value', 'name_product')
                 .from('products')
                 .innerJoin('carts', 'products.id', 'carts.product_id')
-                .where({user_id: user_id, id_supermarket: id_supermarket})
+                .where({"user_id": user_id, "id_supermarket": id_supermarket})
+
 
     const supermarket = await Database
                       .select('id_supermarket', 'amount', 'id')
@@ -62,6 +88,9 @@ class FinalizarCompraController {
 
     // Promise.all(savedOrder).then((result) => console.log(result))
     // Promise.all(result).then((resp) => console.log(resp))
+    // console.log('UPDATE PRODUCTS', updateProducts)
+    // console.log('SAVE ORDER', savedOrder)
+    // console.log('CART DELETE', cartDeleted)
 
     if(updateProducts && savedOrder && cartDeleted){
       return {success: true, msg: "Compra feita com sucesso!"}

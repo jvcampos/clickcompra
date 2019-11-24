@@ -3,12 +3,14 @@ import _ from 'lodash';
 export const addProduct = (product) => {
   const userId = parseInt(product.user_id)
   console.log(userId)
+  console.log(product)
   return (dispatch) => {
     superagent
     .post('http://10.0.2.2:3001/api/cart')
     .query({
       product_id: product.id,
       user_id: userId,
+      cart_product_name: product.name_product,
       // aqui tem que passar o id do usuário
       add: true,
     }).then((resp) => {

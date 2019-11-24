@@ -10,7 +10,8 @@ class OrderController {
       "name_product",
       "qtde",
       "created_at",
-      "status"
+      "status",
+      "unityValue"
     )
       .from("orders")
       .where("user_id", user_id)

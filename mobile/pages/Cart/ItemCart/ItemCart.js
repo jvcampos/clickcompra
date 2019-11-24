@@ -10,7 +10,7 @@ export const ItemCart = ({ product, removeItem }) => {
     return (
     <React.Fragment>
         {
-        product.qtd > 0 &&
+        product?.qtd > 0 &&
         <View>
             <View style={styles.productCard}>
                 <View style={styles.imagemProductCard}>
@@ -21,16 +21,16 @@ export const ItemCart = ({ product, removeItem }) => {
                 </View>
                 <View style={styles.containerTextProductCard}>
                     <Text style={styles.textProductCard}>
-                        {product.name_product}
+                        {product?.name_product}
                     </Text>
                     <Text>
-                        {product.description}
+                        {product?.description}
                     </Text>
                     <Text style={styles.textPriceProduct}>
-                        R$ {product.value}
+                        R$ {product?.value}
                     </Text>
                     <Text style={styles.qtdeProduct}>
-                        Quantidade: {product.qtd}
+                        Quantidade: {product?.qtd}
                     </Text>
                 </View>
                 <View style={styles.buttonsRemoveProduct}>

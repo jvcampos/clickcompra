@@ -14,15 +14,16 @@ class CartSchema extends Schema {
         .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
-      table
+        table
         .integer('product_id').notNullable()
         .unsigned()
         .references('id')
         .inTable('products')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
-      table.integer('qtd').notNullable()
-      table.integer('idRandom')
+        table.integer('qtd').notNullable()
+        table.integer('idRandom')
+        table.string('cart_product_name')
       table.timestamps()
     })
   }

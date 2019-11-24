@@ -88,7 +88,7 @@ export const Cart = ({ navigation, allProducts, removeFromCart, allProductsFromA
     if(_.isEmpty(allProducts)) return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Image source={require('../../assets/emptyCart.png')} style={{width: 200, height: 200}} /></View>
     return (
         <React.Fragment>
-        {supermarketsList && <BestSupermarketsPopup navigation={navigation} supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} closePopUp={closePopUp} />}
+        {supermarketsList && <BestSupermarketsPopup navigation={navigation} supermarketsSelecteds={supermarketsList} clickedOutside={() => setIsModalVisible(false)} isModalVisible={isModalVisible} supermarkets={allSupermarkets} closePopUp={closePopUp} supermarketsList={supermarketsList} />}
         <View style={styles.containerTopoTitle}>
         {_.isEmpty(allProducts) && <View style={{flex: 1}}><Image source={require('../../assets/emptyCart.png')} style={{width: '50%', height: '60%'}} /></View>}
             <Text style={styles.textTopoTitle}>Carrinho</Text>

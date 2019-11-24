@@ -9,6 +9,7 @@ import { allCategories } from '../../store/actions/categories';
 import { loadCart } from '../../store/actions/cart';
 import AsyncStorage from '@react-native-community/async-storage';
 import { allProducts } from '../../store/actions/products';
+import _ from 'lodash';
 
 const Home = ({ navigation }) => {
   const [categories, setCategories] = useState([]);
@@ -47,7 +48,8 @@ const Home = ({ navigation }) => {
   const getProducts = async () => {
     await superagent
       .get(`http://10.0.2.2:3001/api/products`).then((response) => {
-        const products = JSON.parse(response.text);
+        let products = JSON.parse(response.text);
+        products = _.uniqBy(products, 'name_product')
         console.log('PRODUCTS', products)
         dispatch(allProducts(products));
       }).catch((e) => {
