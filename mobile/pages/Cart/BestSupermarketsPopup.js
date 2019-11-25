@@ -9,7 +9,7 @@ import { cleanCart } from '../../store/actions/cart';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supermarkets, supermarketsSelecteds, closePopUp, supermarketsList}) => {
-  const [test, setTest] = useState([]) 
+  const [closeModal, setCloseModal] = useState(false) 
   let cart = useSelector((state) => state.CartReducer)
 
   let {height} = Dimensions.get('window');
@@ -34,7 +34,6 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
         newAr.push(element)
       }
     });
-    setTest(newAr)
       const aaaarrr = newAr.map((i) => {
         console.log('iIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII', i)
       const total = _.sumBy(i.map((item) => {
@@ -62,7 +61,6 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
     }).then((resp) => {
       console.log(resp)
       dispatch(cleanCart());
-      closePopUp()
       navigation.navigate('Home')
     }).catch((e) => {
       console.log(e)
@@ -70,6 +68,7 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
   } 
 
   console.log('allSupermaketsOrdered', allSupermaketsOrdered)
+  console.log('isModalVisible', isModalVisible)
 
   return (
     <Dialog height={0.5} width={0.95} visible={isModalVisible} onTouchOutside={clickedOutside} dialogTitle={<DialogTitle title="Melhores Opções" />}>
@@ -79,7 +78,7 @@ const BestSupermarketsPopup = ({clickedOutside, navigation, isModalVisible, supe
               keyExtractor={(item, index) => index.toString()}
               maxHeight={height - 230}
               data={allSupermaketsOrdered}
-              renderItem={({ item, id }) =><SupermarketApproved cart={cart} key={id} nameSupermarket={_.find(supermarkets, ['id', item.id])?.social_reason} total={item.total} selectSupermarket={() => sendSupermarketSelected(item)} item={item} />}
+              renderItem={({ item, id }) =><SupermarketApproved cart={cart} key={id} nameSupermarket={_.find(supermarkets, ['id', item.id])?.social_reason} total={item.total} selectSupermarket={() => {sendSupermarketSelected(item), closePopUp()}} item={item} />}
               />
         </ScrollView>
       </DialogContent>
