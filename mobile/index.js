@@ -9,7 +9,7 @@ import store from './store'
 if(__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
 }
-
+console.disableYellowBox = true;
 const theme = {
   ...DefaultTheme,
   colors: {
