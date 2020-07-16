@@ -27,7 +27,7 @@
     "@adonisjs/mail": "^3.0.9",
     "adonis-encrypter": "^1.0.0",
     "crypto": "^1.0.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mysql": "^2.16.0",
     "uuid": "^3.3.3"
   },
